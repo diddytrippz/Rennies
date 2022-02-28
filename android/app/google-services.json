@@ -1,0 +1,142 @@
+{
+  "project_info": {
+    "project_number": "73650904699",
+    "project_id": "campus-africa-bda4b",
+    "storage_bucket": "campus-africa-bda4b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:73650904699:android:6130624c7ddaa12aff4cde",
+        "android_client_info": {
+          "package_name": "com.campusafrica.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "73650904699-td4jq6o9kkds1b16tnt2nqj9anhlkks2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.campusafrica.app",
+            "certificate_hash": "9bbb3186b2189ef16d8f272bdab59362c395cbb4"
+          }
+        },
+        {
+          "client_id": "73650904699-l3e3edcl42vht8oc486jnshmp166fvgh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCYYUGKvKW3O4C7La535TNQZdj6Bl5WHzA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "73650904699-l3e3edcl42vht8oc486jnshmp166fvgh.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "73650904699-0dpj7a3eku4mdachir4beu0sb5kah0ik.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.newcampusafrica.app"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:73650904699:android:3a8d1e047fbfb09fff4cde",
+        "android_client_info": {
+          "package_name": "com.conurban.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "73650904699-4t4bf13beielc46bug2dp3qhou6jn8c6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.conurban.app",
+            "certificate_hash": "9bbb3186b2189ef16d8f272bdab59362c395cbb4"
+          }
+        },
+        {
+          "client_id": "73650904699-l3e3edcl42vht8oc486jnshmp166fvgh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCYYUGKvKW3O4C7La535TNQZdj6Bl5WHzA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "73650904699-l3e3edcl42vht8oc486jnshmp166fvgh.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "73650904699-0dpj7a3eku4mdachir4beu0sb5kah0ik.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.newcampusafrica.app"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:73650904699:android:22b58ba1d3471095ff4cde",
+        "android_client_info": {
+          "package_name": "com.renniehouse.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "73650904699-72q49ohikbgqbed1ui5q06v91d1mjnef.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.renniehouse.app",
+            "certificate_hash": "9bbb3186b2189ef16d8f272bdab59362c395cbb4"
+          }
+        },
+        {
+          "client_id": "73650904699-l3e3edcl42vht8oc486jnshmp166fvgh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCYYUGKvKW3O4C7La535TNQZdj6Bl5WHzA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "73650904699-l3e3edcl42vht8oc486jnshmp166fvgh.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "73650904699-0dpj7a3eku4mdachir4beu0sb5kah0ik.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.newcampusafrica.app"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -142,7 +142,7 @@ class _NavBarPageState extends State<NavBarPage> {
         padding: EdgeInsetsDirectional.fromSTEB(14, 12, 4, 12),
         gap: 8,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        duration: Duration(milliseconds: 1000),
+        duration: Duration(milliseconds: 900),
         haptic: true,
         tabs: [
           GButton(

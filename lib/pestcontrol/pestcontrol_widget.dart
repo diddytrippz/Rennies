@@ -266,7 +266,7 @@ class _PestcontrolWidgetState extends State<PestcontrolWidget> {
                             controller: reasonController,
                             obscureText: false,
                             decoration: InputDecoration(
-                              labelText: 'Description •',
+                              labelText: 'Description ',
                               enabledBorder: UnderlineInputBorder(
                                 borderSide: BorderSide(
                                   color: Color(0xFFC5C5C5),

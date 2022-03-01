@@ -648,7 +648,7 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
                         padding: EdgeInsetsDirectional.fromSTEB(24, 0, 0, 0),
                         child: InkWell(
                           onTap: () async {
-                            setDarkModeSetting(context, ThemeMode.dark);
+                            setDarkModeSetting(context, ThemeMode.light);
                           },
                           child: Row(
                             mainAxisSize: MainAxisSize.max,

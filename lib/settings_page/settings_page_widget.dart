@@ -475,12 +475,13 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
       body: Padding(
         padding: EdgeInsetsDirectional.fromSTEB(0, 8, 0, 0),
         child: Column(
-          mainAxisSize: MainAxisSize.max,
+          mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Expanded(
               child: Column(
                 mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Row(
                     mainAxisSize: MainAxisSize.max,
@@ -511,7 +512,6 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
                   children: [
                     Container(
                       width: MediaQuery.of(context).size.width,
-                      height: 50,
                       decoration: BoxDecoration(
                         color: FlutterFlowTheme.of(context).primaryBackground,
                         shape: BoxShape.rectangle,
@@ -579,7 +579,6 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
                   children: [
                     Container(
                       width: MediaQuery.of(context).size.width,
-                      height: 50,
                       decoration: BoxDecoration(
                         color: FlutterFlowTheme.of(context).primaryBackground,
                         shape: BoxShape.rectangle,
@@ -646,7 +645,6 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
                   children: [
                     Container(
                       width: MediaQuery.of(context).size.width,
-                      height: 50,
                       decoration: BoxDecoration(
                         color: FlutterFlowTheme.of(context).primaryBackground,
                         shape: BoxShape.rectangle,
@@ -700,7 +698,6 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
                   children: [
                     Container(
                       width: MediaQuery.of(context).size.width,
-                      height: 50,
                       decoration: BoxDecoration(
                         color: FlutterFlowTheme.of(context).primaryBackground,
                         shape: BoxShape.rectangle,
@@ -774,7 +771,6 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
                   children: [
                     Container(
                       width: MediaQuery.of(context).size.width,
-                      height: 50,
                       decoration: BoxDecoration(
                         color: FlutterFlowTheme.of(context).primaryBackground,
                         shape: BoxShape.rectangle,
@@ -847,7 +843,6 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
                   children: [
                     Container(
                       width: MediaQuery.of(context).size.width,
-                      height: 50,
                       decoration: BoxDecoration(
                         color: FlutterFlowTheme.of(context).primaryBackground,
                         shape: BoxShape.rectangle,
@@ -929,7 +924,6 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
                           },
                           child: Container(
                             width: MediaQuery.of(context).size.width,
-                            height: 50,
                             decoration: BoxDecoration(
                               color: FlutterFlowTheme.of(context)
                                   .primaryBackground,
@@ -1011,7 +1005,6 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
                     children: [
                       Container(
                         width: MediaQuery.of(context).size.width,
-                        height: 50,
                         decoration: BoxDecoration(
                           color: FlutterFlowTheme.of(context).primaryBackground,
                           shape: BoxShape.rectangle,

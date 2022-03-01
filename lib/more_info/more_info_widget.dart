@@ -488,7 +488,7 @@ class _MoreInfoWidgetState extends State<MoreInfoWidget> {
                                                                           color:
                                                                               FlutterFlowTheme.of(context).primaryText,
                                                                           fontSize:
-                                                                              18,
+                                                                              20,
                                                                         ),
                                                                   ),
                                                                 ),
@@ -521,7 +521,7 @@ class _MoreInfoWidgetState extends State<MoreInfoWidget> {
                                                                             color:
                                                                                 Color(0xFF595959),
                                                                             fontSize:
-                                                                                16,
+                                                                                18,
                                                                             fontWeight:
                                                                                 FontWeight.normal,
                                                                           ),

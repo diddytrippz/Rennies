@@ -633,6 +633,58 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
                   ],
                 ),
               ),
+              if (Theme.of(context).brightness == Brightness.dark ?? true)
+                Row(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        color: FlutterFlowTheme.of(context).primaryBackground,
+                        shape: BoxShape.rectangle,
+                      ),
+                      child: Padding(
+                        padding: EdgeInsetsDirectional.fromSTEB(24, 0, 0, 0),
+                        child: InkWell(
+                          onTap: () async {
+                            setDarkModeSetting(context, ThemeMode.dark);
+                          },
+                          child: Row(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                mainAxisSize: MainAxisSize.max,
+                                children: [
+                                  Icon(
+                                    Icons.brightness_4,
+                                    color: Color(0xFF9E9E9E),
+                                    size: 24,
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        24, 0, 0, 0),
+                                    child: Text(
+                                      'Light Mode',
+                                      style: FlutterFlowTheme.of(context)
+                                          .bodyText1
+                                          .override(
+                                            fontFamily: 'Roboto',
+                                            color: FlutterFlowTheme.of(context)
+                                                .primaryText,
+                                          ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               if (!(Theme.of(context).brightness == Brightness.dark) ?? true)
                 Row(
                   mainAxisSize: MainAxisSize.max,
@@ -722,10 +774,14 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
                               SnackBar(
                                 content: Text(
                                   'Currently unavailable',
-                                  style: TextStyle(),
+                                  style: TextStyle(
+                                    color: FlutterFlowTheme.of(context)
+                                        .primaryBackground,
+                                  ),
                                 ),
                                 duration: Duration(milliseconds: 4000),
-                                backgroundColor: Color(0x00000000),
+                                backgroundColor:
+                                    FlutterFlowTheme.of(context).primaryText,
                               ),
                             );
                           },

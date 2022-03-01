@@ -500,7 +500,7 @@ class _MoreInfoWidgetState extends State<MoreInfoWidget> {
                                                                     padding: EdgeInsetsDirectional
                                                                         .fromSTEB(
                                                                             20,
-                                                                            2,
+                                                                            8,
                                                                             16,
                                                                             2),
                                                                     child:

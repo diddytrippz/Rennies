@@ -125,7 +125,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                                           context)
                                                                       .size
                                                                       .width *
-                                                                  0.1,
+                                                                  0.095,
                                                               lineWidth: 15,
                                                               animation: true,
                                                               progressColor:

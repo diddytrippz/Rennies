@@ -177,7 +177,7 @@ class _StudentsWidgetState extends State<StudentsWidget> {
                                                 padding: EdgeInsetsDirectional
                                                     .fromSTEB(0, 4, 0, 0),
                                                 child: Text(
-                                                  columnUsersRecord.role,
+                                                  columnUsersRecord.room,
                                                   style: FlutterFlowTheme.of(
                                                           context)
                                                       .bodyText1

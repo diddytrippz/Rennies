@@ -474,11 +474,12 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
       ),
       body: Padding(
         padding: EdgeInsetsDirectional.fromSTEB(0, 8, 0, 0),
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              Column(
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              child: Column(
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   Row(
@@ -501,7 +502,9 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
                   ),
                 ],
               ),
-              Padding(
+            ),
+            Expanded(
+              child: Padding(
                 padding: EdgeInsetsDirectional.fromSTEB(0, 1, 0, 0),
                 child: Row(
                   mainAxisSize: MainAxisSize.max,
@@ -567,7 +570,9 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
                   ],
                 ),
               ),
-              Padding(
+            ),
+            Expanded(
+              child: Padding(
                 padding: EdgeInsetsDirectional.fromSTEB(0, 1, 0, 0),
                 child: Row(
                   mainAxisSize: MainAxisSize.max,
@@ -633,8 +638,10 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
                   ],
                 ),
               ),
-              if (Theme.of(context).brightness == Brightness.dark ?? true)
-                Row(
+            ),
+            if (Theme.of(context).brightness == Brightness.dark ?? true)
+              Expanded(
+                child: Row(
                   mainAxisSize: MainAxisSize.max,
                   children: [
                     Container(
@@ -685,8 +692,10 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
                     ),
                   ],
                 ),
-              if (!(Theme.of(context).brightness == Brightness.dark) ?? true)
-                Row(
+              ),
+            if (!(Theme.of(context).brightness == Brightness.dark) ?? true)
+              Expanded(
+                child: Row(
                   mainAxisSize: MainAxisSize.max,
                   children: [
                     Container(
@@ -737,7 +746,9 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
                     ),
                   ],
                 ),
-              Row(
+              ),
+            Expanded(
+              child: Row(
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   Padding(
@@ -754,7 +765,9 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
                   ),
                 ],
               ),
-              Padding(
+            ),
+            Expanded(
+              child: Padding(
                 padding: EdgeInsetsDirectional.fromSTEB(0, 1, 0, 0),
                 child: Row(
                   mainAxisSize: MainAxisSize.max,
@@ -825,7 +838,9 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
                   ],
                 ),
               ),
-              Padding(
+            ),
+            Expanded(
+              child: Padding(
                 padding: EdgeInsetsDirectional.fromSTEB(0, 1, 0, 0),
                 child: Row(
                   mainAxisSize: MainAxisSize.max,
@@ -891,8 +906,10 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
                   ],
                 ),
               ),
-              if ((currentUserDocument?.role) == 'Admin')
-                Padding(
+            ),
+            if ((currentUserDocument?.role) == 'Admin')
+              Expanded(
+                child: Padding(
                   padding: EdgeInsetsDirectional.fromSTEB(0, 1, 0, 0),
                   child: AuthUserStreamWidget(
                     child: Row(
@@ -962,7 +979,9 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
                     ),
                   ),
                 ),
-              Row(
+              ),
+            Expanded(
+              child: Row(
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   Padding(
@@ -979,7 +998,9 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
                   ),
                 ],
               ),
-              Padding(
+            ),
+            Expanded(
+              child: Padding(
                 padding: EdgeInsetsDirectional.fromSTEB(0, 1, 0, 0),
                 child: InkWell(
                   onTap: () async {
@@ -1037,54 +1058,53 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
                   ),
                 ),
               ),
-              Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0, 35, 0, 10),
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
-                      child: FFButtonWidget(
-                        onPressed: () async {
-                          await signOut();
-                          await Navigator.pushAndRemoveUntil(
-                            context,
-                            PageTransition(
-                              type: PageTransitionType.bottomToTop,
-                              duration: Duration(milliseconds: 300),
-                              reverseDuration: Duration(milliseconds: 300),
-                              child: OnboardingWidget(),
-                            ),
-                            (r) => false,
-                          );
-                        },
-                        text: 'Log Out',
-                        options: FFButtonOptions(
-                          width: 90,
-                          height: 40,
-                          color: Colors.white,
-                          textStyle: FlutterFlowTheme.of(context)
-                              .bodyText2
-                              .override(
-                                fontFamily: 'Roboto',
-                                color:
-                                    FlutterFlowTheme.of(context).primaryColor,
-                              ),
-                          elevation: 3,
-                          borderSide: BorderSide(
-                            color: Colors.transparent,
-                            width: 1,
+            ),
+            Padding(
+              padding: EdgeInsetsDirectional.fromSTEB(0, 35, 0, 10),
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
+                    child: FFButtonWidget(
+                      onPressed: () async {
+                        await signOut();
+                        await Navigator.pushAndRemoveUntil(
+                          context,
+                          PageTransition(
+                            type: PageTransitionType.bottomToTop,
+                            duration: Duration(milliseconds: 300),
+                            reverseDuration: Duration(milliseconds: 300),
+                            child: OnboardingWidget(),
                           ),
-                          borderRadius: 8,
+                          (r) => false,
+                        );
+                      },
+                      text: 'Log Out',
+                      options: FFButtonOptions(
+                        width: 90,
+                        height: 35,
+                        color: Colors.white,
+                        textStyle: FlutterFlowTheme.of(context)
+                            .bodyText2
+                            .override(
+                              fontFamily: 'Roboto',
+                              color: FlutterFlowTheme.of(context).primaryColor,
+                            ),
+                        elevation: 3,
+                        borderSide: BorderSide(
+                          color: Colors.transparent,
+                          width: 1,
                         ),
+                        borderRadius: 8,
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

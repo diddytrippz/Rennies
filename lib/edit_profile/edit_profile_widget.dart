@@ -2,7 +2,6 @@ import '../auth/auth_util.dart';
 import '../backend/backend.dart';
 import '../backend/firebase_storage/storage.dart';
 import '../flutter_flow/flutter_flow_expanded_image_view.dart';
-import '../flutter_flow/flutter_flow_icon_button.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
@@ -23,9 +22,9 @@ class EditProfileWidget extends StatefulWidget {
 
 class _EditProfileWidgetState extends State<EditProfileWidget> {
   String uploadedFileUrl = '';
+  final scaffoldKey = GlobalKey<ScaffoldState>();
   TextEditingController textController1;
   TextEditingController textController2;
-  final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
@@ -68,7 +67,48 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
                 fontSize: 16,
               ),
         ),
-        actions: [],
+        actions: [
+          Padding(
+            padding: EdgeInsetsDirectional.fromSTEB(0, 0, 18, 0),
+            child: InkWell(
+              onTap: () async {
+                final selectedMedia = await selectMediaWithSourceBottomSheet(
+                  context: context,
+                  allowPhoto: true,
+                );
+                if (selectedMedia != null &&
+                    validateFileFormat(selectedMedia.storagePath, context)) {
+                  showUploadMessage(
+                    context,
+                    'Uploading file...',
+                    showLoading: true,
+                  );
+                  final downloadUrl = await uploadData(
+                      selectedMedia.storagePath, selectedMedia.bytes);
+                  ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                  if (downloadUrl != null) {
+                    setState(() => uploadedFileUrl = downloadUrl);
+                    showUploadMessage(
+                      context,
+                      'File Uploaded!',
+                    );
+                  } else {
+                    showUploadMessage(
+                      context,
+                      'Failed to upload media',
+                    );
+                    return;
+                  }
+                }
+              },
+              child: Icon(
+                Icons.edit_outlined,
+                color: FlutterFlowTheme.of(context).primaryText,
+                size: 24,
+              ),
+            ),
+          ),
+        ],
         centerTitle: true,
         elevation: 1,
       ),
@@ -76,286 +116,238 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
       body: SafeArea(
         child: GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(0, 30, 0, 0),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Stack(
-                          children: [
-                            Container(
-                              width: 150,
-                              height: 150,
-                              decoration: BoxDecoration(
-                                color: FlutterFlowTheme.of(context).campusRed,
-                                shape: BoxShape.circle,
-                                border: Border.all(
-                                  color:
-                                      FlutterFlowTheme.of(context).primaryText,
+          child: Padding(
+            padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 50),
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(0, 40, 0, 0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Row(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Stack(
+                            children: [
+                              Container(
+                                width: MediaQuery.of(context).size.width * 0.3,
+                                height: MediaQuery.of(context).size.width * 0.3,
+                                decoration: BoxDecoration(
+                                  color: FlutterFlowTheme.of(context).campusRed,
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                    color: FlutterFlowTheme.of(context)
+                                        .primaryText,
+                                  ),
                                 ),
-                              ),
-                              child: AuthUserStreamWidget(
-                                child: InkWell(
-                                  onTap: () async {
-                                    await Navigator.push(
-                                      context,
-                                      PageTransition(
-                                        type: PageTransitionType.fade,
-                                        child: FlutterFlowExpandedImageView(
-                                          image: Image.network(
-                                            valueOrDefault<String>(
+                                child: AuthUserStreamWidget(
+                                  child: InkWell(
+                                    onTap: () async {
+                                      await Navigator.push(
+                                        context,
+                                        PageTransition(
+                                          type: PageTransitionType.fade,
+                                          child: FlutterFlowExpandedImageView(
+                                            image: Image.network(
+                                              valueOrDefault<String>(
+                                                currentUserPhoto,
+                                                'https://www.pngitem.com/pimgs/m/348-3483562_fox-icon-png-transparent-png.png',
+                                              ),
+                                              fit: BoxFit.contain,
+                                            ),
+                                            allowRotation: false,
+                                            tag: valueOrDefault<String>(
                                               currentUserPhoto,
                                               'https://www.pngitem.com/pimgs/m/348-3483562_fox-icon-png-transparent-png.png',
                                             ),
-                                            fit: BoxFit.contain,
+                                            useHeroAnimation: true,
                                           ),
-                                          allowRotation: false,
-                                          tag: valueOrDefault<String>(
+                                        ),
+                                      );
+                                    },
+                                    child: Hero(
+                                      tag: valueOrDefault<String>(
+                                        currentUserPhoto,
+                                        'https://www.pngitem.com/pimgs/m/348-3483562_fox-icon-png-transparent-png.png',
+                                      ),
+                                      transitionOnUserGestures: true,
+                                      child: Container(
+                                        width: 150,
+                                        height: 150,
+                                        clipBehavior: Clip.antiAlias,
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                        ),
+                                        child: Image.network(
+                                          valueOrDefault<String>(
                                             currentUserPhoto,
                                             'https://www.pngitem.com/pimgs/m/348-3483562_fox-icon-png-transparent-png.png',
                                           ),
-                                          useHeroAnimation: true,
+                                          fit: BoxFit.cover,
                                         ),
-                                      ),
-                                    );
-                                  },
-                                  child: Hero(
-                                    tag: valueOrDefault<String>(
-                                      currentUserPhoto,
-                                      'https://www.pngitem.com/pimgs/m/348-3483562_fox-icon-png-transparent-png.png',
-                                    ),
-                                    transitionOnUserGestures: true,
-                                    child: Container(
-                                      width: 150,
-                                      height: 150,
-                                      clipBehavior: Clip.antiAlias,
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                      ),
-                                      child: Image.network(
-                                        valueOrDefault<String>(
-                                          currentUserPhoto,
-                                          'https://www.pngitem.com/pimgs/m/348-3483562_fox-icon-png-transparent-png.png',
-                                        ),
-                                        fit: BoxFit.cover,
                                       ),
                                     ),
                                   ),
                                 ),
                               ),
-                            ),
-                            Padding(
-                              padding:
-                                  EdgeInsetsDirectional.fromSTEB(120, 80, 0, 0),
-                              child: FlutterFlowIconButton(
-                                borderColor: Colors.white,
-                                borderRadius: 30,
-                                borderWidth: 2,
-                                buttonSize: 50,
-                                fillColor:
-                                    FlutterFlowTheme.of(context).campusRed,
-                                icon: Icon(
-                                  Icons.edit_outlined,
-                                  color: Colors.white,
-                                  size: 30,
+                            ],
+                          ),
+                        ],
+                      ),
+                      Padding(
+                        padding: EdgeInsetsDirectional.fromSTEB(16, 40, 16, 0),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Expanded(
+                              child: AuthUserStreamWidget(
+                                child: TextFormField(
+                                  controller: textController1,
+                                  obscureText: false,
+                                  decoration: InputDecoration(
+                                    labelText: 'Display Name',
+                                    hintText: 'Dispaly Name',
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Color(0xFF9A9A9A),
+                                        width: 1,
+                                      ),
+                                      borderRadius: BorderRadius.circular(5),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Color(0xFF9A9A9A),
+                                        width: 1,
+                                      ),
+                                      borderRadius: BorderRadius.circular(5),
+                                    ),
+                                    prefixIcon: Icon(
+                                      Icons.person_outline_sharp,
+                                      color: FlutterFlowTheme.of(context)
+                                          .campusGrey,
+                                    ),
+                                  ),
+                                  style: FlutterFlowTheme.of(context)
+                                      .bodyText1
+                                      .override(
+                                        fontFamily: 'Roboto',
+                                        color: FlutterFlowTheme.of(context)
+                                            .primaryText,
+                                      ),
                                 ),
-                                onPressed: () async {
-                                  final selectedMedia =
-                                      await selectMediaWithSourceBottomSheet(
-                                    context: context,
-                                    allowPhoto: true,
-                                  );
-                                  if (selectedMedia != null &&
-                                      validateFileFormat(
-                                          selectedMedia.storagePath, context)) {
-                                    showUploadMessage(
-                                      context,
-                                      'Uploading file...',
-                                      showLoading: true,
-                                    );
-                                    final downloadUrl = await uploadData(
-                                        selectedMedia.storagePath,
-                                        selectedMedia.bytes);
-                                    ScaffoldMessenger.of(context)
-                                        .hideCurrentSnackBar();
-                                    if (downloadUrl != null) {
-                                      setState(
-                                          () => uploadedFileUrl = downloadUrl);
-                                      showUploadMessage(
-                                        context,
-                                        'File Uploaded!',
-                                      );
-                                    } else {
-                                      showUploadMessage(
-                                        context,
-                                        'Failed to upload media',
-                                      );
-                                      return;
-                                    }
-                                  }
-                                },
                               ),
                             ),
                           ],
                         ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(16, 40, 16, 0),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        Expanded(
-                          child: AuthUserStreamWidget(
-                            child: TextFormField(
-                              controller: textController1,
-                              obscureText: false,
-                              decoration: InputDecoration(
-                                labelText: 'Display Name',
-                                hintText: 'Dispaly Name',
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Color(0xFF9A9A9A),
-                                    width: 1,
-                                  ),
-                                  borderRadius: BorderRadius.circular(5),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Color(0xFF9A9A9A),
-                                    width: 1,
-                                  ),
-                                  borderRadius: BorderRadius.circular(5),
-                                ),
-                                prefixIcon: Icon(
-                                  Icons.person_outline_sharp,
-                                  color:
-                                      FlutterFlowTheme.of(context).campusGrey,
-                                ),
-                              ),
-                              style: FlutterFlowTheme.of(context)
-                                  .bodyText1
-                                  .override(
-                                    fontFamily: 'Roboto',
-                                    color: FlutterFlowTheme.of(context)
-                                        .primaryText,
-                                  ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(16, 20, 16, 0),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        Expanded(
-                          child: TextFormField(
-                            controller: textController2,
-                            obscureText: false,
-                            decoration: InputDecoration(
-                              labelText: 'Email',
-                              hintText: 'Email',
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: Color(0xFF9A9A9A),
-                                  width: 1,
-                                ),
-                                borderRadius: BorderRadius.circular(5),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: Color(0xFF9A9A9A),
-                                  width: 1,
-                                ),
-                                borderRadius: BorderRadius.circular(5),
-                              ),
-                              prefixIcon: Icon(
-                                Icons.mail_outline_rounded,
-                                color: FlutterFlowTheme.of(context).campusGrey,
-                              ),
-                            ),
-                            style: FlutterFlowTheme.of(context)
-                                .bodyText1
-                                .override(
-                                  fontFamily: 'Roboto',
-                                  color:
-                                      FlutterFlowTheme.of(context).primaryText,
-                                ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(16, 0, 16, 30),
-                child: Column(
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    FFButtonWidget(
-                      onPressed: () async {
-                        final usersUpdateData = createUsersRecordData(
-                          photoUrl: uploadedFileUrl,
-                        );
-                        await currentUserReference.update(usersUpdateData);
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(
-                              'Image successfully uploaded',
-                              style: TextStyle(
-                                color: FlutterFlowTheme.of(context)
-                                    .primaryBackground,
-                              ),
-                            ),
-                            duration: Duration(milliseconds: 4000),
-                            backgroundColor:
-                                FlutterFlowTheme.of(context).primaryText,
-                          ),
-                        );
-                        await Navigator.push(
-                          context,
-                          PageTransition(
-                            type: PageTransitionType.bottomToTop,
-                            duration: Duration(milliseconds: 300),
-                            reverseDuration: Duration(milliseconds: 300),
-                            child: NavBarPage(initialPage: 'settingsPage'),
-                          ),
-                        );
-                      },
-                      text: 'UPDATE PROFILE',
-                      options: FFButtonOptions(
-                        width: double.infinity,
-                        height: 55,
-                        color: FlutterFlowTheme.of(context).primaryColor,
-                        textStyle:
-                            FlutterFlowTheme.of(context).subtitle2.override(
-                                  fontFamily: 'Roboto',
-                                  color: Colors.white,
-                                ),
-                        borderSide: BorderSide(
-                          color: Colors.transparent,
-                          width: 1,
-                        ),
-                        borderRadius: 12,
                       ),
-                    ),
-                  ],
+                      Padding(
+                        padding: EdgeInsetsDirectional.fromSTEB(16, 20, 16, 0),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Expanded(
+                              child: TextFormField(
+                                controller: textController2,
+                                obscureText: false,
+                                decoration: InputDecoration(
+                                  labelText: 'Email',
+                                  hintText: 'Email',
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: Color(0xFF9A9A9A),
+                                      width: 1,
+                                    ),
+                                    borderRadius: BorderRadius.circular(5),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: Color(0xFF9A9A9A),
+                                      width: 1,
+                                    ),
+                                    borderRadius: BorderRadius.circular(5),
+                                  ),
+                                  prefixIcon: Icon(
+                                    Icons.mail_outline_rounded,
+                                    color:
+                                        FlutterFlowTheme.of(context).campusGrey,
+                                  ),
+                                ),
+                                style: FlutterFlowTheme.of(context)
+                                    .bodyText1
+                                    .override(
+                                      fontFamily: 'Roboto',
+                                      color: FlutterFlowTheme.of(context)
+                                          .primaryText,
+                                    ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+                Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(16, 50, 16, 30),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      FFButtonWidget(
+                        onPressed: () async {
+                          final usersUpdateData = createUsersRecordData(
+                            photoUrl: uploadedFileUrl,
+                          );
+                          await currentUserReference.update(usersUpdateData);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                'Image successfully uploaded',
+                                style: TextStyle(
+                                  color: FlutterFlowTheme.of(context)
+                                      .primaryBackground,
+                                ),
+                              ),
+                              duration: Duration(milliseconds: 4000),
+                              backgroundColor:
+                                  FlutterFlowTheme.of(context).primaryText,
+                            ),
+                          );
+                          await Navigator.push(
+                            context,
+                            PageTransition(
+                              type: PageTransitionType.bottomToTop,
+                              duration: Duration(milliseconds: 300),
+                              reverseDuration: Duration(milliseconds: 300),
+                              child: NavBarPage(initialPage: 'settingsPage'),
+                            ),
+                          );
+                        },
+                        text: 'UPDATE PROFILE',
+                        options: FFButtonOptions(
+                          width: double.infinity,
+                          height: 55,
+                          color: FlutterFlowTheme.of(context).primaryColor,
+                          textStyle:
+                              FlutterFlowTheme.of(context).subtitle2.override(
+                                    fontFamily: 'Roboto',
+                                    color: Colors.white,
+                                  ),
+                          borderSide: BorderSide(
+                            color: Colors.transparent,
+                            width: 1,
+                          ),
+                          borderRadius: 12,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

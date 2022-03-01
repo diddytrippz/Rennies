@@ -9,6 +9,7 @@ import '../main.dart';
 import '../onboarding/onboarding_widget.dart';
 import '../rules_book/rules_book_widget.dart';
 import '../students/students_widget.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -478,31 +479,28 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Expanded(
-              child: Column(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Row(
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(24, 12, 0, 12),
-                        child: Text(
-                          'ACCOUNT',
-                          style:
-                              FlutterFlowTheme.of(context).bodyText1.override(
-                                    fontFamily: 'Roboto',
-                                    color: Color(0xFF9E9E9E),
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                        ),
+            Column(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Row(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Padding(
+                      padding: EdgeInsetsDirectional.fromSTEB(24, 12, 0, 12),
+                      child: Text(
+                        'ACCOUNT',
+                        style: FlutterFlowTheme.of(context).bodyText1.override(
+                              fontFamily: 'Roboto',
+                              color: Color(0xFF9E9E9E),
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                            ),
                       ),
-                    ],
-                  ),
-                ],
-              ),
+                    ),
+                  ],
+                ),
+              ],
             ),
             Expanded(
               child: Padding(
@@ -541,7 +539,7 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
                               Padding(
                                 padding:
                                     EdgeInsetsDirectional.fromSTEB(24, 0, 0, 0),
-                                child: Text(
+                                child: AutoSizeText(
                                   'My account',
                                   style: FlutterFlowTheme.of(context)
                                       .bodyText1
@@ -608,7 +606,7 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
                               Padding(
                                 padding:
                                     EdgeInsetsDirectional.fromSTEB(24, 0, 0, 0),
-                                child: Text(
+                                child: AutoSizeText(
                                   'Messages',
                                   style: FlutterFlowTheme.of(context)
                                       .bodyText1
@@ -723,7 +721,7 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
                                   Padding(
                                     padding: EdgeInsetsDirectional.fromSTEB(
                                         24, 0, 0, 0),
-                                    child: Text(
+                                    child: AutoSizeText(
                                       'Dark Mode',
                                       style: FlutterFlowTheme.of(context)
                                           .bodyText1
@@ -744,24 +742,22 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
                   ],
                 ),
               ),
-            Expanded(
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(24, 12, 0, 12),
-                    child: Text(
-                      'STUDENTS',
-                      style: FlutterFlowTheme.of(context).bodyText1.override(
-                            fontFamily: 'Roboto',
-                            color: Color(0xFF9E9E9E),
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
-                          ),
-                    ),
+            Row(
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(24, 12, 0, 12),
+                  child: Text(
+                    'STUDENTS',
+                    style: FlutterFlowTheme.of(context).bodyText1.override(
+                          fontFamily: 'Roboto',
+                          color: Color(0xFF9E9E9E),
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                        ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
             Expanded(
               child: Padding(
@@ -805,7 +801,7 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
                               Padding(
                                 padding:
                                     EdgeInsetsDirectional.fromSTEB(24, 0, 0, 0),
-                                child: Text(
+                                child: AutoSizeText(
                                   'Checklist',
                                   style: FlutterFlowTheme.of(context)
                                       .bodyText1
@@ -872,7 +868,7 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
                               Padding(
                                 padding:
                                     EdgeInsetsDirectional.fromSTEB(24, 0, 0, 0),
-                                child: Text(
+                                child: AutoSizeText(
                                   'Residence fees',
                                   style: FlutterFlowTheme.of(context)
                                       .bodyText1
@@ -943,7 +939,7 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
                                   Padding(
                                     padding: EdgeInsetsDirectional.fromSTEB(
                                         24, 0, 0, 0),
-                                    child: Text(
+                                    child: AutoSizeText(
                                       'Students',
                                       style: FlutterFlowTheme.of(context)
                                           .bodyText1
@@ -974,24 +970,22 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
                   ),
                 ),
               ),
-            Expanded(
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(24, 14, 0, 14),
-                    child: Text(
-                      'LEGAL',
-                      style: FlutterFlowTheme.of(context).bodyText1.override(
-                            fontFamily: 'Roboto',
-                            color: Color(0xFF9E9E9E),
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
-                          ),
-                    ),
+            Row(
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(24, 14, 0, 14),
+                  child: Text(
+                    'LEGAL',
+                    style: FlutterFlowTheme.of(context).bodyText1.override(
+                          fontFamily: 'Roboto',
+                          color: Color(0xFF9E9E9E),
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                        ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
             Expanded(
               child: Padding(
@@ -1022,7 +1016,7 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
                               Padding(
                                 padding:
                                     EdgeInsetsDirectional.fromSTEB(24, 0, 0, 0),
-                                child: Text(
+                                child: AutoSizeText(
                                   'About us',
                                   style: FlutterFlowTheme.of(context)
                                       .bodyText1
@@ -1053,7 +1047,7 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
               ),
             ),
             Padding(
-              padding: EdgeInsetsDirectional.fromSTEB(0, 35, 0, 10),
+              padding: EdgeInsetsDirectional.fromSTEB(0, 45, 0, 30),
               child: Row(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.center,

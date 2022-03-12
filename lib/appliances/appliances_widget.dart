@@ -35,7 +35,7 @@ class _AppliancesWidgetState extends State<AppliancesWidget> {
   void initState() {
     super.initState();
     reasonController = TextEditingController();
-    textController1 = TextEditingController();
+    textController1 = TextEditingController(text: currentUserDisplayName);
   }
 
   @override
@@ -186,7 +186,7 @@ class _AppliancesWidgetState extends State<AppliancesWidget> {
                         obscureText: false,
                         decoration: InputDecoration(
                           labelText: currentUserDisplayName,
-                          hintText: '[Some hint text...]',
+                          hintText: currentUserDisplayName,
                           enabledBorder: OutlineInputBorder(
                             borderSide: BorderSide(
                               color: Color(0x00000000),

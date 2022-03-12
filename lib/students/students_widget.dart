@@ -28,42 +28,30 @@ class _StudentsWidgetState extends State<StudentsWidget> {
       appBar: AppBar(
         backgroundColor: FlutterFlowTheme.of(context).tertiaryColor,
         automaticallyImplyLeading: false,
-        leading: Padding(
-          padding: EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
-          child: Row(
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              InkWell(
-                onTap: () async {
-                  await Navigator.push(
-                    context,
-                    PageTransition(
-                      type: PageTransitionType.leftToRight,
-                      duration: Duration(milliseconds: 300),
-                      reverseDuration: Duration(milliseconds: 300),
-                      child: NavBarPage(initialPage: 'settingsPage'),
-                    ),
-                  );
-                },
-                child: Icon(
-                  Icons.more_vert,
-                  color: FlutterFlowTheme.of(context).primaryText,
-                  size: 24,
-                ),
+        leading: InkWell(
+          onTap: () async {
+            await Navigator.push(
+              context,
+              PageTransition(
+                type: PageTransitionType.leftToRight,
+                duration: Duration(milliseconds: 300),
+                reverseDuration: Duration(milliseconds: 300),
+                child: NavBarPage(initialPage: 'settingsPage'),
               ),
-              Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(8, 0, 0, 0),
-                child: Text(
-                  'Students',
-                  style: FlutterFlowTheme.of(context).title1.override(
-                        fontFamily: 'Roboto',
-                        color: FlutterFlowTheme.of(context).primaryText,
-                        fontSize: 16,
-                      ),
-                ),
-              ),
-            ],
+            );
+          },
+          child: Icon(
+            Icons.more_vert,
+            color: FlutterFlowTheme.of(context).primaryText,
+            size: 24,
           ),
+        ),
+        title: Text(
+          'Students',
+          style: FlutterFlowTheme.of(context).bodyText1.override(
+                fontFamily: 'Roboto',
+                color: FlutterFlowTheme.of(context).primaryText,
+              ),
         ),
         actions: [
           Padding(

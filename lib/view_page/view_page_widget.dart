@@ -1138,9 +1138,9 @@ class _ViewPageWidgetState extends State<ViewPageWidget>
                                                                           0xFF303030),
                                                                       size: 20,
                                                                     ),
-                                                                    tileColor: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .primaryText,
+                                                                    tileColor:
+                                                                        Color(
+                                                                            0x00FFFFFF),
                                                                     dense: true,
                                                                   ),
                                                                 ),

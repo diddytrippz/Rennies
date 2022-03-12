@@ -113,6 +113,20 @@
       ]
     },
     {
+      "collectionGroup": "users",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "building",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "display_name",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
       "collectionGroup": "chat_messages",
       "queryScope": "COLLECTION",
       "fields": [

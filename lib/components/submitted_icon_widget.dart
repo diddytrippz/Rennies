@@ -89,7 +89,7 @@ class _SubmittedIconWidgetState extends State<SubmittedIconWidget> {
                             padding:
                                 EdgeInsetsDirectional.fromSTEB(16, 0, 16, 0),
                             child: AutoSizeText(
-                              'Your request has been received\nby the Campus Africa maintenance\nteam.',
+                              'Your request has been received\nby the maintenance\nteam.',
                               textAlign: TextAlign.start,
                               style: FlutterFlowTheme.of(context)
                                   .bodyText1

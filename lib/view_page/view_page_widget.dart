@@ -25,7 +25,6 @@ class ViewPageWidget extends StatefulWidget {
 class _ViewPageWidgetState extends State<ViewPageWidget>
     with TickerProviderStateMixin {
   DateTimeRange calendarSelectedDay;
-  List<MaintenanceRecord> algoliaSearchResults = [];
   TextEditingController textController;
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final animationsMap = {
@@ -195,16 +194,8 @@ class _ViewPageWidgetState extends State<ViewPageWidget>
                               padding:
                                   EdgeInsetsDirectional.fromSTEB(0, 0, 8, 0),
                               child: FFButtonWidget(
-                                onPressed: () async {
-                                  setState(() => algoliaSearchResults = null);
-                                  await MaintenanceRecord.search(
-                                    term: textController.text,
-                                    maxResults: 10,
-                                  )
-                                      .then((r) => algoliaSearchResults = r)
-                                      .onError(
-                                          (_, __) => algoliaSearchResults = [])
-                                      .whenComplete(() => setState(() {}));
+                                onPressed: () {
+                                  print('Button pressed ...');
                                 },
                                 text: 'Search',
                                 options: FFButtonOptions(
@@ -426,30 +417,30 @@ class _ViewPageWidgetState extends State<ViewPageWidget>
                                                                           .delete_outline,
                                                                       onTap:
                                                                           () async {
-                                                                        await showDialog(
-                                                                          context:
-                                                                              context,
-                                                                          builder:
-                                                                              (alertDialogContext) {
-                                                                            return AlertDialog(
-                                                                              content: Text('You are about to delete all items. Do you wish to continue?'),
-                                                                              actions: [
-                                                                                TextButton(
-                                                                                  onPressed: () => Navigator.pop(alertDialogContext),
-                                                                                  child: Text('Cancel'),
-                                                                                ),
-                                                                                TextButton(
-                                                                                  onPressed: () async {
-                                                                                    Navigator.pop(alertDialogContext);
-                                                                                    await listViewMaintenanceRecord.reference.delete();
-                                                                                    ;
-                                                                                  },
-                                                                                  child: Text('OK'),
-                                                                                ),
-                                                                              ],
-                                                                            );
-                                                                          },
-                                                                        );
+                                                                        var confirmDialogResponse = await showDialog<bool>(
+                                                                              context: context,
+                                                                              builder: (alertDialogContext) {
+                                                                                return AlertDialog(
+                                                                                  content: Text('You are about to delete all items. Do you wish to continue?'),
+                                                                                  actions: [
+                                                                                    TextButton(
+                                                                                      onPressed: () => Navigator.pop(alertDialogContext, false),
+                                                                                      child: Text('Cancel'),
+                                                                                    ),
+                                                                                    TextButton(
+                                                                                      onPressed: () => Navigator.pop(alertDialogContext, true),
+                                                                                      child: Text('OK'),
+                                                                                    ),
+                                                                                  ],
+                                                                                );
+                                                                              },
+                                                                            ) ??
+                                                                            false;
+                                                                        if (confirmDialogResponse) {
+                                                                          await listViewMaintenanceRecord
+                                                                              .reference
+                                                                              .delete();
+                                                                        }
                                                                         ScaffoldMessenger.of(context)
                                                                             .showSnackBar(
                                                                           SnackBar(

@@ -902,7 +902,7 @@ class _MoreInfoWidgetState extends State<MoreInfoWidget> {
                                                                                     shape: BoxShape.circle,
                                                                                   ),
                                                                                   child: Icon(
-                                                                                    Icons.account_circle,
+                                                                                    FFIcons.user,
                                                                                     color: FlutterFlowTheme.of(context).campusGrey,
                                                                                     size: 30,
                                                                                   ),
@@ -965,7 +965,7 @@ class _MoreInfoWidgetState extends State<MoreInfoWidget> {
                                                                 Padding(
                                                                   padding: EdgeInsetsDirectional
                                                                       .fromSTEB(
-                                                                          16,
+                                                                          14,
                                                                           0,
                                                                           16,
                                                                           0),
@@ -973,8 +973,8 @@ class _MoreInfoWidgetState extends State<MoreInfoWidget> {
                                                                       ListTile(
                                                                     leading:
                                                                         Icon(
-                                                                      Icons
-                                                                          .add_location_alt,
+                                                                      FFIcons
+                                                                          .location2,
                                                                       color: Color(
                                                                           0xFF464749),
                                                                       size: 30,
@@ -1017,7 +1017,7 @@ class _MoreInfoWidgetState extends State<MoreInfoWidget> {
                                                                 Padding(
                                                                   padding: EdgeInsetsDirectional
                                                                       .fromSTEB(
-                                                                          16,
+                                                                          18,
                                                                           2,
                                                                           16,
                                                                           0),
@@ -1083,8 +1083,8 @@ class _MoreInfoWidgetState extends State<MoreInfoWidget> {
                                                                       ListTile(
                                                                     leading:
                                                                         Icon(
-                                                                      Icons
-                                                                          .location_history_rounded,
+                                                                      FFIcons
+                                                                          .user,
                                                                       color: Color(
                                                                           0xFF464749),
                                                                       size: 25,

@@ -69,6 +69,37 @@ abstract class UsersRecord implements Built<UsersRecord, UsersRecordBuilder> {
       .get()
       .then((s) => serializers.deserializeWith(serializer, serializedData(s)));
 
+  static UsersRecord fromAlgolia(AlgoliaObjectSnapshot snapshot) => UsersRecord(
+        (c) => c
+          ..email = snapshot.data['email']
+          ..password = snapshot.data['password']
+          ..displayName = snapshot.data['display_name']
+          ..photoUrl = snapshot.data['photo_url']
+          ..uid = snapshot.data['uid']
+          ..createdTime = safeGet(() => DateTime.fromMillisecondsSinceEpoch(
+              snapshot.data['created_time']))
+          ..phoneNumber = snapshot.data['phone_number']
+          ..room = snapshot.data['room']
+          ..building = snapshot.data['building']
+          ..role = snapshot.data['role']
+          ..reference = UsersRecord.collection.doc(snapshot.objectID),
+      );
+
+  static Future<List<UsersRecord>> search(
+          {String term,
+          FutureOr<LatLng> location,
+          int maxResults,
+          double searchRadiusMeters}) =>
+      FFAlgoliaManager.instance
+          .algoliaQuery(
+            index: 'users',
+            term: term,
+            maxResults: maxResults,
+            location: location,
+            searchRadiusMeters: searchRadiusMeters,
+          )
+          .then((r) => r.map(fromAlgolia).toList());
+
   UsersRecord._();
   factory UsersRecord([void Function(UsersRecordBuilder) updates]) =
       _$UsersRecord;

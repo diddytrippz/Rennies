@@ -108,7 +108,7 @@ class _ChatPageWidgetState extends State<ChatPageWidget> {
                     style: FlutterFlowTheme.of(context).title2.override(
                           fontFamily: 'Roboto',
                           color: FlutterFlowTheme.of(context).primaryText,
-                          fontSize: 22,
+                          fontSize: 18,
                         ),
                   ),
                 ),

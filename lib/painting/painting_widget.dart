@@ -136,7 +136,7 @@ class _PaintingWidgetState extends State<PaintingWidget> {
                           }
                         },
                         child: Icon(
-                          Icons.camera_alt,
+                          Icons.add_a_photo,
                           color: FlutterFlowTheme.of(context).primaryText,
                           size: 26,
                         ),
@@ -308,25 +308,6 @@ class _PaintingWidgetState extends State<PaintingWidget> {
                             child: FFButtonWidget(
                               onPressed: () async {
                                 if (!formKey.currentState.validate()) {
-                                  return;
-                                }
-
-                                if (budgetValue == null) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(
-                                        'Field is required',
-                                        style: TextStyle(
-                                          color: FlutterFlowTheme.of(context)
-                                              .primaryBackground,
-                                        ),
-                                      ),
-                                      duration: Duration(milliseconds: 4000),
-                                      backgroundColor:
-                                          FlutterFlowTheme.of(context)
-                                              .primaryText,
-                                    ),
-                                  );
                                   return;
                                 }
 

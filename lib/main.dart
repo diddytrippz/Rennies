@@ -22,6 +22,7 @@ void main() async {
   await Firebase.initializeApp();
 
   await FlutterFlowTheme.initialize();
+
   runApp(MyApp());
 }
 
@@ -157,7 +158,7 @@ class _NavBarPageState extends State<NavBarPage> {
           ),
           GButton(
             icon: currentIndex == 2 ? Icons.mail : Icons.email_outlined,
-            text: 'MESSAGES',
+            text: 'CHAT',
             iconSize: 24,
           ),
           GButton(

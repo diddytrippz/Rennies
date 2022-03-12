@@ -91,43 +91,6 @@ abstract class MaintenanceRecord
       .get()
       .then((s) => serializers.deserializeWith(serializer, serializedData(s)));
 
-  static MaintenanceRecord fromAlgolia(AlgoliaObjectSnapshot snapshot) =>
-      MaintenanceRecord(
-        (c) => c
-          ..issue = snapshot.data['issue']
-          ..status = snapshot.data['status']
-          ..email = snapshot.data['email']
-          ..photoUrl = snapshot.data['photo_url']
-          ..uid = snapshot.data['uid']
-          ..createdTime = safeGet(() => DateTime.fromMillisecondsSinceEpoch(
-              snapshot.data['created_time']))
-          ..phoneNumber = snapshot.data['phone_number']
-          ..displayName = snapshot.data['display_name']
-          ..room = snapshot.data['room']
-          ..building = snapshot.data['building']
-          ..notes = snapshot.data['notes']
-          ..rating = snapshot.data['rating']
-          ..isDone = snapshot.data['isDone']
-          ..category = snapshot.data['category']
-          ..assigned = snapshot.data['assigned']
-          ..reference = MaintenanceRecord.collection.doc(snapshot.objectID),
-      );
-
-  static Future<List<MaintenanceRecord>> search(
-          {String term,
-          FutureOr<LatLng> location,
-          int maxResults,
-          double searchRadiusMeters}) =>
-      FFAlgoliaManager.instance
-          .algoliaQuery(
-            index: 'maintenance',
-            term: term,
-            maxResults: maxResults,
-            location: location,
-            searchRadiusMeters: searchRadiusMeters,
-          )
-          .then((r) => r.map(fromAlgolia).toList());
-
   MaintenanceRecord._();
   factory MaintenanceRecord([void Function(MaintenanceRecordBuilder) updates]) =
       _$MaintenanceRecord;

@@ -19,31 +19,29 @@ class _EmptyListWidgetState extends State<EmptyListWidget> {
       children: [
         Expanded(
           child: Padding(
-            padding: EdgeInsetsDirectional.fromSTEB(12, 12, 12, 12),
+            padding: EdgeInsetsDirectional.fromSTEB(12, 0, 12, 12),
             child: Column(
               mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(0, 200, 0, 0),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        width: 150,
-                        height: 150,
-                        decoration: BoxDecoration(
-                          color: Color(0x00EEEEEE),
-                          image: DecorationImage(
-                            fit: BoxFit.scaleDown,
-                            image: Image.asset(
-                              'assets/images/undraw_no_data_re_kwbl.png',
-                            ).image,
-                          ),
+                Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      width: 150,
+                      height: 150,
+                      decoration: BoxDecoration(
+                        color: Color(0x00EEEEEE),
+                        image: DecorationImage(
+                          fit: BoxFit.scaleDown,
+                          image: Image.asset(
+                            'assets/images/undraw_no_data_re_kwbl.png',
+                          ).image,
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
                 Padding(
                   padding: EdgeInsetsDirectional.fromSTEB(12, 60, 0, 0),

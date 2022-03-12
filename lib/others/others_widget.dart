@@ -133,7 +133,7 @@ class _OthersWidgetState extends State<OthersWidget> {
                           }
                         },
                         child: Icon(
-                          Icons.camera_alt,
+                          Icons.add_a_photo,
                           color: FlutterFlowTheme.of(context).primaryText,
                           size: 26,
                         ),

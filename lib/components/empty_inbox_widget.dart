@@ -17,9 +17,9 @@ class _EmptyInboxWidgetState extends State<EmptyInboxWidget> {
   Widget build(BuildContext context) {
     return Column(
       mainAxisSize: MainAxisSize.max,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Padding(
-          padding: EdgeInsetsDirectional.fromSTEB(0, 100, 0, 0),
+        Expanded(
           child: Row(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.center,

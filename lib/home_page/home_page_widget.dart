@@ -703,9 +703,9 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                     MainAxisAlignment.center,
                                                 children: [
                                                   Icon(
-                                                    Icons.vpn_key_outlined,
+                                                    FFIcons.key2,
                                                     color: Colors.white,
-                                                    size: 35,
+                                                    size: 30,
                                                   ),
                                                   Padding(
                                                     padding:
@@ -872,10 +872,9 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                     MainAxisAlignment.center,
                                                 children: [
                                                   Icon(
-                                                    Icons
-                                                        .pest_control_rodent_sharp,
+                                                    FFIcons.bug,
                                                     color: Colors.white,
-                                                    size: 35,
+                                                    size: 30,
                                                   ),
                                                   Padding(
                                                     padding:
@@ -1011,9 +1010,9 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                     MainAxisAlignment.center,
                                                 children: [
                                                   Icon(
-                                                    Icons.auto_awesome_motion,
+                                                    FFIcons.filesEmpty,
                                                     color: Colors.white,
-                                                    size: 35,
+                                                    size: 30,
                                                   ),
                                                   Padding(
                                                     padding:

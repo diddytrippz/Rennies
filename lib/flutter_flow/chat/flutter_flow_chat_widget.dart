@@ -58,71 +58,74 @@ class FFChatWidget extends StatelessWidget {
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 12.0),
-                child: DashChat(
-                  scrollController: scrollController,
-                  focusNode: focusNode,
-                  shouldShowLoadEarlier: false,
-                  scrollToBottom: false,
-                  inverted: true,
-                  inputMaxLines: 10,
-                  user: currentUser,
-                  messages: messages.reversed.toList(),
-                  onLoadEarlier: () => {},
-                  onSend: onSend,
-                  leading: const [SizedBox(width: 10.0)],
-                  trailing: [
-                    if (uploadMediaAction != null)
-                      Padding(
-                        padding: const EdgeInsetsDirectional.only(
-                            start: 12.0, end: 6.0),
-                        child: InkWell(
-                          onTap: uploadMediaAction,
-                          child: const Icon(
-                            Icons.camera_alt_outlined,
-                            color: Color(0xA1A1A1A1),
-                            size: 24,
+                child: Theme(
+                  data: ThemeData(brightness: Brightness.light),
+                  child: DashChat(
+                    scrollController: scrollController,
+                    focusNode: focusNode,
+                    shouldShowLoadEarlier: false,
+                    scrollToBottom: false,
+                    inverted: true,
+                    inputMaxLines: 10,
+                    user: currentUser,
+                    messages: messages.reversed.toList(),
+                    onLoadEarlier: () => {},
+                    onSend: onSend,
+                    leading: const [SizedBox(width: 10.0)],
+                    trailing: [
+                      if (uploadMediaAction != null)
+                        Padding(
+                          padding: const EdgeInsetsDirectional.only(
+                              start: 12.0, end: 6.0),
+                          child: InkWell(
+                            onTap: uploadMediaAction,
+                            child: const Icon(
+                              Icons.camera_alt_outlined,
+                              color: Color(0xA1A1A1A1),
+                              size: 24,
+                            ),
                           ),
                         ),
-                      ),
-                  ],
-                  inputDecoration: InputDecoration.collapsed(
-                    hintText: 'Type message here',
-                    hintStyle: inputHintTextStyle ??
+                    ],
+                    inputDecoration: InputDecoration.collapsed(
+                      hintText: 'Type message here',
+                      hintStyle: inputHintTextStyle ??
+                          GoogleFonts.getFont(
+                            'DM Sans',
+                            color: const Color(0xFF95A1AC),
+                            fontSize: 14,
+                          ),
+                      fillColor: Colors.white,
+                    ),
+                    inputTextStyle: inputTextStyle ??
                         GoogleFonts.getFont(
                           'DM Sans',
-                          color: const Color(0xFF95A1AC),
+                          color: Colors.black,
                           fontSize: 14,
                         ),
-                    fillColor: Colors.white,
-                  ),
-                  inputTextStyle: inputTextStyle ??
-                      GoogleFonts.getFont(
-                        'DM Sans',
-                        color: Colors.black,
-                        fontSize: 14,
-                      ),
-                  inputToolbarMargin: const EdgeInsets.only(
-                    left: 20.0,
-                    right: 20.0,
-                    top: 10.0,
-                  ),
-                  inputToolbarPadding:
-                      const EdgeInsets.symmetric(vertical: 6.0),
-                  messageContainerPadding:
-                      const EdgeInsets.fromLTRB(2.0, 2.0, 2.0, 0.0),
-                  inputContainerStyle: BoxDecoration(
-                    borderRadius: BorderRadius.circular(25),
-                    color: Colors.white,
-                  ),
-                  messageBuilder: (chatMessage) => FFChatMessage(
-                    key: Key('ChatMessage_${chatMessage.id}'),
-                    chatMessage: chatMessage,
-                    timeDisplaySetting: timeDisplaySetting,
-                    currentUserBoxDecoration: currentUserBoxDecoration,
-                    otherUsersBoxDecoration: otherUsersBoxDecoration,
-                    currentUserTextStyle: currentUserTextStyle,
-                    otherUsersTextStyle: otherUsersTextStyle,
-                    isMe: chatMessage.user.uid == currentUser.uid,
+                    inputToolbarMargin: const EdgeInsets.only(
+                      left: 20.0,
+                      right: 20.0,
+                      top: 10.0,
+                    ),
+                    inputToolbarPadding:
+                        const EdgeInsets.symmetric(vertical: 6.0),
+                    messageContainerPadding:
+                        const EdgeInsets.fromLTRB(2.0, 2.0, 2.0, 0.0),
+                    inputContainerStyle: BoxDecoration(
+                      borderRadius: BorderRadius.circular(25),
+                      color: Colors.white,
+                    ),
+                    messageBuilder: (chatMessage) => FFChatMessage(
+                      key: Key('ChatMessage_${chatMessage.id}'),
+                      chatMessage: chatMessage,
+                      timeDisplaySetting: timeDisplaySetting,
+                      currentUserBoxDecoration: currentUserBoxDecoration,
+                      otherUsersBoxDecoration: otherUsersBoxDecoration,
+                      currentUserTextStyle: currentUserTextStyle,
+                      otherUsersTextStyle: otherUsersTextStyle,
+                      isMe: chatMessage.user.uid == currentUser.uid,
+                    ),
                   ),
                 ),
               ),

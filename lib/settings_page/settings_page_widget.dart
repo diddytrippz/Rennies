@@ -898,78 +898,73 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
                 ),
               ),
             ),
-            if ((currentUserDocument?.role) == 'Admin')
-              Expanded(
-                child: Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(0, 1, 0, 0),
-                  child: AuthUserStreamWidget(
-                    child: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        InkWell(
-                          onTap: () async {
-                            await Navigator.push(
-                              context,
-                              PageTransition(
-                                type: PageTransitionType.bottomToTop,
-                                duration: Duration(milliseconds: 300),
-                                reverseDuration: Duration(milliseconds: 300),
-                                child: StudentsWidget(),
+            Expanded(
+              child: Padding(
+                padding: EdgeInsetsDirectional.fromSTEB(0, 1, 0, 0),
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    InkWell(
+                      onTap: () async {
+                        await Navigator.push(
+                          context,
+                          PageTransition(
+                            type: PageTransitionType.bottomToTop,
+                            duration: Duration(milliseconds: 300),
+                            reverseDuration: Duration(milliseconds: 300),
+                            child: StudentsWidget(),
+                          ),
+                        );
+                      },
+                      child: Container(
+                        width: MediaQuery.of(context).size.width,
+                        decoration: BoxDecoration(
+                          color: FlutterFlowTheme.of(context).primaryBackground,
+                          shape: BoxShape.rectangle,
+                        ),
+                        child: Padding(
+                          padding: EdgeInsetsDirectional.fromSTEB(24, 0, 0, 0),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              Icon(
+                                Icons.group_add,
+                                color: Color(0xFF9E9E9E),
+                                size: 24,
                               ),
-                            );
-                          },
-                          child: Container(
-                            width: MediaQuery.of(context).size.width,
-                            decoration: BoxDecoration(
-                              color: FlutterFlowTheme.of(context)
-                                  .primaryBackground,
-                              shape: BoxShape.rectangle,
-                            ),
-                            child: Padding(
-                              padding:
-                                  EdgeInsetsDirectional.fromSTEB(24, 0, 0, 0),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.max,
-                                children: [
-                                  Icon(
-                                    Icons.group_add,
-                                    color: Color(0xFF9E9E9E),
-                                    size: 24,
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        24, 0, 0, 0),
-                                    child: AutoSizeText(
-                                      'Students',
-                                      style: FlutterFlowTheme.of(context)
-                                          .bodyText1
-                                          .override(
-                                            fontFamily: 'Roboto',
-                                            color: FlutterFlowTheme.of(context)
-                                                .primaryText,
-                                          ),
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: Align(
-                                      alignment: AlignmentDirectional(0.9, 0),
-                                      child: Icon(
-                                        Icons.arrow_forward_ios,
-                                        color: Color(0xFF95A1AC),
-                                        size: 18,
+                              Padding(
+                                padding:
+                                    EdgeInsetsDirectional.fromSTEB(24, 0, 0, 0),
+                                child: AutoSizeText(
+                                  'Students',
+                                  style: FlutterFlowTheme.of(context)
+                                      .bodyText1
+                                      .override(
+                                        fontFamily: 'Roboto',
+                                        color: FlutterFlowTheme.of(context)
+                                            .primaryText,
                                       ),
-                                    ),
-                                  ),
-                                ],
+                                ),
                               ),
-                            ),
+                              Expanded(
+                                child: Align(
+                                  alignment: AlignmentDirectional(0.9, 0),
+                                  child: Icon(
+                                    Icons.arrow_forward_ios,
+                                    color: Color(0xFF95A1AC),
+                                    size: 18,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                      ],
+                      ),
                     ),
-                  ),
+                  ],
                 ),
               ),
+            ),
             Row(
               mainAxisSize: MainAxisSize.max,
               children: [
@@ -1069,9 +1064,13 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
                         );
                       },
                       text: 'Log Out',
+                      icon: Icon(
+                        FFIcons.enter,
+                        size: 15,
+                      ),
                       options: FFButtonOptions(
-                        width: 90,
-                        height: 35,
+                        width: 120,
+                        height: 45,
                         color: Colors.white,
                         textStyle: FlutterFlowTheme.of(context)
                             .bodyText2

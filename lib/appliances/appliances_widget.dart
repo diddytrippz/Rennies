@@ -299,14 +299,39 @@ class _AppliancesWidgetState extends State<AppliancesWidget> {
                           fontWeight: FontWeight.normal,
                         ),
                     textAlign: TextAlign.start,
-                    maxLines: 4,
+                    maxLines: 3,
                     keyboardType: TextInputType.name,
+                    validator: (val) {
+                      if (val.isEmpty) {
+                        return 'Field is required';
+                      }
+
+                      return null;
+                    },
                   ),
                   Padding(
                     padding: EdgeInsetsDirectional.fromSTEB(16, 30, 16, 0),
                     child: FFButtonWidget(
                       onPressed: () async {
                         if (!formKey.currentState.validate()) {
+                          return;
+                        }
+
+                        if (budgetValue == null) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                'Field is required',
+                                style: TextStyle(
+                                  color: FlutterFlowTheme.of(context)
+                                      .primaryBackground,
+                                ),
+                              ),
+                              duration: Duration(milliseconds: 4000),
+                              backgroundColor:
+                                  FlutterFlowTheme.of(context).primaryText,
+                            ),
+                          );
                           return;
                         }
 

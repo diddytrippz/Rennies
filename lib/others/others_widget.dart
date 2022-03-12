@@ -26,11 +26,13 @@ class _OthersWidgetState extends State<OthersWidget> {
   final formKey = GlobalKey<FormState>();
   final scaffoldKey = GlobalKey<ScaffoldState>();
   TextEditingController reasonController;
+  TextEditingController textController1;
 
   @override
   void initState() {
     super.initState();
     reasonController = TextEditingController();
+    textController1 = TextEditingController(text: currentUserDisplayName);
   }
 
   @override
@@ -148,208 +150,203 @@ class _OthersWidgetState extends State<OthersWidget> {
           elevation: 1,
         ),
       ),
-      backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
+      backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
       body: GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
         child: Form(
           key: formKey,
           autovalidateMode: AutovalidateMode.always,
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Expanded(
-                flex: 1,
-                child: Material(
-                  color: Colors.transparent,
-                  elevation: 40,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(0),
-                      bottomRight: Radius.circular(0),
-                      topLeft: Radius.circular(10),
-                      topRight: Radius.circular(10),
-                    ),
-                  ),
-                  child: Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.height * 1,
-                    decoration: BoxDecoration(
-                      color: FlutterFlowTheme.of(context).tertiaryColor,
-                      borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(0),
-                        bottomRight: Radius.circular(0),
-                        topLeft: Radius.circular(10),
-                        topRight: Radius.circular(10),
+          child: Padding(
+            padding: EdgeInsetsDirectional.fromSTEB(12, 5, 12, 0),
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
+                    child: AuthUserStreamWidget(
+                      child: TextFormField(
+                        controller: textController1,
+                        obscureText: false,
+                        decoration: InputDecoration(
+                          labelText: 'NAME',
+                          hintText: currentUserDisplayName,
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Color(0x00000000),
+                              width: 1,
+                            ),
+                            borderRadius: const BorderRadius.only(
+                              topLeft: Radius.circular(4.0),
+                              topRight: Radius.circular(4.0),
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Color(0x00000000),
+                              width: 1,
+                            ),
+                            borderRadius: const BorderRadius.only(
+                              topLeft: Radius.circular(4.0),
+                              topRight: Radius.circular(4.0),
+                            ),
+                          ),
+                          suffixIcon: Icon(
+                            FFIcons.user,
+                            color: Color(0xFF757575),
+                            size: 18,
+                          ),
+                        ),
+                        style: FlutterFlowTheme.of(context).bodyText1.override(
+                              fontFamily: 'Roboto',
+                              color: FlutterFlowTheme.of(context).primaryText,
+                            ),
+                        keyboardType: TextInputType.name,
                       ),
                     ),
-                    child: Padding(
-                      padding: EdgeInsetsDirectional.fromSTEB(12, 5, 12, 0),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding:
-                                EdgeInsetsDirectional.fromSTEB(18, 25, 0, 0),
-                            child: Text(
-                              'Issue',
-                              style: FlutterFlowTheme.of(context)
-                                  .bodyText1
-                                  .override(
-                                    fontFamily: 'Roboto',
-                                    color: FlutterFlowTheme.of(context)
-                                        .primaryText,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                            ),
+                  ),
+                  Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(18, 25, 0, 0),
+                    child: Text(
+                      'Issue',
+                      style: FlutterFlowTheme.of(context).bodyText1.override(
+                            fontFamily: 'Roboto',
+                            color: FlutterFlowTheme.of(context).primaryText,
+                            fontWeight: FontWeight.bold,
                           ),
-                          TextFormField(
-                            controller: reasonController,
-                            obscureText: false,
-                            decoration: InputDecoration(
-                              labelText: 'Description ',
-                              enabledBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: Color(0xFFC5C5C5),
-                                  width: 2,
-                                ),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              focusedBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: Color(0xFFC5C5C5),
-                                  width: 2,
-                                ),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              filled: true,
-                              fillColor: FlutterFlowTheme.of(context)
-                                  .primaryBackground,
-                              contentPadding:
-                                  EdgeInsetsDirectional.fromSTEB(20, 40, 24, 0),
-                            ),
-                            style: FlutterFlowTheme.of(context)
-                                .bodyText1
-                                .override(
-                                  fontFamily: 'Lexend Deca',
-                                  color:
-                                      FlutterFlowTheme.of(context).primaryText,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.normal,
-                                ),
-                            textAlign: TextAlign.start,
-                            maxLines: 4,
-                            keyboardType: TextInputType.name,
-                            validator: (val) {
-                              if (val.isEmpty) {
-                                return 'Field is required';
-                              }
+                    ),
+                  ),
+                  TextFormField(
+                    controller: reasonController,
+                    obscureText: false,
+                    decoration: InputDecoration(
+                      labelText: 'Description ',
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Color(0xFFC5C5C5),
+                          width: 2,
+                        ),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Color(0xFFC5C5C5),
+                          width: 2,
+                        ),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      filled: true,
+                      fillColor: FlutterFlowTheme.of(context).primaryBackground,
+                      contentPadding:
+                          EdgeInsetsDirectional.fromSTEB(20, 40, 24, 0),
+                    ),
+                    style: FlutterFlowTheme.of(context).bodyText1.override(
+                          fontFamily: 'Lexend Deca',
+                          color: FlutterFlowTheme.of(context).primaryText,
+                          fontSize: 16,
+                          fontWeight: FontWeight.normal,
+                        ),
+                    textAlign: TextAlign.start,
+                    maxLines: 4,
+                    keyboardType: TextInputType.name,
+                    validator: (val) {
+                      if (val.isEmpty) {
+                        return 'Field is required';
+                      }
 
-                              return null;
-                            },
-                          ),
-                          Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Expanded(
-                                child: Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      6, 4, 12, 0),
-                                  child: AutoSizeText(
-                                    uploadedFileUrl,
-                                    style: FlutterFlowTheme.of(context)
-                                        .bodyText1
-                                        .override(
-                                          fontFamily: 'Roboto',
-                                          fontSize: 12,
-                                        ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          Padding(
-                            padding:
-                                EdgeInsetsDirectional.fromSTEB(16, 30, 16, 0),
-                            child: FFButtonWidget(
-                              onPressed: () async {
-                                if (!formKey.currentState.validate()) {
-                                  return;
-                                }
-
-                                final maintenanceCreateData =
-                                    createMaintenanceRecordData(
-                                  issue: reasonController.text,
-                                  status: 'Submitted',
-                                  email: currentUserEmail,
-                                  createdTime: getCurrentTimestamp,
-                                  displayName: currentUserDisplayName,
-                                  room: currentUserDocument?.room,
-                                  building: currentUserDocument?.building,
-                                  rating: 0,
-                                  uid: currentUserUid,
-                                  category: 'Others',
-                                  isDone: false,
-                                  assigned: 'Maintenance Team',
-                                  photoUrl: uploadedFileUrl,
-                                );
-                                await MaintenanceRecord.collection
-                                    .doc()
-                                    .set(maintenanceCreateData);
-                                await AirtableCall.call(
-                                  user: currentUserEmail,
-                                  issue: reasonController.text,
-                                  room: currentUserDocument?.room,
-                                  building: currentUserDocument?.building,
-                                  status: 'Submitted',
-                                  created: dateTimeFormat(
-                                      'd/M/y', getCurrentTimestamp),
-                                );
-                                await showModalBottomSheet(
-                                  isScrollControlled: true,
-                                  backgroundColor: Colors.transparent,
-                                  barrierColor: Color(0x64F5F5F5),
-                                  context: context,
-                                  builder: (context) {
-                                    return Padding(
-                                      padding:
-                                          MediaQuery.of(context).viewInsets,
-                                      child: SubmittedIconWidget(),
-                                    );
-                                  },
-                                );
-                              },
-                              text: 'Submit',
-                              options: FFButtonOptions(
-                                width: double.infinity,
-                                height: 50,
-                                color:
-                                    FlutterFlowTheme.of(context).primaryColor,
-                                textStyle: FlutterFlowTheme.of(context)
-                                    .title3
-                                    .override(
+                      return null;
+                    },
+                  ),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Expanded(
+                        child: Padding(
+                          padding: EdgeInsetsDirectional.fromSTEB(6, 4, 12, 0),
+                          child: AutoSizeText(
+                            uploadedFileUrl,
+                            style:
+                                FlutterFlowTheme.of(context).bodyText1.override(
                                       fontFamily: 'Roboto',
-                                      color: Color(0xFFE2E3E7),
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w600,
+                                      fontSize: 12,
                                     ),
-                                borderSide: BorderSide(
-                                  color: Colors.transparent,
-                                  width: 1,
-                                ),
-                                borderRadius: 7,
-                              ),
-                            ),
                           ),
-                        ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(16, 30, 16, 0),
+                    child: FFButtonWidget(
+                      onPressed: () async {
+                        if (!formKey.currentState.validate()) {
+                          return;
+                        }
+
+                        final maintenanceCreateData =
+                            createMaintenanceRecordData(
+                          issue: reasonController.text,
+                          status: 'Submitted',
+                          email: currentUserEmail,
+                          createdTime: getCurrentTimestamp,
+                          displayName: currentUserDisplayName,
+                          room: currentUserDocument?.room,
+                          building: currentUserDocument?.building,
+                          rating: 0,
+                          uid: currentUserUid,
+                          category: 'Others',
+                          isDone: false,
+                          assigned: 'Maintenance Team',
+                          photoUrl: uploadedFileUrl,
+                        );
+                        await MaintenanceRecord.collection
+                            .doc()
+                            .set(maintenanceCreateData);
+                        await AirtableCall.call(
+                          user: currentUserEmail,
+                          issue: reasonController.text,
+                          room: currentUserDocument?.room,
+                          building: currentUserDocument?.building,
+                          status: 'Submitted',
+                          created: dateTimeFormat('d/M/y', getCurrentTimestamp),
+                        );
+                        await showModalBottomSheet(
+                          isScrollControlled: true,
+                          backgroundColor: Colors.transparent,
+                          barrierColor: Color(0x64F5F5F5),
+                          context: context,
+                          builder: (context) {
+                            return Padding(
+                              padding: MediaQuery.of(context).viewInsets,
+                              child: SubmittedIconWidget(),
+                            );
+                          },
+                        );
+                      },
+                      text: 'Submit',
+                      options: FFButtonOptions(
+                        width: double.infinity,
+                        height: 50,
+                        color: FlutterFlowTheme.of(context).primaryColor,
+                        textStyle: FlutterFlowTheme.of(context).title3.override(
+                              fontFamily: 'Roboto',
+                              color: Color(0xFFE2E3E7),
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600,
+                            ),
+                        borderSide: BorderSide(
+                          color: Colors.transparent,
+                          width: 1,
+                        ),
+                        borderRadius: 7,
                       ),
                     ),
                   ),
-                ),
+                ],
               ),
-            ],
+            ),
           ),
         ),
       ),

@@ -41,7 +41,7 @@ class _StudentsWidgetState extends State<StudentsWidget> {
             );
           },
           child: Icon(
-            Icons.more_vert,
+            Icons.clear_outlined,
             color: FlutterFlowTheme.of(context).primaryText,
             size: 24,
           ),

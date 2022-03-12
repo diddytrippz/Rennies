@@ -168,24 +168,13 @@ class _AppliancesWidgetState extends State<AppliancesWidget> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(18, 25, 0, 0),
-                    child: Text(
-                      'Name',
-                      style: FlutterFlowTheme.of(context).bodyText1.override(
-                            fontFamily: 'Roboto',
-                            color: FlutterFlowTheme.of(context).primaryText,
-                            fontWeight: FontWeight.bold,
-                          ),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(0, 12, 0, 0),
+                    padding: EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
                     child: AuthUserStreamWidget(
                       child: TextFormField(
                         controller: textController1,
                         obscureText: false,
                         decoration: InputDecoration(
-                          labelText: currentUserDisplayName,
+                          labelText: 'NAME',
                           hintText: currentUserDisplayName,
                           enabledBorder: OutlineInputBorder(
                             borderSide: BorderSide(

@@ -65,7 +65,7 @@ class _AppliancesWidgetState extends State<AppliancesWidget> {
                         borderWidth: 1,
                         buttonSize: 50,
                         icon: Icon(
-                          Icons.keyboard_backspace,
+                          Icons.arrow_back,
                           color: FlutterFlowTheme.of(context).primaryText,
                           size: 24,
                         ),
@@ -211,7 +211,7 @@ class _AppliancesWidgetState extends State<AppliancesWidget> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(18, 25, 0, 0),
+                    padding: EdgeInsetsDirectional.fromSTEB(18, 15, 0, 0),
                     child: Text(
                       'Issue',
                       style: FlutterFlowTheme.of(context).bodyText1.override(

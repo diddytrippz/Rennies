@@ -98,7 +98,7 @@ class _FurnitureWidgetState extends State<FurnitureWidget> {
                         style: FlutterFlowTheme.of(context).title2.override(
                               fontFamily: 'Roboto',
                               color: FlutterFlowTheme.of(context).primaryText,
-                              fontSize: 22,
+                              fontSize: 18,
                             ),
                       ),
                     ),
@@ -211,7 +211,7 @@ class _FurnitureWidgetState extends State<FurnitureWidget> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(18, 25, 0, 0),
+                    padding: EdgeInsetsDirectional.fromSTEB(18, 15, 0, 0),
                     child: Text(
                       'Issue',
                       style: FlutterFlowTheme.of(context).bodyText1.override(

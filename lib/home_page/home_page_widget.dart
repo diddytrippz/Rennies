@@ -134,7 +134,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                                         .size
                                                                         .width *
                                                                     0.09,
-                                                                lineWidth: 15,
+                                                                lineWidth: 10,
                                                                 animation: true,
                                                                 progressColor:
                                                                     FlutterFlowTheme.of(
@@ -154,7 +154,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                                         color: FlutterFlowTheme.of(context)
                                                                             .primaryText,
                                                                         fontSize:
-                                                                            10,
+                                                                            8,
                                                                       ),
                                                                 ),
                                                                 startAngle:

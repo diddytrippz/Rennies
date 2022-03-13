@@ -9,7 +9,6 @@ import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
 import '../flutter_flow/upload_media.dart';
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -257,24 +256,6 @@ class _PlumbingWidgetState extends State<PlumbingWidget> {
                     borderRadius: 8,
                     margin: EdgeInsetsDirectional.fromSTEB(20, 0, 12, 0),
                   ),
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Expanded(
-                        child: Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(6, 4, 12, 0),
-                          child: AutoSizeText(
-                            uploadedFileUrl,
-                            style:
-                                FlutterFlowTheme.of(context).bodyText1.override(
-                                      fontFamily: 'Roboto',
-                                      fontSize: 12,
-                                    ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
                   TextFormField(
                     controller: reasonController,
                     obscureText: false,
@@ -317,7 +298,7 @@ class _PlumbingWidgetState extends State<PlumbingWidget> {
                     },
                   ),
                   Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(16, 30, 16, 0),
+                    padding: EdgeInsetsDirectional.fromSTEB(16, 50, 16, 0),
                     child: FFButtonWidget(
                       onPressed: () async {
                         if (!formKey.currentState.validate()) {

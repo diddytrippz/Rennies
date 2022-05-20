@@ -49,13 +49,16 @@ class _EmptyListWidgetState extends State<EmptyListWidget> {
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
-                        'No results were found from your seaech.\nPlease try again.',
-                        textAlign: TextAlign.center,
-                        style: FlutterFlowTheme.of(context).bodyText1.override(
-                              fontFamily: 'Roboto',
-                              color: Color(0xFF9E9E9E),
-                            ),
+                      Expanded(
+                        child: Text(
+                          'No results were found from your search.\nPlease try again.',
+                          textAlign: TextAlign.center,
+                          style:
+                              FlutterFlowTheme.of(context).bodyText1.override(
+                                    fontFamily: 'Open Sans',
+                                    color: Color(0xFF9E9E9E),
+                                  ),
+                        ),
                       ),
                     ],
                   ),

@@ -61,6 +61,9 @@ abstract class MaintenanceRecord
   String get assigned;
 
   @nullable
+  DateTime get updateTime;
+
+  @nullable
   @BuiltValueField(wireName: kDocumentReferenceField)
   DocumentReference get reference;
 
@@ -117,6 +120,7 @@ Map<String, dynamic> createMaintenanceRecordData({
   bool isDone,
   String category,
   String assigned,
+  DateTime updateTime,
 }) =>
     serializers.toFirestore(
         MaintenanceRecord.serializer,
@@ -135,4 +139,5 @@ Map<String, dynamic> createMaintenanceRecordData({
           ..rating = rating
           ..isDone = isDone
           ..category = category
-          ..assigned = assigned));
+          ..assigned = assigned
+          ..updateTime = updateTime));

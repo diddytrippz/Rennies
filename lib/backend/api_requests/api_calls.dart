@@ -13,6 +13,8 @@ class AirtableCall {
     String status = '',
     String created = '',
     String updated = '',
+    String name = '',
+    String links = '',
   }) {
     final body = '''
 {
@@ -21,7 +23,9 @@ class AirtableCall {
     "Issue": "${issue}",
     "Building": "${building}",
     "Room": "${room}",
-    "Status": "${status}"
+    "Status": "${status}",
+    "Name": "${name}",
+    "Links": "${links}"
   }
 }''';
     return ApiManager.instance.makeApiCall(
@@ -39,6 +43,63 @@ class AirtableCall {
         'Status': status,
         'Created': created,
         'Updated': updated,
+        'Name': name,
+        'Links': links,
+      },
+      body: body,
+      bodyType: BodyType.JSON,
+      returnBody: true,
+    );
+  }
+}
+
+class SendGridCall {
+  static Future<ApiCallResponse> call({
+    String toEmail = '',
+    String subject = '',
+    String content = '',
+    String name = '',
+  }) {
+    final body = '''
+{
+  "personalizations": [
+    {
+      "to": [
+        {
+          "email": "${toEmail}"
+        }
+      ],
+      "subject": "${subject}"
+    }
+  ],
+  "content": [
+    {
+      "type": "text/plain",
+      "value": "${content}"
+    }
+  ],
+  "from": {
+    "email": "campusafricapp@gmail.com",
+    "name": "admin"
+  },
+  "reply_to": {
+    "email": "campusafricapp@gmail.com",
+    "name": "admin"
+  }
+}''';
+    return ApiManager.instance.makeApiCall(
+      callName: 'SendGrid',
+      apiUrl: 'https://api.sendgrid.com/v3/mail/send',
+      callType: ApiCallType.POST,
+      headers: {
+        'Authorization':
+            'Bearer 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',
+      },
+      params: {
+        'toEmail': toEmail,
+        'subject': subject,
+        'content': content,
+        'name': name,
       },
       body: body,
       bodyType: BodyType.JSON,

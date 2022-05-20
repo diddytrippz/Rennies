@@ -1,14 +1,14 @@
 import '../auth/auth_util.dart';
 import '../backend/backend.dart';
-import '../chat_page/chat_page_widget.dart';
 import '../components/empty_list_widget.dart';
 import '../flutter_flow/chat/index.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
-import '../flutter_flow/flutter_flow_toggle_icon.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:text_search/text_search.dart';
 
 class MessagesPageWidget extends StatefulWidget {
   const MessagesPageWidget({Key key}) : super(key: key);
@@ -18,12 +18,15 @@ class MessagesPageWidget extends StatefulWidget {
 }
 
 class _MessagesPageWidgetState extends State<MessagesPageWidget> {
+  List<ChatsRecord> simpleSearchResults = [];
   TextEditingController textController;
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
     super.initState();
+    logFirebaseEvent('screen_view',
+        parameters: {'screen_name': 'MessagesPage'});
     textController = TextEditingController();
   }
 
@@ -34,90 +37,105 @@ class _MessagesPageWidgetState extends State<MessagesPageWidget> {
       appBar: AppBar(
         backgroundColor: FlutterFlowTheme.of(context).tertiaryColor,
         automaticallyImplyLeading: false,
-        leading: ToggleIcon(
-          onPressed: () async {
-            setState(() => FFAppState().isPressed = !FFAppState().isPressed);
+        leading: InkWell(
+          onTap: () async {
+            logFirebaseEvent('Icon_ON_TAP');
+            logFirebaseEvent('Icon_Simple-Search');
+            await queryChatsRecordOnce()
+                .then(
+                  (records) => simpleSearchResults = TextSearch(
+                    records
+                        .map(
+                          (record) =>
+                              TextSearchItem(record, [record.lastMessage]),
+                        )
+                        .toList(),
+                  )
+                      .search(textController.text)
+                      .map((r) => r.object)
+                      .take(5)
+                      .toList(),
+                )
+                .onError((_, __) => simpleSearchResults = [])
+                .whenComplete(() => setState(() {}));
           },
-          value: FFAppState().isPressed,
-          onIcon: Icon(
-            Icons.menu,
+          child: Icon(
+            FFIcons.ksearch,
             color: FlutterFlowTheme.of(context).primaryText,
-            size: 25,
-          ),
-          offIcon: Icon(
-            Icons.arrow_back,
-            color: FlutterFlowTheme.of(context).primaryText,
-            size: 25,
+            size: 24,
           ),
         ),
         title: Stack(
           children: [
-            if (!(FFAppState().isPressed) ?? true)
-              TextFormField(
-                controller: textController,
-                obscureText: false,
-                decoration: InputDecoration(
-                  hintText: 'Search',
-                  enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Color(0x00000000),
-                      width: 1,
-                    ),
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(4.0),
-                      topRight: Radius.circular(4.0),
-                    ),
+            TextFormField(
+              controller: textController,
+              obscureText: false,
+              decoration: InputDecoration(
+                hintText: 'Search',
+                enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Color(0x00000000),
+                    width: 1,
                   ),
-                  focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Color(0x00000000),
-                      width: 1,
-                    ),
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(4.0),
-                      topRight: Radius.circular(4.0),
-                    ),
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(4.0),
+                    topRight: Radius.circular(4.0),
                   ),
                 ),
-                style: FlutterFlowTheme.of(context).bodyText1.override(
-                      fontFamily: 'Roboto',
-                      color: FlutterFlowTheme.of(context).primaryText,
-                    ),
-                keyboardType: TextInputType.name,
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Color(0x00000000),
+                    width: 1,
+                  ),
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(4.0),
+                    topRight: Radius.circular(4.0),
+                  ),
+                ),
               ),
-            if (FFAppState().isPressed ?? true)
-              Text(
-                'Inbox',
-                style: FlutterFlowTheme.of(context).title3.override(
-                      fontFamily: 'Roboto',
-                      color: FlutterFlowTheme.of(context).primaryText,
-                      fontSize: 18,
-                    ),
-              ),
+              style: FlutterFlowTheme.of(context).bodyText1.override(
+                    fontFamily: 'Open Sans',
+                    color: FlutterFlowTheme.of(context).primaryText,
+                  ),
+              keyboardType: TextInputType.name,
+            ),
           ],
         ),
         actions: [
-          ToggleIcon(
-            onPressed: () async {
-              setState(() => FFAppState().isPressed = !FFAppState().isPressed);
-            },
-            value: FFAppState().isPressed,
-            onIcon: Icon(
-              Icons.search_sharp,
-              color: FlutterFlowTheme.of(context).primaryText,
-              size: 25,
-            ),
-            offIcon: Icon(
-              Icons.clear,
-              color: FlutterFlowTheme.of(context).primaryText,
-              size: 25,
+          Padding(
+            padding: EdgeInsetsDirectional.fromSTEB(0, 0, 18, 0),
+            child: InkWell(
+              onTap: () async {
+                logFirebaseEvent('Icon_ON_TAP');
+                logFirebaseEvent('Icon_Clear-Text-Fields');
+                setState(() {
+                  textController?.clear();
+                });
+              },
+              child: Icon(
+                Icons.clear,
+                color: FlutterFlowTheme.of(context).primaryText,
+                size: 24,
+              ),
             ),
           ),
         ],
         centerTitle: false,
-        elevation: 1,
+        elevation: 0,
       ),
       backgroundColor: FlutterFlowTheme.of(context).tertiaryColor,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          print('FloatingActionButton pressed ...');
+        },
+        backgroundColor: FlutterFlowTheme.of(context).primaryColor,
+        elevation: 8,
+        child: FaIcon(
+          FontAwesomeIcons.facebookMessenger,
+          color: Colors.white,
+          size: 24,
+        ),
+      ),
       body: SafeArea(
         child: Padding(
           padding: EdgeInsetsDirectional.fromSTEB(0, 12, 0, 0),
@@ -143,7 +161,9 @@ class _MessagesPageWidgetState extends State<MessagesPageWidget> {
               }
               List<ChatsRecord> listViewChatsRecordList = snapshot.data;
               if (listViewChatsRecordList.isEmpty) {
-                return EmptyListWidget();
+                return Center(
+                  child: EmptyListWidget(),
+                );
               }
               return ListView.builder(
                 padding: EdgeInsets.zero,
@@ -161,24 +181,24 @@ class _MessagesPageWidgetState extends State<MessagesPageWidget> {
                         final chatInfo =
                             snapshot.data ?? FFChatInfo(listViewChatsRecord);
                         return FFChatPreview(
-                          onTap: chatInfo != null
-                              ? () => Navigator.push(
-                                    context,
-                                    PageTransition(
-                                      type: PageTransitionType.bottomToTop,
-                                      duration: Duration(milliseconds: 300),
-                                      reverseDuration:
-                                          Duration(milliseconds: 300),
-                                      child: ChatPageWidget(
-                                        chatUser:
-                                            chatInfo.otherUsers.length == 1
-                                                ? chatInfo.otherUsersList.first
-                                                : null,
-                                        chatRef: chatInfo.chatRecord.reference,
-                                      ),
-                                    ),
-                                  )
-                              : null,
+                          onTap: () => context.pushNamed(
+                            'ChatPage',
+                            queryParams: {
+                              'chatUser': serializeParam(
+                                  chatInfo.otherUsers.length == 1
+                                      ? chatInfo.otherUsersList.first
+                                      : null,
+                                  ParamType.Document),
+                              'chatRef': serializeParam(
+                                  chatInfo.chatRecord.reference,
+                                  ParamType.DocumentReference),
+                            }.withoutNulls,
+                            extra: <String, dynamic>{
+                              'chatUser': chatInfo.otherUsers.length == 1
+                                  ? chatInfo.otherUsersList.first
+                                  : null,
+                            },
+                          ),
                           lastChatText: chatInfo.chatPreviewMessage(),
                           lastChatTime: listViewChatsRecord.lastMessageTime,
                           seen: listViewChatsRecord.lastMessageSeenBy
@@ -186,21 +206,21 @@ class _MessagesPageWidgetState extends State<MessagesPageWidget> {
                           title: chatInfo.chatPreviewTitle(),
                           userProfilePic: chatInfo.chatPreviewPic(),
                           color: FlutterFlowTheme.of(context).tertiaryColor,
-                          unreadColor: Colors.blue,
+                          unreadColor: Color(0xFF0078FF),
                           titleTextStyle: GoogleFonts.getFont(
-                            'DM Sans',
+                            'Open Sans',
                             color: FlutterFlowTheme.of(context).primaryText,
                             fontWeight: FontWeight.bold,
                             fontSize: 14,
                           ),
                           dateTextStyle: GoogleFonts.getFont(
-                            'Roboto',
+                            'Open Sans',
                             color: FlutterFlowTheme.of(context).primaryText,
                             fontWeight: FontWeight.normal,
-                            fontSize: 12,
+                            fontSize: 10,
                           ),
                           previewTextStyle: GoogleFonts.getFont(
-                            'DM Sans',
+                            'Open Sans',
                             color: FlutterFlowTheme.of(context).campusGrey,
                             fontWeight: FontWeight.normal,
                             fontSize: 13,

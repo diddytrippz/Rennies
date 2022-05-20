@@ -1,4 +1,4 @@
-# Rennies
+# EasyTenant
 
 A new Flutter project.
 

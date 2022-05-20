@@ -76,6 +76,9 @@ extension AnimatedWidgetExtension on Widget {
     return AnimatedBuilder(
       animation: animationInfo.curvedAnimation,
       builder: (context, child) {
+        if (child == null) {
+          return Container();
+        }
         // On Action Trigger animations are in this state when
         // they are first loaded, but before they are triggered.
         // The widget should remain as it is.

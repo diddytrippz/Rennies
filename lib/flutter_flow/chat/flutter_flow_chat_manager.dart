@@ -100,7 +100,7 @@ class FFChatManager {
 
   DocumentReference getChatUserRef(ChatsRecord chat) {
     final userRef =
-        chat.users.firstWhere((d) => d.path != currentUserReference.path);
+        chat.users.firstWhere((d) => d.path != currentUserReference?.path);
     _userChats[userRef.id] = chat.reference;
     return userRef;
   }

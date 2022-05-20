@@ -17,6 +17,12 @@ class _RulesBookWidgetState extends State<RulesBookWidget> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
+  void initState() {
+    super.initState();
+    logFirebaseEvent('screen_view', parameters: {'screen_name': 'rulesBook'});
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: scaffoldKey,
@@ -48,7 +54,9 @@ class _RulesBookWidgetState extends State<RulesBookWidget> {
                           size: 24,
                         ),
                         onPressed: () async {
-                          Navigator.pop(context);
+                          logFirebaseEvent('IconButton_ON_TAP');
+                          logFirebaseEvent('IconButton_Navigate-Back');
+                          context.pop();
                         },
                       ),
                       Padding(
@@ -56,7 +64,7 @@ class _RulesBookWidgetState extends State<RulesBookWidget> {
                         child: Text(
                           'Back',
                           style: FlutterFlowTheme.of(context).title2.override(
-                                fontFamily: 'Roboto',
+                                fontFamily: 'Open Sans',
                                 color: FlutterFlowTheme.of(context).primaryText,
                                 fontSize: 16,
                               ),
@@ -68,9 +76,9 @@ class _RulesBookWidgetState extends State<RulesBookWidget> {
                 Padding(
                   padding: EdgeInsetsDirectional.fromSTEB(24, 0, 0, 0),
                   child: Text(
-                    'Rennie House',
+                    'Campus Africa',
                     style: FlutterFlowTheme.of(context).title2.override(
-                          fontFamily: 'Roboto',
+                          fontFamily: 'Open Sans',
                           color: FlutterFlowTheme.of(context).primaryText,
                           fontSize: 18,
                         ),
@@ -94,7 +102,8 @@ class _RulesBookWidgetState extends State<RulesBookWidget> {
                 child: Padding(
                   padding: EdgeInsetsDirectional.fromSTEB(3, 0, 3, 3),
                   child: FlutterFlowPdfViewer(
-                    assetPath: 'assets/pdfs/Residence_Fees_2022.pdf',
+                    assetPath:
+                        'assets/pdfs/CampusAfrica_StudentHandbook_2021_V2.pdf',
                     width: MediaQuery.of(context).size.width,
                     height: MediaQuery.of(context).size.height * 1,
                     horizontalScroll: false,

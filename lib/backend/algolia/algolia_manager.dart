@@ -76,9 +76,12 @@ class FFAlgoliaManager {
       query = query.setAroundRadius(searchRadiusMeters?.round() ?? 'all');
     }
 
-    final snapshot = await query.getObjects().onError((error, stackTrace) {
+    AlgoliaQuerySnapshot snapshot;
+    snapshot = await query
+        .getObjects()
+        .then((value) => snapshot = value)
+        .catchError((error, stackTrace) {
       print('Algolia error: $error\nStack trace: $stackTrace');
-      return null;
     });
     return _algoliaCache[params] = snapshot?.hits ?? [];
   }

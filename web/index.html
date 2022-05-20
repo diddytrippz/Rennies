@@ -20,13 +20,13 @@
   <!-- iOS meta tags & icons -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="Rennies">
+  <meta name="apple-mobile-web-app-title" content="EasyTenant">
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
 
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="favicon.png"/>
 
-  <title>Rennies</title>
+  <title>EasyTenant</title>
   <link rel="manifest" href="manifest.json">
 </head>
 <body>
@@ -42,6 +42,7 @@
   </script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-analytics.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-functions.js"></script>
@@ -50,20 +51,23 @@
   <script>
     const firebaseConfig = {
     apiKey: "AIzaSyBx4kPnRuoIkof4JYLSdcrokDkp7AJUN_0",
-    authDomain: "campus-africa-bda4b.firebaseapp.com",
-    projectId: "campus-africa-bda4b",
-    storageBucket: "campus-africa-bda4b.appspot.com",
-    messagingSenderId: "73650904699",
-    appId: "1:73650904699:web:e4b2d4a8e050ddf5ff4cde",
-    measurementId: "G-QWDEW01XVG"
-  }
+      authDomain: "campus-africa-bda4b.firebaseapp.com",
+      projectId: "campus-africa-bda4b",
+      storageBucket: "campus-africa-bda4b.appspot.com",
+      messagingSenderId: "73650904699",
+      appId: "1:73650904699:web:e4b2d4a8e050ddf5ff4cde",
+      measurementId: "G-QWDEW01XVG"
+    }
     firebase.initializeApp(firebaseConfig);
   </script>
   
-    <script src="//cdnjs.cloudflare.com/ajax/libs/pdf.js/2.7.570/pdf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@2.12.313/build/pdf.js" type="text/javascript"></script>
   <script type="text/javascript">
-    // Link to worker for pdf.js library
-    pdfjsLib.GlobalWorkerOptions.workerSrc = "//cdnjs.cloudflare.com/ajax/libs/pdf.js/2.7.570/pdf.worker.min.js";
+    pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdn.jsdelivr.net/npm/pdfjs-dist@2.12.313/build/pdf.worker.min.js";
+    pdfRenderOptions = {
+      cMapUrl: 'https://cdn.jsdelivr.net/npm/pdfjs-dist@2.12.313/cmaps/',
+      cMapPacked: true,
+    }
   </script>
         
   <script src="main.dart.js" type="application/javascript"></script>

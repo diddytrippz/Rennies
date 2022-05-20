@@ -22,6 +22,8 @@ class _VerificationWidgetState extends State<VerificationWidget> {
   @override
   void initState() {
     super.initState();
+    logFirebaseEvent('screen_view',
+        parameters: {'screen_name': 'verification'});
     phoneNumberController = TextEditingController();
   }
 
@@ -29,188 +31,160 @@ class _VerificationWidgetState extends State<VerificationWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: scaffoldKey,
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(100),
-        child: AppBar(
-          backgroundColor: FlutterFlowTheme.of(context).primaryColor,
-          automaticallyImplyLeading: false,
-          flexibleSpace: Padding(
-            padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 14),
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.end,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 8),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
-                        child: FlutterFlowIconButton(
+      backgroundColor: FlutterFlowTheme.of(context).primaryColor,
+      body: SafeArea(
+        child: Form(
+          key: formKey,
+          autovalidateMode: AutovalidateMode.always,
+          child: Container(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height * 1,
+            decoration: BoxDecoration(
+              color: FlutterFlowTheme.of(context).primaryColor,
+            ),
+            child: Padding(
+              padding: EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(20, 0, 20, 0),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        FlutterFlowIconButton(
                           borderColor: Colors.transparent,
                           borderRadius: 30,
-                          borderWidth: 1,
-                          buttonSize: 50,
+                          buttonSize: 45,
+                          fillColor: Colors.white,
                           icon: Icon(
                             Icons.arrow_back_rounded,
-                            color: Colors.white,
-                            size: 30,
+                            color: Colors.black,
+                            size: 20,
                           ),
                           onPressed: () async {
-                            Navigator.pop(context);
+                            logFirebaseEvent('IconButton_ON_TAP');
+                            logFirebaseEvent('IconButton_Navigate-Back');
+                            context.pop();
                           },
                         ),
-                      ),
-                      Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(4, 0, 0, 0),
-                        child: Text(
-                          'Back',
-                          style: FlutterFlowTheme.of(context).title2.override(
-                                fontFamily: 'Roboto',
-                                color: Colors.white,
-                                fontSize: 16,
-                              ),
-                        ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-                Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(24, 0, 0, 0),
-                  child: Text(
-                    'Create password',
-                    style: FlutterFlowTheme.of(context).title2.override(
-                          fontFamily: 'Roboto',
-                          color: Colors.white,
-                          fontSize: 22,
-                        ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          actions: [],
-          elevation: 1,
-        ),
-      ),
-      backgroundColor: FlutterFlowTheme.of(context).primaryColor,
-      body: Form(
-        key: formKey,
-        autovalidateMode: AutovalidateMode.always,
-        child: Container(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height * 1,
-          decoration: BoxDecoration(
-            color: FlutterFlowTheme.of(context).primaryColor,
-          ),
-          child: Padding(
-            padding: EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(20, 20, 20, 0),
-                  child: TextFormField(
-                    controller: phoneNumberController,
-                    obscureText: false,
-                    decoration: InputDecoration(
-                      labelText: 'Enter Your Student Email',
-                      labelStyle:
-                          FlutterFlowTheme.of(context).bodyText1.override(
-                                fontFamily: 'Lexend Deca',
-                                color: Colors.white,
-                                fontSize: 14,
-                                fontWeight: FontWeight.normal,
-                              ),
-                      hintText: 'i.e 12345@students.wits.ac.za',
-                      hintStyle:
-                          FlutterFlowTheme.of(context).bodyText1.override(
-                                fontFamily: 'Lexend Deca',
-                                color: Colors.white,
-                                fontSize: 14,
-                                fontWeight: FontWeight.normal,
-                              ),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Color(0xC3FFFFFF),
-                          width: 1,
-                        ),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Color(0xC3FFFFFF),
-                          width: 1,
-                        ),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      filled: true,
-                      fillColor: FlutterFlowTheme.of(context).primaryColor,
-                      contentPadding:
-                          EdgeInsetsDirectional.fromSTEB(20, 24, 20, 24),
-                      prefixIcon: Icon(
-                        Icons.person_outline,
-                        color: Colors.white,
+                  Expanded(
+                    child: Padding(
+                      padding: EdgeInsetsDirectional.fromSTEB(0, 20, 0, 20),
+                      child: Image.asset(
+                        'assets/images/login.png',
+                        fit: BoxFit.cover,
                       ),
                     ),
-                    style: FlutterFlowTheme.of(context).bodyText1.override(
-                          fontFamily: 'Lexend Deca',
-                          color: Colors.white,
-                          fontSize: 14,
-                          fontWeight: FontWeight.normal,
-                        ),
-                    validator: (val) {
-                      if (val.isEmpty) {
-                        return 'Field required';
-                      }
-
-                      return null;
-                    },
                   ),
-                ),
-                Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(0, 24, 0, 0),
-                  child: FFButtonWidget(
-                    onPressed: () async {
-                      if (phoneNumberController.text.isEmpty) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(
-                              'Email required!',
-                            ),
+                  Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(20, 20, 20, 0),
+                    child: TextFormField(
+                      controller: phoneNumberController,
+                      obscureText: false,
+                      decoration: InputDecoration(
+                        labelText: 'Enter Your Student Email',
+                        labelStyle:
+                            FlutterFlowTheme.of(context).bodyText1.override(
+                                  fontFamily: 'Open Sans',
+                                  color: Colors.white,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.normal,
+                                ),
+                        hintText: 'i.e 12345@students.wits.ac.za',
+                        hintStyle:
+                            FlutterFlowTheme.of(context).bodyText1.override(
+                                  fontFamily: 'Open Sans',
+                                  color: Colors.white,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.normal,
+                                ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Color(0xC3FFFFFF),
+                            width: 1,
                           ),
-                        );
-                        return;
-                      }
-                      await resetPassword(
-                        email: phoneNumberController.text,
-                        context: context,
-                      );
-                    },
-                    text: 'Verify email',
-                    options: FFButtonOptions(
-                      width: 230,
-                      height: 60,
-                      color: FlutterFlowTheme.of(context).primaryColor,
-                      textStyle:
-                          FlutterFlowTheme.of(context).subtitle2.override(
-                                fontFamily: 'Lexend Deca',
-                                color: Colors.white,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                              ),
-                      elevation: 3,
-                      borderSide: BorderSide(
-                        color: Colors.transparent,
-                        width: 1,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Color(0xC3FFFFFF),
+                            width: 1,
+                          ),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        filled: true,
+                        fillColor: FlutterFlowTheme.of(context).primaryColor,
+                        contentPadding:
+                            EdgeInsetsDirectional.fromSTEB(20, 24, 20, 24),
+                        suffixIcon: Icon(
+                          FFIcons.kprofile,
+                          color: Colors.white,
+                          size: 22,
+                        ),
                       ),
-                      borderRadius: 8,
+                      style: FlutterFlowTheme.of(context).bodyText1.override(
+                            fontFamily: 'Open Sans',
+                            color: Colors.white,
+                            fontSize: 14,
+                            fontWeight: FontWeight.normal,
+                          ),
+                      validator: (val) {
+                        if (val == null || val.isEmpty) {
+                          return 'Field required';
+                        }
+
+                        return null;
+                      },
                     ),
                   ),
-                ),
-              ],
+                  Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(0, 24, 0, 80),
+                    child: FFButtonWidget(
+                      onPressed: () async {
+                        logFirebaseEvent('Button-Login_ON_TAP');
+                        logFirebaseEvent('Button-Login_Auth');
+                        if (phoneNumberController.text.isEmpty) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                'Email required!',
+                              ),
+                            ),
+                          );
+                          return;
+                        }
+                        await resetPassword(
+                          email: phoneNumberController.text,
+                          context: context,
+                        );
+                      },
+                      text: 'Verify email',
+                      options: FFButtonOptions(
+                        width: 230,
+                        height: 60,
+                        color: FlutterFlowTheme.of(context).primaryColor,
+                        textStyle:
+                            FlutterFlowTheme.of(context).subtitle2.override(
+                                  fontFamily: 'Open Sans',
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                        elevation: 3,
+                        borderSide: BorderSide(
+                          color: Colors.transparent,
+                          width: 1,
+                        ),
+                        borderRadius: 8,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

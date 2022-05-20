@@ -27,7 +27,7 @@
           "order": "ASCENDING"
         },
         {
-          "fieldPath": "email",
+          "fieldPath": "building",
           "order": "ASCENDING"
         },
         {
@@ -45,51 +45,11 @@
       "queryScope": "COLLECTION",
       "fields": [
         {
-          "fieldPath": "isDone",
+          "fieldPath": "building",
           "order": "ASCENDING"
         },
-        {
-          "fieldPath": "email",
-          "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "created_time",
-          "order": "DESCENDING"
-        }
-      ]
-    },
-    {
-      "collectionGroup": "maintenance",
-      "queryScope": "COLLECTION",
-      "fields": [
         {
           "fieldPath": "status",
-          "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "building",
-          "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "isDone",
-          "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "created_time",
-          "order": "DESCENDING"
-        }
-      ]
-    },
-    {
-      "collectionGroup": "maintenance",
-      "queryScope": "COLLECTION",
-      "fields": [
-        {
-          "fieldPath": "building",
-          "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "isDone",
           "order": "ASCENDING"
         },
         {
@@ -116,6 +76,10 @@
       "collectionGroup": "users",
       "queryScope": "COLLECTION",
       "fields": [
+        {
+          "fieldPath": "role",
+          "order": "ASCENDING"
+        },
         {
           "fieldPath": "building",
           "order": "ASCENDING"

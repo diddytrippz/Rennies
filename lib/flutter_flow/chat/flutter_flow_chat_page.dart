@@ -68,7 +68,7 @@ class _FFChatPageState extends State<FFChatPage> {
         (lastBefore?.isAtSameMomentAs(lastAfter) ?? false)) {
       return;
     }
-    SchedulerBinding.instance.addPostFrameCallback((_) async {
+    SchedulerBinding.instance?.addPostFrameCallback((_) async {
       Future.delayed(Duration(milliseconds: 100))
           .then((_) => scrollController.jumpTo(0));
       updateSeenBy();
@@ -98,7 +98,7 @@ class _FFChatPageState extends State<FFChatPage> {
     super.initState();
     updateMessages(FFChatManager.instance.getLatestMessages(chatReference));
     messagesStream = getMessagesStream(chatReference);
-    SchedulerBinding.instance.addPostFrameCallback((_) {
+    SchedulerBinding.instance?.addPostFrameCallback((_) {
       updateSeenBy();
       setState(() => _initialized = true);
     });
@@ -165,7 +165,7 @@ class _FFChatPageState extends State<FFChatPage> {
               final selectedMedia = await selectMediaWithSourceBottomSheet(
                 context: context,
                 allowPhoto: true,
-              );
+              ).then((m) => m != null && m.isNotEmpty ? m.first : null);
               if (selectedMedia == null ||
                   !validateFileFormat(selectedMedia.storagePath, context)) {
                 return;

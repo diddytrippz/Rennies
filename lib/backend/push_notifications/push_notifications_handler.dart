@@ -9,31 +9,12 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
+import '../../index.dart';
 import '../../main.dart';
-import '../../onboarding/onboarding_widget.dart';
-import '../../login_page/login_page_widget.dart';
-import '../../verification/verification_widget.dart';
-import '../../rules_book/rules_book_widget.dart';
-import '../../more_info/more_info_widget.dart';
-import '../../chat_page/chat_page_widget.dart';
-import '../../edit_profile/edit_profile_widget.dart';
-import '../../students/students_widget.dart';
-import '../../users_search/users_search_widget.dart';
-import '../../appliances/appliances_widget.dart';
-import '../../plumbing/plumbing_widget.dart';
-import '../../furniture/furniture_widget.dart';
-import '../../electrical/electrical_widget.dart';
-import '../../locksmith/locksmith_widget.dart';
-import '../../painting/painting_widget.dart';
-import '../../pestcontrol/pestcontrol_widget.dart';
-import '../../others/others_widget.dart';
 
 class PushNotificationsHandler extends StatefulWidget {
-  const PushNotificationsHandler(
-      {Key key, this.handlePushNotification, this.child})
-      : super(key: key);
+  const PushNotificationsHandler({Key key, this.child}) : super(key: key);
 
-  final Function(BuildContext) handlePushNotification;
   final Widget child;
 
   @override
@@ -45,6 +26,10 @@ class _PushNotificationsHandlerState extends State<PushNotificationsHandler> {
   bool _loading = false;
 
   Future handleOpenedPushNotification() async {
+    if (isWeb) {
+      return;
+    }
+
     final notification = await FirebaseMessaging.instance.getInitialMessage();
     if (notification != null) {
       await _handlePushNotification(notification);
@@ -81,11 +66,15 @@ class _PushNotificationsHandlerState extends State<PushNotificationsHandler> {
   @override
   Widget build(BuildContext context) => _loading
       ? Container(
-          color: Colors.black,
-          child: Builder(
-            builder: (context) => Image.asset(
-              'assets/images/Untitled_design_(4).png',
-              fit: BoxFit.contain,
+          color: FlutterFlowTheme.of(context).primaryColor,
+          child: Center(
+            child: Builder(
+              builder: (context) => Image.asset(
+                'assets/images/campus_logo_1.png',
+                width: MediaQuery.of(context).size.width * 0.75,
+                height: MediaQuery.of(context).size.height * 0.75,
+                fit: BoxFit.scaleDown,
+              ),
             ),
           ),
         )
@@ -96,8 +85,8 @@ final pageBuilderMap = <String, Future<Widget> Function(Map<String, dynamic>)>{
   'onboarding': (data) async => OnboardingWidget(),
   'loginPage': (data) async => LoginPageWidget(),
   'verification': (data) async => VerificationWidget(),
-  'viewPage': (data) async => NavBarPage(initialPage: 'ViewPageWidget'),
-  'settingsPage': (data) async => NavBarPage(initialPage: 'SettingsPageWidget'),
+  'settingsPage': (data) async => NavBarPage(initialPage: 'settingsPage'),
+  'viewPage': (data) async => NavBarPage(initialPage: 'viewPage'),
   'rulesBook': (data) async => RulesBookWidget(),
   'moreInfo': (data) async => MoreInfoWidget(
         jobStatus: await getDocumentParameter(
@@ -109,17 +98,21 @@ final pageBuilderMap = <String, Future<Widget> Function(Map<String, dynamic>)>{
         chatRef: getParameter(data, 'chatRef'),
       ),
   'editProfile': (data) async => EditProfileWidget(),
-  'MessagesPage': (data) async => NavBarPage(initialPage: 'MessagesPageWidget'),
-  'students': (data) async => StudentsWidget(),
-  'usersSearch': (data) async => UsersSearchWidget(),
+  'MessagesPage': (data) async => NavBarPage(initialPage: 'MessagesPage'),
+  'usersSearch': (data) async => NavBarPage(initialPage: 'usersSearch'),
   'Appliances': (data) async => AppliancesWidget(),
   'Plumbing': (data) async => PlumbingWidget(),
   'Furniture': (data) async => FurnitureWidget(),
   'Electrical': (data) async => ElectricalWidget(),
   'Locksmith': (data) async => LocksmithWidget(),
-  'painting': (data) async => PaintingWidget(),
   'Pestcontrol': (data) async => PestcontrolWidget(),
+  'painting': (data) async => PaintingWidget(),
   'Others': (data) async => OthersWidget(),
+  'Communal': (data) async => CommunalWidget(),
+  'reviews': (data) async => ReviewsWidget(
+        jobReviews: await getDocumentParameter(
+            data, 'jobReviews', MaintenanceRecord.serializer),
+      ),
 };
 
 bool hasMatchingParameters(Map<String, dynamic> data, Set<String> params) =>

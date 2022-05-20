@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
@@ -22,10 +23,11 @@ enum MediaSource {
   camera,
 }
 
-Future<SelectedMedia> selectMediaWithSourceBottomSheet({
+Future<List<SelectedMedia>> selectMediaWithSourceBottomSheet({
   BuildContext context,
   double maxWidth,
   double maxHeight,
+  int imageQuality,
   bool allowPhoto,
   bool allowVideo = false,
   String pickerFontFamily = 'Roboto',
@@ -109,33 +111,58 @@ Future<SelectedMedia> selectMediaWithSourceBottomSheet({
   return selectMedia(
     maxWidth: maxWidth,
     maxHeight: maxHeight,
+    imageQuality: imageQuality,
     isVideo: mediaSource == MediaSource.videoGallery ||
         (mediaSource == MediaSource.camera && allowVideo && !allowPhoto),
     mediaSource: mediaSource,
   );
 }
 
-Future<SelectedMedia> selectMedia({
+Future<List<SelectedMedia>> selectMedia({
   double maxWidth,
   double maxHeight,
+  int imageQuality,
   bool isVideo = false,
   MediaSource mediaSource = MediaSource.camera,
+  bool multiImage = false,
 }) async {
   final picker = ImagePicker();
+
+  if (multiImage) {
+    final pickedMediaFuture = picker.pickMultiImage(
+      maxWidth: maxWidth,
+      maxHeight: maxHeight,
+      imageQuality: imageQuality,
+    );
+    final pickedMedia = await pickedMediaFuture;
+    if (pickedMedia == null || pickedMedia.isEmpty) {
+      return null;
+    }
+    return Future.wait(pickedMedia.map((media) async {
+      final mediaBytes = await media.readAsBytes();
+      final path = storagePath(currentUserUid, media.name, false);
+      return SelectedMedia(path, mediaBytes);
+    }));
+  }
+
   final source = mediaSource == MediaSource.camera
       ? ImageSource.camera
       : ImageSource.gallery;
   final pickedMediaFuture = isVideo
       ? picker.pickVideo(source: source)
       : picker.pickImage(
-          maxWidth: maxWidth, maxHeight: maxHeight, source: source);
+          maxWidth: maxWidth,
+          maxHeight: maxHeight,
+          imageQuality: imageQuality,
+          source: source,
+        );
   final pickedMedia = await pickedMediaFuture;
   final mediaBytes = await pickedMedia?.readAsBytes();
   if (mediaBytes == null) {
     return null;
   }
   final path = storagePath(currentUserUid, pickedMedia.name, isVideo);
-  return SelectedMedia(path, mediaBytes);
+  return [SelectedMedia(path, mediaBytes)];
 }
 
 bool validateFileFormat(String filePath, BuildContext context) {
@@ -148,6 +175,25 @@ bool validateFileFormat(String filePath, BuildContext context) {
       content: Text('Invalid file format: ${mime(filePath)}'),
     ));
   return false;
+}
+
+Future<SelectedMedia> selectFile({
+  List<String> allowedExtensions = const ['pdf'],
+}) async {
+  final pickedFiles = await FilePicker.platform.pickFiles(
+    type: FileType.custom,
+    allowedExtensions: allowedExtensions,
+  );
+  if (pickedFiles == null || pickedFiles.files.isEmpty) {
+    return null;
+  }
+
+  final file = pickedFiles.files.first;
+  if (file?.bytes == null) {
+    return null;
+  }
+  final path = storagePath(currentUserUid, file.name, false);
+  return SelectedMedia(path, file.bytes);
 }
 
 String storagePath(String uid, String filePath, bool isVideo) {

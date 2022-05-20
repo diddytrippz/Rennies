@@ -6,22 +6,19 @@ import 'auth/firebase_user_provider.dart';
 import 'auth/auth_util.dart';
 import 'backend/push_notifications/push_notifications_util.dart';
 import 'flutter_flow/flutter_flow_theme.dart';
+import 'flutter_flow/flutter_flow_util.dart';
 import 'flutter_flow/internationalization.dart';
-import 'package:rennies/onboarding/onboarding_widget.dart';
-import 'flutter_flow/flutter_flow_theme.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'home_page/home_page_widget.dart';
-import 'view_page/view_page_widget.dart';
-import 'messages_page/messages_page_widget.dart';
-import 'settings_page/settings_page_widget.dart';
+import 'flutter_flow/nav/nav.dart';
+import 'index.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 
-  await FlutterFlowTheme.initialize();
+  FFAppState(); // Initialize FFAppState
 
   runApp(MyApp());
 }
@@ -29,7 +26,7 @@ void main() async {
 class MyApp extends StatefulWidget {
   // This widget is the root of your application.
   @override
-  _MyAppState createState() => _MyAppState();
+  State<MyApp> createState() => _MyAppState();
 
   static _MyAppState of(BuildContext context) =>
       context.findAncestorStateOfType<_MyAppState>();
@@ -37,26 +34,27 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   Locale _locale;
-  ThemeMode _themeMode = FlutterFlowTheme.themeMode;
-  Stream<RenniesFirebaseUser> userStream;
-  RenniesFirebaseUser initialUser;
-  bool displaySplashImage = true;
+  ThemeMode _themeMode = ThemeMode.system;
+
+  Stream<EasyTenantFirebaseUser> userStream;
+
+  AppStateNotifier _appStateNotifier;
+  GoRouter _router;
+
   final authUserSub = authenticatedUserStream.listen((_) {});
   final fcmTokenSub = fcmTokenUserStream.listen((_) {});
-
-  void setLocale(Locale value) => setState(() => _locale = value);
-  void setThemeMode(ThemeMode mode) => setState(() {
-        _themeMode = mode;
-        FlutterFlowTheme.saveThemeMode(mode);
-      });
 
   @override
   void initState() {
     super.initState();
-    userStream = renniesFirebaseUserStream()
-      ..listen((user) => initialUser ?? setState(() => initialUser = user));
+    _appStateNotifier = AppStateNotifier();
+    _router = createRouter(_appStateNotifier);
+    userStream = easyTenantFirebaseUserStream()
+      ..listen((user) => _appStateNotifier.update(user));
     Future.delayed(
-        Duration(seconds: 1), () => setState(() => displaySplashImage = false));
+      Duration(seconds: 1),
+      () => _appStateNotifier.stopShowingSplashImage(),
+    );
   }
 
   @override
@@ -66,10 +64,15 @@ class _MyAppState extends State<MyApp> {
     super.dispose();
   }
 
+  void setLocale(Locale value) => setState(() => _locale = value);
+  void setThemeMode(ThemeMode mode) => setState(() {
+        _themeMode = mode;
+      });
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Rennies',
+    return MaterialApp.router(
+      title: 'EasyTenant',
       localizationsDelegates: [
         FFLocalizationsDelegate(),
         GlobalMaterialLocalizations.delegate,
@@ -81,21 +84,9 @@ class _MyAppState extends State<MyApp> {
         Locale('en', ''),
       ],
       theme: ThemeData(brightness: Brightness.light),
-      darkTheme: ThemeData(brightness: Brightness.dark),
       themeMode: _themeMode,
-      home: initialUser == null || displaySplashImage
-          ? Container(
-              color: Colors.black,
-              child: Builder(
-                builder: (context) => Image.asset(
-                  'assets/images/Untitled_design_(4).png',
-                  fit: BoxFit.contain,
-                ),
-              ),
-            )
-          : currentUser.loggedIn
-              ? PushNotificationsHandler(child: NavBarPage())
-              : OnboardingWidget(),
+      routeInformationParser: _router.routeInformationParser,
+      routerDelegate: _router.routerDelegate,
     );
   }
 }
@@ -124,6 +115,7 @@ class _NavBarPageState extends State<NavBarPage> {
     final tabs = {
       'homePage': HomePageWidget(),
       'viewPage': ViewPageWidget(),
+      'usersSearch': UsersSearchWidget(),
       'MessagesPage': MessagesPageWidget(),
       'settingsPage': SettingsPageWidget(),
     };
@@ -138,33 +130,38 @@ class _NavBarPageState extends State<NavBarPage> {
         color: FlutterFlowTheme.of(context).campusGrey,
         activeColor: Colors.white,
         tabBackgroundColor: FlutterFlowTheme.of(context).mellow,
-        tabBorderRadius: 25,
+        tabBorderRadius: 15,
         tabMargin: EdgeInsetsDirectional.fromSTEB(8, 12, 8, 16),
         padding: EdgeInsetsDirectional.fromSTEB(14, 12, 4, 12),
-        gap: 8,
+        gap: 4,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        duration: Duration(milliseconds: 900),
+        duration: Duration(milliseconds: 1000),
         haptic: true,
         tabs: [
           GButton(
-            icon: Icons.home_sharp,
-            text: 'HOME',
+            icon: FFIcons.khome3,
+            text: '',
             iconSize: 24,
           ),
           GButton(
-            icon: Icons.auto_awesome_motion,
-            text: 'VIEW',
+            icon: FFIcons.kapps,
+            text: '',
+            iconSize: 20,
+          ),
+          GButton(
+            icon: FFIcons.ksearch,
+            text: '',
             iconSize: 24,
           ),
           GButton(
-            icon: currentIndex == 2 ? Icons.mail : Icons.email_outlined,
-            text: 'CHAT',
-            iconSize: 24,
+            icon: FFIcons.kmessage3,
+            text: '',
+            iconSize: 26,
           ),
           GButton(
-            icon: currentIndex == 3 ? Icons.person : Icons.person_outline,
-            text: 'SETTINGS',
-            iconSize: 24,
+            icon: FFIcons.kprofile,
+            text: '',
+            iconSize: 25,
           )
         ],
       ),

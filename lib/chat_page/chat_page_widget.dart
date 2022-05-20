@@ -1,13 +1,15 @@
 import '../backend/backend.dart';
 import '../components/empty_inbox_widget.dart';
 import '../flutter_flow/chat/index.dart';
-import '../flutter_flow/flutter_flow_icon_button.dart';
+import '../flutter_flow/flutter_flow_expanded_image_view.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:page_transition/page_transition.dart';
 
 class ChatPageWidget extends StatefulWidget {
   const ChatPageWidget({
@@ -50,76 +52,144 @@ class _ChatPageWidgetState extends State<ChatPageWidget> {
         setState(() => _chatInfo = info);
       }
     });
+
+    logFirebaseEvent('screen_view', parameters: {'screen_name': 'ChatPage'});
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: scaffoldKey,
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(100),
-        child: AppBar(
-          backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
-          automaticallyImplyLeading: false,
-          flexibleSpace: Padding(
-            padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 14),
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.end,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 8),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      FlutterFlowIconButton(
-                        borderColor: Colors.transparent,
-                        borderRadius: 30,
-                        borderWidth: 1,
-                        buttonSize: 50,
-                        icon: Icon(
-                          Icons.arrow_back,
-                          color: FlutterFlowTheme.of(context).primaryText,
-                          size: 24,
+      appBar: AppBar(
+        backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
+        automaticallyImplyLeading: false,
+        leading: InkWell(
+          onTap: () async {
+            logFirebaseEvent('Icon_ON_TAP');
+            logFirebaseEvent('Icon_Navigate-Back');
+            context.pop();
+          },
+          child: Icon(
+            Icons.arrow_back_rounded,
+            color: FlutterFlowTheme.of(context).primaryText,
+            size: 24,
+          ),
+        ),
+        title: Row(
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            Padding(
+              padding: EdgeInsetsDirectional.fromSTEB(0, 0, 12, 0),
+              child: InkWell(
+                onTap: () async {
+                  logFirebaseEvent('CircleImage_ON_TAP');
+                  logFirebaseEvent('CircleImage_Expand-Image');
+                  await Navigator.push(
+                    context,
+                    PageTransition(
+                      type: PageTransitionType.fade,
+                      child: FlutterFlowExpandedImageView(
+                        image: Image.network(
+                          valueOrDefault<String>(
+                            widget.chatUser.photoUrl,
+                            'https://t3.ftcdn.net/jpg/03/46/83/96/360_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg',
+                          ),
+                          fit: BoxFit.contain,
                         ),
-                        onPressed: () async {
-                          Navigator.pop(context);
-                        },
-                      ),
-                      Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(4, 0, 0, 0),
-                        child: Text(
-                          'Back',
-                          style: FlutterFlowTheme.of(context).title2.override(
-                                fontFamily: 'Roboto',
-                                color: FlutterFlowTheme.of(context).primaryText,
-                                fontSize: 16,
-                              ),
+                        allowRotation: false,
+                        tag: valueOrDefault<String>(
+                          widget.chatUser.photoUrl,
+                          'https://t3.ftcdn.net/jpg/03/46/83/96/360_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg',
                         ),
+                        useHeroAnimation: true,
                       ),
-                    ],
+                    ),
+                  );
+                },
+                child: Hero(
+                  tag: valueOrDefault<String>(
+                    widget.chatUser.photoUrl,
+                    'https://t3.ftcdn.net/jpg/03/46/83/96/360_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg',
+                  ),
+                  transitionOnUserGestures: true,
+                  child: Container(
+                    width: 40,
+                    height: 40,
+                    clipBehavior: Clip.antiAlias,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                    ),
+                    child: Image.network(
+                      valueOrDefault<String>(
+                        widget.chatUser.photoUrl,
+                        'https://t3.ftcdn.net/jpg/03/46/83/96/360_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg',
+                      ),
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
-                Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(24, 0, 0, 0),
-                  child: Text(
+              ),
+            ),
+            Expanded(
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  AutoSizeText(
                     widget.chatUser.displayName,
-                    style: FlutterFlowTheme.of(context).title2.override(
-                          fontFamily: 'Roboto',
+                    style: FlutterFlowTheme.of(context).bodyText1.override(
+                          fontFamily: 'Open Sans',
                           color: FlutterFlowTheme.of(context).primaryText,
-                          fontSize: 18,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
                         ),
                   ),
-                ),
-              ],
+                  Text(
+                    dateTimeFormat('jms', getCurrentTimestamp),
+                    style: FlutterFlowTheme.of(context).bodyText1.override(
+                          fontFamily: 'Open Sans',
+                          color: FlutterFlowTheme.of(context).primaryText,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
+                        ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          Padding(
+            padding: EdgeInsetsDirectional.fromSTEB(0, 0, 12, 0),
+            child: InkWell(
+              onTap: () async {
+                logFirebaseEvent('Icon_ON_TAP');
+                logFirebaseEvent('Icon_Show-Snack-Bar');
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                      'Video call not yet supported ',
+                      style: TextStyle(
+                        color: FlutterFlowTheme.of(context).primaryBackground,
+                      ),
+                    ),
+                    duration: Duration(milliseconds: 4000),
+                    backgroundColor: FlutterFlowTheme.of(context).primaryText,
+                  ),
+                );
+              },
+              child: Icon(
+                Icons.videocam_outlined,
+                color: FlutterFlowTheme.of(context).primaryText,
+                size: 30,
+              ),
             ),
           ),
-          actions: [],
-          elevation: 2,
-        ),
+        ],
+        centerTitle: false,
+        elevation: 2,
       ),
-      backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
+      backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
       body: SafeArea(
         child: GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
@@ -133,10 +203,10 @@ class _ChatPageWidgetState extends State<ChatPageWidget> {
                     chatInfo: snapshot.data,
                     allowImages: true,
                     backgroundColor:
-                        FlutterFlowTheme.of(context).primaryBackground,
-                    timeDisplaySetting: TimeDisplaySetting.visibleOnTap,
+                        FlutterFlowTheme.of(context).secondaryBackground,
+                    timeDisplaySetting: TimeDisplaySetting.alwaysVisible,
                     currentUserBoxDecoration: BoxDecoration(
-                      color: Color(0xFFDCF8C6),
+                      color: Color(0xFF0078FF),
                       border: Border.all(
                         color: Colors.transparent,
                       ),
@@ -150,26 +220,26 @@ class _ChatPageWidgetState extends State<ChatPageWidget> {
                       borderRadius: BorderRadius.circular(15),
                     ),
                     currentUserTextStyle: GoogleFonts.getFont(
-                      'DM Sans',
-                      color: FlutterFlowTheme.of(context).campusGrey,
+                      'Open Sans',
+                      color: Color(0xE1FFFFFF),
                       fontWeight: FontWeight.w500,
                       fontSize: 14,
                       fontStyle: FontStyle.normal,
                     ),
                     otherUsersTextStyle: GoogleFonts.getFont(
-                      'DM Sans',
-                      color: FlutterFlowTheme.of(context).campusGrey,
+                      'Open Sans',
+                      color: Color(0xFF080808),
                       fontWeight: FontWeight.w500,
                       fontSize: 14,
                     ),
                     inputHintTextStyle: GoogleFonts.getFont(
-                      'DM Sans',
+                      'Open Sans',
                       color: FlutterFlowTheme.of(context).campusGrey,
                       fontWeight: FontWeight.normal,
                       fontSize: 14,
                     ),
                     inputTextStyle: GoogleFonts.getFont(
-                      'DM Sans',
+                      'Open Sans',
                       color: Colors.black,
                       fontWeight: FontWeight.normal,
                       fontSize: 14,

@@ -28,6 +28,7 @@ bool isSameMonth(DateTime a, DateTime b) {
 
 class FlutterFlowCalendar extends StatefulWidget {
   const FlutterFlowCalendar({
+    Key key,
     @required this.color,
     this.onChange,
     this.initialDate,
@@ -39,8 +40,8 @@ class FlutterFlowCalendar extends StatefulWidget {
     this.inactiveDateStyle,
     this.selectedDateStyle,
     this.titleStyle,
+    this.rowHeight,
     this.locale,
-    Key key,
   }) : super(key: key);
 
   final bool weekFormat;
@@ -54,10 +55,8 @@ class FlutterFlowCalendar extends StatefulWidget {
   final TextStyle inactiveDateStyle;
   final TextStyle selectedDateStyle;
   final TextStyle titleStyle;
+  final double rowHeight;
   final String locale;
-
-  static const Cubic pageAnimationCurve = Curves.easeInOut;
-  static const Duration pageAnimationDuration = Duration(milliseconds: 350);
 
   @override
   State<StatefulWidget> createState() => _FlutterFlowCalendarState();
@@ -65,20 +64,20 @@ class FlutterFlowCalendar extends StatefulWidget {
 
 class _FlutterFlowCalendarState extends State<FlutterFlowCalendar> {
   DateTime focusedDay;
-  DateTimeRange selectedDay;
-  CalendarController calendarController;
+  DateTime selectedDay;
+  DateTimeRange selectedRange;
 
   @override
   void initState() {
     super.initState();
     focusedDay = widget.initialDate ?? DateTime.now();
-    selectedDay = DateTimeRange(
-      start: widget.initialDate?.startOfDay ?? DateTime.now().startOfDay,
-      end: widget.initialDate?.endOfDay ?? DateTime.now().endOfDay,
+    selectedDay = widget.initialDate ?? DateTime.now();
+    selectedRange = DateTimeRange(
+      start: selectedDay.startOfDay,
+      end: selectedDay.endOfDay,
     );
-    calendarController = CalendarController();
     SchedulerBinding.instance
-        .addPostFrameCallback((_) => setSelectedDay(selectedDay.start));
+        .addPostFrameCallback((_) => setSelectedDay(selectedRange.start));
   }
 
   CalendarFormat get calendarFormat =>
@@ -105,9 +104,9 @@ class _FlutterFlowCalendarState extends State<FlutterFlowCalendar> {
             end: newSelectedEnd ?? newSelectedDay.endOfDay,
           );
     setState(() {
-      selectedDay = newRange;
-      calendarController.setSelectedDay(newSelectedDay);
-      widget.onChange?.call(newRange);
+      selectedDay = newSelectedDay;
+      selectedRange = newRange;
+      widget.onChange(newRange);
     });
   }
 
@@ -119,53 +118,56 @@ class _FlutterFlowCalendarState extends State<FlutterFlowCalendar> {
         children: <Widget>[
           CalendarHeader(
             focusedDay: focusedDay,
-            onLeftChevronTap: () => calendarController.previousPage(),
-            onRightChevronTap: () => calendarController.nextPage(),
-            onTodayButtonTap: () {
-              if (!calendarController.visibleDays.any(
-                calendarController.isToday,
-              )) {
-                setState(() {
-                  calendarController.setFocusedDay(DateTime.now());
-                  focusedDay = DateTime.now();
-                });
-              }
-            },
+            onLeftChevronTap: () => setState(
+              () => focusedDay = widget.weekFormat
+                  ? _previousWeek(focusedDay)
+                  : _previousMonth(focusedDay),
+            ),
+            onRightChevronTap: () => setState(
+              () => focusedDay = widget.weekFormat
+                  ? _nextWeek(focusedDay)
+                  : _nextMonth(focusedDay),
+            ),
+            onTodayButtonTap: () => setState(() => focusedDay = DateTime.now()),
             titleStyle: widget.titleStyle,
             iconColor: widget.iconColor,
             locale: widget.locale,
           ),
           TableCalendar(
-            calendarController: calendarController,
-            startDay: kFirstDay,
-            endDay: kLastDay,
-            initialCalendarFormat: calendarFormat,
+            focusedDay: focusedDay,
+            selectedDayPredicate: (date) => isSameDay(selectedDay, date),
+            firstDay: kFirstDay,
+            lastDay: kLastDay,
+            calendarFormat: calendarFormat,
             headerVisible: false,
             locale: widget.locale,
+            rowHeight:
+                widget.rowHeight ?? MediaQuery.of(context).size.width / 7,
             calendarStyle: CalendarStyle(
-              weekdayStyle: widget.dateStyle,
-              weekendStyle: widget.dateStyle,
-              holidayStyle: widget.dateStyle,
-              eventDayStyle: widget.dateStyle,
-              selectedStyle:
+              weekendTextStyle: widget.dateStyle,
+              holidayTextStyle: widget.dateStyle,
+              selectedTextStyle:
                   const TextStyle(color: Color(0xFFFAFAFA), fontSize: 16.0)
                       .merge(widget.selectedDateStyle),
-              todayStyle:
+              todayTextStyle:
                   const TextStyle(color: Color(0xFFFAFAFA), fontSize: 16.0)
                       .merge(widget.selectedDateStyle),
-              unavailableStyle: const TextStyle(color: Color(0xFF9E9E9E))
+              outsideTextStyle: const TextStyle(color: Color(0xFF9E9E9E))
                   .merge(widget.inactiveDateStyle),
-              outsideStyle: const TextStyle(color: Color(0xFF9E9E9E))
-                  .merge(widget.inactiveDateStyle),
-              outsideWeekendStyle: const TextStyle(color: Color(0xFF9E9E9E))
-                  .merge(widget.inactiveDateStyle),
-              outsideHolidayStyle: const TextStyle(color: Color(0xFF9E9E9E))
-                  .merge(widget.inactiveDateStyle),
-              selectedColor: color,
-              todayColor: lighterColor,
-              markersColor: lightColor,
-              markersMaxAmount: 3,
-              canEventMarkersOverflow: true,
+              selectedDecoration: BoxDecoration(
+                color: color,
+                shape: BoxShape.circle,
+              ),
+              todayDecoration: BoxDecoration(
+                color: lighterColor,
+                shape: BoxShape.circle,
+              ),
+              markerDecoration: BoxDecoration(
+                color: lightColor,
+                shape: BoxShape.circle,
+              ),
+              markersMaxCount: 3,
+              canMarkersOverflow: true,
             ),
             availableGestures: AvailableGestures.horizontalSwipe,
             startingDayOfWeek: startingDayOfWeek,
@@ -175,25 +177,14 @@ class _FlutterFlowCalendarState extends State<FlutterFlowCalendar> {
               weekendStyle: const TextStyle(color: Color(0xFF616161))
                   .merge(widget.dayOfWeekStyle),
             ),
-            holidays: const {},
-            onDaySelected: (newSelectedDay, _, __) {
-              if (!isSameDay(selectedDay?.start, newSelectedDay)) {
+            onDaySelected: (newSelectedDay, _) {
+              if (!isSameDay(selectedDay, newSelectedDay)) {
                 setSelectedDay(newSelectedDay);
                 if (!isSameMonth(focusedDay, newSelectedDay)) {
-                  setState(() {
-                    newSelectedDay.isAfter(focusedDay)
-                        ? calendarController.nextPage()
-                        : calendarController.previousPage();
-                    focusedDay = newSelectedDay;
-                    calendarController.setFocusedDay(newSelectedDay);
-                  });
+                  setState(() => focusedDay = newSelectedDay);
                 }
               }
             },
-            onVisibleDaysChanged: (start, end, format) => setState(() {
-              focusedDay = start.add(end.difference(start) ~/ 2);
-              calendarController.setFocusedDay(focusedDay);
-            }),
           ),
         ],
       );
@@ -201,21 +192,17 @@ class _FlutterFlowCalendarState extends State<FlutterFlowCalendar> {
 
 class CalendarHeader extends StatelessWidget {
   const CalendarHeader({
+    Key key,
     @required this.focusedDay,
     @required this.onLeftChevronTap,
     @required this.onRightChevronTap,
     @required this.onTodayButtonTap,
     this.iconColor,
-    this.clearButtonVisible = false,
-    this.onClearButtonTap,
     this.titleStyle,
     this.locale,
-    Key key,
   }) : super(key: key);
 
-  final bool clearButtonVisible;
   final DateTime focusedDay;
-  final VoidCallback onClearButtonTap;
   final VoidCallback onLeftChevronTap;
   final VoidCallback onRightChevronTap;
   final VoidCallback onTodayButtonTap;
@@ -240,11 +227,6 @@ class CalendarHeader extends StatelessWidget {
                 style: const TextStyle(fontSize: 17).merge(titleStyle),
               ),
             ),
-            if (clearButtonVisible)
-              CustomIconButton(
-                icon: Icon(Icons.clear, color: iconColor),
-                onTap: onClearButtonTap,
-              ),
             CustomIconButton(
               icon: Icon(Icons.calendar_today, color: iconColor),
               onTap: onTodayButtonTap,
@@ -264,11 +246,11 @@ class CalendarHeader extends StatelessWidget {
 
 class CustomIconButton extends StatelessWidget {
   const CustomIconButton({
+    Key key,
     @required this.icon,
-    @required this.onTap,
+    this.onTap,
     this.margin = const EdgeInsets.symmetric(horizontal: 4),
     this.padding = const EdgeInsets.all(10),
-    Key key,
   }) : super(key: key);
 
   final Icon icon;
@@ -286,10 +268,34 @@ class CustomIconButton extends StatelessWidget {
             padding: padding,
             child: Icon(
               icon.icon,
-              color: icon?.color,
-              size: icon?.size,
+              color: icon.color,
+              size: icon.size,
             ),
           ),
         ),
       );
+}
+
+DateTime _previousWeek(DateTime week) {
+  return week.subtract(const Duration(days: 7));
+}
+
+DateTime _nextWeek(DateTime week) {
+  return week.add(const Duration(days: 7));
+}
+
+DateTime _previousMonth(DateTime month) {
+  if (month.month == 1) {
+    return DateTime(month.year - 1, 12);
+  } else {
+    return DateTime(month.year, month.month - 1);
+  }
+}
+
+DateTime _nextMonth(DateTime month) {
+  if (month.month == 12) {
+    return DateTime(month.year + 1, 1);
+  } else {
+    return DateTime(month.year, month.month + 1);
+  }
 }

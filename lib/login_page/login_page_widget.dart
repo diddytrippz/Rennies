@@ -2,8 +2,6 @@ import '../auth/auth_util.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
-import '../main.dart';
-import '../verification/verification_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -27,6 +25,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
     emailAddressController = TextEditingController();
     passwordController = TextEditingController();
     passwordVisibility = false;
+    logFirebaseEvent('screen_view', parameters: {'screen_name': 'loginPage'});
   }
 
   @override
@@ -37,20 +36,20 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
         preferredSize:
             Size.fromHeight(MediaQuery.of(context).size.height * 0.05),
         child: AppBar(
-          backgroundColor: Colors.black,
+          backgroundColor: Color(0xFF604AF6),
           automaticallyImplyLeading: false,
           actions: [],
           elevation: 0,
         ),
       ),
-      backgroundColor: Colors.black,
+      backgroundColor: Color(0xFFF5F5F5),
       body: GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
         child: Container(
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height * 1,
           decoration: BoxDecoration(
-            color: Colors.black,
+            color: FlutterFlowTheme.of(context).primaryColor,
             shape: BoxShape.rectangle,
           ),
           child: Align(
@@ -65,11 +64,11 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                     padding: EdgeInsetsDirectional.fromSTEB(40, 10, 40, 10),
                     child: Container(
                       decoration: BoxDecoration(
-                        color: Colors.black,
+                        color: Color(0x00EEEEEE),
                         image: DecorationImage(
-                          fit: BoxFit.scaleDown,
+                          fit: BoxFit.fill,
                           image: Image.asset(
-                            'assets/images/Untitled_design_(4).png',
+                            'assets/images/Minimalist_Property_Agency_Logo.png',
                           ).image,
                         ),
                       ),
@@ -110,11 +109,11 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                               children: [
                                 Expanded(
                                   child: Text(
-                                    'Welcome Back,',
+                                    'Easy Properties,',
                                     style: FlutterFlowTheme.of(context)
                                         .title1
                                         .override(
-                                          fontFamily: 'Lexend Deca',
+                                          fontFamily: 'Open Sans',
                                           color: FlutterFlowTheme.of(context)
                                               .primaryText,
                                           fontSize: 24,
@@ -172,11 +171,17 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                                       contentPadding:
                                           EdgeInsetsDirectional.fromSTEB(
                                               16, 24, 0, 24),
+                                      suffixIcon: Icon(
+                                        FFIcons.kprofile,
+                                        color: FlutterFlowTheme.of(context)
+                                            .primaryText,
+                                        size: 22,
+                                      ),
                                     ),
                                     style: FlutterFlowTheme.of(context)
                                         .bodyText1
                                         .override(
-                                          fontFamily: 'Lexend Deca',
+                                          fontFamily: 'Open Sans',
                                           color: FlutterFlowTheme.of(context)
                                               .primaryText,
                                           fontSize: 14,
@@ -244,7 +249,8 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                                           passwordVisibility
                                               ? Icons.visibility_outlined
                                               : Icons.visibility_off_outlined,
-                                          color: Color(0xFF95A1AC),
+                                          color: FlutterFlowTheme.of(context)
+                                              .primaryText,
                                           size: 22,
                                         ),
                                       ),
@@ -252,7 +258,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                                     style: FlutterFlowTheme.of(context)
                                         .bodyText1
                                         .override(
-                                          fontFamily: 'Lexend Deca',
+                                          fontFamily: 'Open Sans',
                                           color: FlutterFlowTheme.of(context)
                                               .primaryText,
                                           fontSize: 14,
@@ -272,6 +278,10 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                               children: [
                                 FFButtonWidget(
                                   onPressed: () async {
+                                    logFirebaseEvent(
+                                        'ButtonForgotPassword_ON_TAP');
+                                    logFirebaseEvent(
+                                        'ButtonForgotPassword_Auth');
                                     if (emailAddressController.text.isEmpty) {
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(
@@ -312,6 +322,10 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                                 ),
                                 FFButtonWidget(
                                   onPressed: () async {
+                                    logFirebaseEvent('ButtonLogin_ON_TAP');
+                                    logFirebaseEvent('ButtonLogin_Auth');
+                                    GoRouter.of(context).prepareAuthEvent();
+
                                     final user = await signInWithEmail(
                                       context,
                                       emailAddressController.text,
@@ -321,25 +335,14 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                                       return;
                                     }
 
-                                    await Navigator.pushAndRemoveUntil(
-                                      context,
-                                      PageTransition(
-                                        type: PageTransitionType.bottomToTop,
-                                        duration: Duration(milliseconds: 300),
-                                        reverseDuration:
-                                            Duration(milliseconds: 300),
-                                        child:
-                                            NavBarPage(initialPage: 'homePage'),
-                                      ),
-                                      (r) => false,
-                                    );
+                                    context.goNamedAuth('homePage', mounted);
                                   },
                                   text: 'Login',
                                   options: FFButtonOptions(
                                     width: 130,
                                     height: 50,
-                                    color:
-                                        FlutterFlowTheme.of(context).campusGrey,
+                                    color: FlutterFlowTheme.of(context)
+                                        .primaryColor,
                                     textStyle: FlutterFlowTheme.of(context)
                                         .subtitle2
                                         .override(
@@ -370,16 +373,10 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                                 EdgeInsetsDirectional.fromSTEB(0, 16, 0, 16),
                             child: FFButtonWidget(
                               onPressed: () async {
-                                await Navigator.push(
-                                  context,
-                                  PageTransition(
-                                    type: PageTransitionType.bottomToTop,
-                                    duration: Duration(milliseconds: 300),
-                                    reverseDuration:
-                                        Duration(milliseconds: 300),
-                                    child: VerificationWidget(),
-                                  ),
-                                );
+                                logFirebaseEvent('ButtonCreateAccount_ON_TAP');
+                                logFirebaseEvent(
+                                    'ButtonCreateAccount_Navigate-To');
+                                context.pushNamed('verification');
                               },
                               text: 'Create Account',
                               options: FFButtonOptions(
@@ -391,7 +388,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                                     .override(
                                       fontFamily: 'Lexend Deca',
                                       color: FlutterFlowTheme.of(context)
-                                          .campusGrey,
+                                          .primaryColor,
                                       fontSize: 16,
                                       fontWeight: FontWeight.w500,
                                     ),

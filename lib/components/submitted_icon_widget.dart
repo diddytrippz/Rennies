@@ -1,7 +1,6 @@
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
-import '../main.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -74,7 +73,7 @@ class _SubmittedIconWidgetState extends State<SubmittedIconWidget> {
                               'Success!',
                               style:
                                   FlutterFlowTheme.of(context).title1.override(
-                                        fontFamily: 'Roboto',
+                                        fontFamily: 'Open Sans',
                                         color: Color(0xFF181818),
                                       ),
                             ),
@@ -89,12 +88,12 @@ class _SubmittedIconWidgetState extends State<SubmittedIconWidget> {
                             padding:
                                 EdgeInsetsDirectional.fromSTEB(16, 0, 16, 0),
                             child: AutoSizeText(
-                              'Your request has been received\nby the maintenance\nteam.',
+                              'Your request has been received\nby the Campus Africa maintenance\nteam.',
                               textAlign: TextAlign.start,
                               style: FlutterFlowTheme.of(context)
                                   .bodyText1
                                   .override(
-                                    fontFamily: 'Roboto',
+                                    fontFamily: 'Open Sans',
                                     color: Color(0xFF181818),
                                     fontWeight: FontWeight.w500,
                                   ),
@@ -106,16 +105,9 @@ class _SubmittedIconWidgetState extends State<SubmittedIconWidget> {
                         padding: EdgeInsetsDirectional.fromSTEB(0, 29, 0, 20),
                         child: FFButtonWidget(
                           onPressed: () async {
-                            await Navigator.pushAndRemoveUntil(
-                              context,
-                              PageTransition(
-                                type: PageTransitionType.bottomToTop,
-                                duration: Duration(milliseconds: 300),
-                                reverseDuration: Duration(milliseconds: 300),
-                                child: NavBarPage(initialPage: 'viewPage'),
-                              ),
-                              (r) => false,
-                            );
+                            logFirebaseEvent('Button_ON_TAP');
+                            logFirebaseEvent('Button_Navigate-To');
+                            context.goNamed('viewPage');
                           },
                           text: 'Continue',
                           options: FFButtonOptions(
@@ -124,7 +116,7 @@ class _SubmittedIconWidgetState extends State<SubmittedIconWidget> {
                             color: FlutterFlowTheme.of(context).primaryColor,
                             textStyle:
                                 FlutterFlowTheme.of(context).subtitle2.override(
-                                      fontFamily: 'Roboto',
+                                      fontFamily: 'Open Sans',
                                       color: Colors.white,
                                     ),
                             borderSide: BorderSide(

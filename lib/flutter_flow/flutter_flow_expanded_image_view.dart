@@ -3,10 +3,10 @@ import 'package:photo_view/photo_view.dart';
 
 class FlutterFlowExpandedImageView extends StatelessWidget {
   const FlutterFlowExpandedImageView({
-    @required this.image,
+    required this.image,
     this.allowRotation = false,
     this.useHeroAnimation = true,
-    this.tag,
+    required this.tag,
   });
 
   final Widget image;
@@ -32,7 +32,7 @@ class FlutterFlowExpandedImageView extends StatelessWidget {
                 heroAttributes:
                     useHeroAnimation ? PhotoViewHeroAttributes(tag: tag) : null,
                 onScaleEnd: (context, details, value) {
-                  if (value.scale < 0.3) {
+                  if (value.scale! < 0.3) {
                     Navigator.pop(context);
                   }
                 },

@@ -6,7 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 
 class EmptyInboxWidget extends StatefulWidget {
-  const EmptyInboxWidget({Key key}) : super(key: key);
+  const EmptyInboxWidget({Key? key}) : super(key: key);
 
   @override
   _EmptyInboxWidgetState createState() => _EmptyInboxWidgetState();

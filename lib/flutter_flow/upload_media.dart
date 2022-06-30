@@ -23,12 +23,12 @@ enum MediaSource {
   camera,
 }
 
-Future<List<SelectedMedia>> selectMediaWithSourceBottomSheet({
-  BuildContext context,
-  double maxWidth,
-  double maxHeight,
-  int imageQuality,
-  bool allowPhoto,
+Future<List<SelectedMedia>?> selectMediaWithSourceBottomSheet({
+  required BuildContext context,
+  double? maxWidth,
+  double? maxHeight,
+  int? imageQuality,
+  required bool allowPhoto,
   bool allowVideo = false,
   String pickerFontFamily = 'Roboto',
   Color textColor = const Color(0xFF111417),
@@ -118,10 +118,10 @@ Future<List<SelectedMedia>> selectMediaWithSourceBottomSheet({
   );
 }
 
-Future<List<SelectedMedia>> selectMedia({
-  double maxWidth,
-  double maxHeight,
-  int imageQuality,
+Future<List<SelectedMedia>?> selectMedia({
+  double? maxWidth,
+  double? maxHeight,
+  int? imageQuality,
   bool isVideo = false,
   MediaSource mediaSource = MediaSource.camera,
   bool multiImage = false,
@@ -138,9 +138,11 @@ Future<List<SelectedMedia>> selectMedia({
     if (pickedMedia == null || pickedMedia.isEmpty) {
       return null;
     }
-    return Future.wait(pickedMedia.map((media) async {
+    return Future.wait(pickedMedia.asMap().entries.map((e) async {
+      final index = e.key;
+      final media = e.value;
       final mediaBytes = await media.readAsBytes();
-      final path = storagePath(currentUserUid, media.name, false);
+      final path = storagePath(currentUserUid, media.name, false, index);
       return SelectedMedia(path, mediaBytes);
     }));
   }
@@ -161,7 +163,7 @@ Future<List<SelectedMedia>> selectMedia({
   if (mediaBytes == null) {
     return null;
   }
-  final path = storagePath(currentUserUid, pickedMedia.name, isVideo);
+  final path = storagePath(currentUserUid, pickedMedia!.name, isVideo);
   return [SelectedMedia(path, mediaBytes)];
 }
 
@@ -177,12 +179,13 @@ bool validateFileFormat(String filePath, BuildContext context) {
   return false;
 }
 
-Future<SelectedMedia> selectFile({
+Future<SelectedMedia?> selectFile({
   List<String> allowedExtensions = const ['pdf'],
 }) async {
   final pickedFiles = await FilePicker.platform.pickFiles(
     type: FileType.custom,
     allowedExtensions: allowedExtensions,
+    withData: true,
   );
   if (pickedFiles == null || pickedFiles.files.isEmpty) {
     return null;
@@ -193,15 +196,21 @@ Future<SelectedMedia> selectFile({
     return null;
   }
   final path = storagePath(currentUserUid, file.name, false);
-  return SelectedMedia(path, file.bytes);
+  return SelectedMedia(path, file.bytes!);
 }
 
-String storagePath(String uid, String filePath, bool isVideo) {
+String storagePath(String uid, String filePath, bool isVideo, [int? index]) {
   final timestamp = DateTime.now().microsecondsSinceEpoch;
   // Workaround fixed by https://github.com/flutter/plugins/pull/3685
   // (not yet in stable).
   final ext = isVideo ? 'mp4' : filePath.split('.').last;
-  return 'users/$uid/uploads/$timestamp.$ext';
+  final indexStr = index != null ? '_$index' : '';
+  return 'users/$uid/uploads/$timestamp$indexStr.$ext';
+}
+
+String signatureStoragePath(String uid) {
+  final timestamp = DateTime.now().microsecondsSinceEpoch;
+  return 'users/$uid/uploads/signature_$timestamp.png';
 }
 
 void showUploadMessage(BuildContext context, String message,

@@ -14,13 +14,13 @@ const kAlgoliaApiKey = '72caf89280f5827d5332ff9d149a3f87';
 class AlgoliaQueryParams extends Equatable {
   const AlgoliaQueryParams(
       this.term, this.latLng, this.maxResults, this.searchRadiusMeters);
-  final String term;
-  final LatLng latLng;
-  final int maxResults;
-  final double searchRadiusMeters;
+  final String? term;
+  final LatLng? latLng;
+  final int? maxResults;
+  final double? searchRadiusMeters;
 
   @override
-  List<Object> get props => [term, latLng, maxResults, searchRadiusMeters];
+  List<Object?> get props => [term, latLng, maxResults, searchRadiusMeters];
 }
 
 class FFAlgoliaManager {
@@ -31,7 +31,7 @@ class FFAlgoliaManager {
         );
   final Algolia algolia;
 
-  static FFAlgoliaManager _instance;
+  static FFAlgoliaManager? _instance;
   static FFAlgoliaManager get instance => _instance ??= FFAlgoliaManager._();
 
   // Cache that will ensure identical queries are not repeatedly made.
@@ -39,17 +39,17 @@ class FFAlgoliaManager {
       {};
 
   Future<List<AlgoliaObjectSnapshot>> algoliaQuery({
-    @required String index,
-    String term,
-    int maxResults,
-    FutureOr<LatLng> location,
-    double searchRadiusMeters,
+    required String index,
+    String? term,
+    int? maxResults,
+    FutureOr<LatLng>? location,
+    double? searchRadiusMeters,
   }) async {
     // User must specify search term or location.
     if ((term ?? '').isEmpty && location == null) {
       return [];
     }
-    LatLng loc;
+    LatLng? loc;
     if (location != null) {
       loc = await location;
       // Either the user denied permissions, we could not access
@@ -61,7 +61,7 @@ class FFAlgoliaManager {
     final params =
         AlgoliaQueryParams(term, loc, maxResults, searchRadiusMeters);
     if (_algoliaCache.containsKey(params)) {
-      return _algoliaCache[params];
+      return _algoliaCache[params]!;
     }
 
     AlgoliaQuery query = algolia.index(index);
@@ -76,7 +76,7 @@ class FFAlgoliaManager {
       query = query.setAroundRadius(searchRadiusMeters?.round() ?? 'all');
     }
 
-    AlgoliaQuerySnapshot snapshot;
+    AlgoliaQuerySnapshot? snapshot;
     snapshot = await query
         .getObjects()
         .then((value) => snapshot = value)

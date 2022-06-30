@@ -9,43 +9,33 @@ part 'users_record.g.dart';
 abstract class UsersRecord implements Built<UsersRecord, UsersRecordBuilder> {
   static Serializer<UsersRecord> get serializer => _$usersRecordSerializer;
 
-  @nullable
-  String get email;
+  String? get email;
 
-  @nullable
-  String get password;
+  String? get password;
 
-  @nullable
   @BuiltValueField(wireName: 'display_name')
-  String get displayName;
+  String? get displayName;
 
-  @nullable
   @BuiltValueField(wireName: 'photo_url')
-  String get photoUrl;
+  String? get photoUrl;
 
-  @nullable
-  String get uid;
+  String? get uid;
 
-  @nullable
   @BuiltValueField(wireName: 'created_time')
-  DateTime get createdTime;
+  DateTime? get createdTime;
 
-  @nullable
   @BuiltValueField(wireName: 'phone_number')
-  String get phoneNumber;
+  String? get phoneNumber;
 
-  @nullable
-  String get room;
+  String? get room;
 
-  @nullable
-  String get building;
+  String? get building;
 
-  @nullable
-  String get role;
+  String? get role;
 
-  @nullable
   @BuiltValueField(wireName: kDocumentReferenceField)
-  DocumentReference get reference;
+  DocumentReference? get ref;
+  DocumentReference get reference => ref!;
 
   static void _initializeBuilder(UsersRecordBuilder builder) => builder
     ..email = ''
@@ -63,11 +53,11 @@ abstract class UsersRecord implements Built<UsersRecord, UsersRecordBuilder> {
 
   static Stream<UsersRecord> getDocument(DocumentReference ref) => ref
       .snapshots()
-      .map((s) => serializers.deserializeWith(serializer, serializedData(s)));
+      .map((s) => serializers.deserializeWith(serializer, serializedData(s))!);
 
   static Future<UsersRecord> getDocumentOnce(DocumentReference ref) => ref
       .get()
-      .then((s) => serializers.deserializeWith(serializer, serializedData(s)));
+      .then((s) => serializers.deserializeWith(serializer, serializedData(s))!);
 
   static UsersRecord fromAlgolia(AlgoliaObjectSnapshot snapshot) => UsersRecord(
         (c) => c
@@ -82,14 +72,14 @@ abstract class UsersRecord implements Built<UsersRecord, UsersRecordBuilder> {
           ..room = snapshot.data['room']
           ..building = snapshot.data['building']
           ..role = snapshot.data['role']
-          ..reference = UsersRecord.collection.doc(snapshot.objectID),
+          ..ref = UsersRecord.collection.doc(snapshot.objectID),
       );
 
   static Future<List<UsersRecord>> search(
-          {String term,
-          FutureOr<LatLng> location,
-          int maxResults,
-          double searchRadiusMeters}) =>
+          {String? term,
+          FutureOr<LatLng>? location,
+          int? maxResults,
+          double? searchRadiusMeters}) =>
       FFAlgoliaManager.instance
           .algoliaQuery(
             index: 'users',
@@ -107,20 +97,20 @@ abstract class UsersRecord implements Built<UsersRecord, UsersRecordBuilder> {
   static UsersRecord getDocumentFromData(
           Map<String, dynamic> data, DocumentReference reference) =>
       serializers.deserializeWith(serializer,
-          {...mapFromFirestore(data), kDocumentReferenceField: reference});
+          {...mapFromFirestore(data), kDocumentReferenceField: reference})!;
 }
 
 Map<String, dynamic> createUsersRecordData({
-  String email,
-  String password,
-  String displayName,
-  String photoUrl,
-  String uid,
-  DateTime createdTime,
-  String phoneNumber,
-  String room,
-  String building,
-  String role,
+  String? email,
+  String? password,
+  String? displayName,
+  String? photoUrl,
+  String? uid,
+  DateTime? createdTime,
+  String? phoneNumber,
+  String? room,
+  String? building,
+  String? role,
 }) =>
     serializers.toFirestore(
         UsersRecord.serializer,

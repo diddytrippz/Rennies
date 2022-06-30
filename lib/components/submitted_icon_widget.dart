@@ -1,13 +1,14 @@
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
+import '../main.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class SubmittedIconWidget extends StatefulWidget {
-  const SubmittedIconWidget({Key key}) : super(key: key);
+  const SubmittedIconWidget({Key? key}) : super(key: key);
 
   @override
   _SubmittedIconWidgetState createState() => _SubmittedIconWidgetState();
@@ -70,7 +71,9 @@ class _SubmittedIconWidgetState extends State<SubmittedIconWidget> {
                             padding:
                                 EdgeInsetsDirectional.fromSTEB(0, 10, 0, 15),
                             child: Text(
-                              'Success!',
+                              FFLocalizations.of(context).getText(
+                                'ua7ubrzs' /* Success! */,
+                              ),
                               style:
                                   FlutterFlowTheme.of(context).title1.override(
                                         fontFamily: 'Open Sans',
@@ -88,7 +91,9 @@ class _SubmittedIconWidgetState extends State<SubmittedIconWidget> {
                             padding:
                                 EdgeInsetsDirectional.fromSTEB(16, 0, 16, 0),
                             child: AutoSizeText(
-                              'Your request has been received\nby the Campus Africa maintenance\nteam.',
+                              FFLocalizations.of(context).getText(
+                                'eelep3l0' /* Your request has been received... */,
+                              ),
                               textAlign: TextAlign.start,
                               style: FlutterFlowTheme.of(context)
                                   .bodyText1
@@ -105,11 +110,23 @@ class _SubmittedIconWidgetState extends State<SubmittedIconWidget> {
                         padding: EdgeInsetsDirectional.fromSTEB(0, 29, 0, 20),
                         child: FFButtonWidget(
                           onPressed: () async {
-                            logFirebaseEvent('Button_ON_TAP');
+                            logFirebaseEvent(
+                                'SUBMITTED_ICON_COMP_CONTINUE_BTN_ON_TAP');
                             logFirebaseEvent('Button_Navigate-To');
-                            context.goNamed('viewPage');
+                            await Navigator.pushAndRemoveUntil(
+                              context,
+                              PageTransition(
+                                type: PageTransitionType.bottomToTop,
+                                duration: Duration(milliseconds: 300),
+                                reverseDuration: Duration(milliseconds: 300),
+                                child: NavBarPage(initialPage: 'viewPage'),
+                              ),
+                              (r) => false,
+                            );
                           },
-                          text: 'Continue',
+                          text: FFLocalizations.of(context).getText(
+                            '6vhy0doc' /* Continue */,
+                          ),
                           options: FFButtonOptions(
                             width: 130,
                             height: 40,

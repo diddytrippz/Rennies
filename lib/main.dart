@@ -9,14 +9,15 @@ import 'flutter_flow/flutter_flow_theme.dart';
 import 'flutter_flow/flutter_flow_util.dart';
 import 'flutter_flow/internationalization.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-import 'flutter_flow/nav/nav.dart';
 import 'index.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  await FlutterFlowTheme.initialize();
 
   FFAppState(); // Initialize FFAppState
 
@@ -29,17 +30,16 @@ class MyApp extends StatefulWidget {
   State<MyApp> createState() => _MyAppState();
 
   static _MyAppState of(BuildContext context) =>
-      context.findAncestorStateOfType<_MyAppState>();
+      context.findAncestorStateOfType<_MyAppState>()!;
 }
 
 class _MyAppState extends State<MyApp> {
-  Locale _locale;
-  ThemeMode _themeMode = ThemeMode.system;
+  Locale? _locale;
+  ThemeMode _themeMode = FlutterFlowTheme.themeMode;
 
-  Stream<EasyTenantFirebaseUser> userStream;
-
-  AppStateNotifier _appStateNotifier;
-  GoRouter _router;
+  late Stream<RennieHouseFirebaseUser> userStream;
+  RennieHouseFirebaseUser? initialUser;
+  bool displaySplashImage = true;
 
   final authUserSub = authenticatedUserStream.listen((_) {});
   final fcmTokenSub = fcmTokenUserStream.listen((_) {});
@@ -47,13 +47,11 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    _appStateNotifier = AppStateNotifier();
-    _router = createRouter(_appStateNotifier);
-    userStream = easyTenantFirebaseUserStream()
-      ..listen((user) => _appStateNotifier.update(user));
+    userStream = rennieHouseFirebaseUserStream()
+      ..listen((user) => initialUser ?? setState(() => initialUser = user));
     Future.delayed(
       Duration(seconds: 1),
-      () => _appStateNotifier.stopShowingSplashImage(),
+      () => setState(() => displaySplashImage = false),
     );
   }
 
@@ -67,12 +65,13 @@ class _MyAppState extends State<MyApp> {
   void setLocale(Locale value) => setState(() => _locale = value);
   void setThemeMode(ThemeMode mode) => setState(() {
         _themeMode = mode;
+        FlutterFlowTheme.saveThemeMode(mode);
       });
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      title: 'EasyTenant',
+    return MaterialApp(
+      title: 'Rennie House',
       localizationsDelegates: [
         FFLocalizationsDelegate(),
         GlobalMaterialLocalizations.delegate,
@@ -82,19 +81,34 @@ class _MyAppState extends State<MyApp> {
       locale: _locale,
       supportedLocales: const [
         Locale('en', ''),
+        Locale('af', ''),
+        Locale('zu', ''),
+        Locale('st', ''),
       ],
       theme: ThemeData(brightness: Brightness.light),
+      darkTheme: ThemeData(brightness: Brightness.dark),
       themeMode: _themeMode,
-      routeInformationParser: _router.routeInformationParser,
-      routerDelegate: _router.routerDelegate,
+      home: initialUser == null || displaySplashImage
+          ? Container(
+              color: Color(0xFF000002),
+              child: Builder(
+                builder: (context) => Image.asset(
+                  'assets/images/Untitled_design_(4).png',
+                  fit: BoxFit.contain,
+                ),
+              ),
+            )
+          : currentUser!.loggedIn
+              ? PushNotificationsHandler(child: NavBarPage())
+              : LoginPageWidget(),
     );
   }
 }
 
 class NavBarPage extends StatefulWidget {
-  NavBarPage({Key key, this.initialPage}) : super(key: key);
+  NavBarPage({Key? key, this.initialPage}) : super(key: key);
 
-  final String initialPage;
+  final String? initialPage;
 
   @override
   _NavBarPageState createState() => _NavBarPageState();
@@ -115,9 +129,9 @@ class _NavBarPageState extends State<NavBarPage> {
     final tabs = {
       'homePage': HomePageWidget(),
       'viewPage': ViewPageWidget(),
-      'usersSearch': UsersSearchWidget(),
       'MessagesPage': MessagesPageWidget(),
-      'settingsPage': SettingsPageWidget(),
+      'notifications': NotificationsWidget(),
+      'newSettings': NewSettingsWidget(),
     };
     final currentIndex = tabs.keys.toList().indexOf(_currentPage);
     return Scaffold(
@@ -128,8 +142,8 @@ class _NavBarPageState extends State<NavBarPage> {
             setState(() => _currentPage = tabs.keys.toList()[i]),
         backgroundColor: FlutterFlowTheme.of(context).tertiaryColor,
         color: FlutterFlowTheme.of(context).campusGrey,
-        activeColor: Colors.white,
-        tabBackgroundColor: FlutterFlowTheme.of(context).mellow,
+        activeColor: FlutterFlowTheme.of(context).primaryText,
+        tabBackgroundColor: Color(0x00181818),
         tabBorderRadius: 15,
         tabMargin: EdgeInsetsDirectional.fromSTEB(8, 12, 8, 16),
         padding: EdgeInsetsDirectional.fromSTEB(14, 12, 4, 12),
@@ -139,29 +153,35 @@ class _NavBarPageState extends State<NavBarPage> {
         haptic: true,
         tabs: [
           GButton(
-            icon: FFIcons.khome3,
+            icon: FontAwesomeIcons.home,
             text: '',
-            iconSize: 24,
+            iconSize: 22,
           ),
           GButton(
-            icon: FFIcons.kapps,
+            icon: currentIndex == 1
+                ? FontAwesomeIcons.solidEdit
+                : FontAwesomeIcons.edit,
             text: '',
-            iconSize: 20,
+            iconSize: 22,
           ),
           GButton(
-            icon: FFIcons.ksearch,
-            text: '',
-            iconSize: 24,
-          ),
-          GButton(
-            icon: FFIcons.kmessage3,
+            icon: FFIcons.kchatboxes,
             text: '',
             iconSize: 26,
           ),
           GButton(
-            icon: FFIcons.kprofile,
+            icon: currentIndex == 3
+                ? FontAwesomeIcons.solidBell
+                : FontAwesomeIcons.bell,
             text: '',
-            iconSize: 25,
+            iconSize: 22,
+          ),
+          GButton(
+            icon: Icons.settings_outlined,
+            text: FFLocalizations.of(context).getText(
+              'ugb9k6b5' /*  */,
+            ),
+            iconSize: 26,
           )
         ],
       ),

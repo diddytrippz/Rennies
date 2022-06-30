@@ -1,4 +1,4 @@
-# EasyTenant
+# Rennie House
 
 A new Flutter project.
 

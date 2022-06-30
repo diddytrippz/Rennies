@@ -13,20 +13,20 @@ import 'package:page_transition/page_transition.dart';
 
 class ChatPageWidget extends StatefulWidget {
   const ChatPageWidget({
-    Key key,
+    Key? key,
     this.chatUser,
     this.chatRef,
   }) : super(key: key);
 
-  final UsersRecord chatUser;
-  final DocumentReference chatRef;
+  final UsersRecord? chatUser;
+  final DocumentReference? chatRef;
 
   @override
   _ChatPageWidgetState createState() => _ChatPageWidgetState();
 }
 
 class _ChatPageWidgetState extends State<ChatPageWidget> {
-  FFChatInfo _chatInfo;
+  FFChatInfo? _chatInfo;
   bool isGroupChat() {
     if (widget.chatUser == null) {
       return true;
@@ -65,9 +65,9 @@ class _ChatPageWidgetState extends State<ChatPageWidget> {
         automaticallyImplyLeading: false,
         leading: InkWell(
           onTap: () async {
-            logFirebaseEvent('Icon_ON_TAP');
+            logFirebaseEvent('CHAT_PAGE_PAGE_Icon_9aaekj7i_ON_TAP');
             logFirebaseEvent('Icon_Navigate-Back');
-            context.pop();
+            Navigator.pop(context);
           },
           child: Icon(
             Icons.arrow_back_rounded,
@@ -82,7 +82,7 @@ class _ChatPageWidgetState extends State<ChatPageWidget> {
               padding: EdgeInsetsDirectional.fromSTEB(0, 0, 12, 0),
               child: InkWell(
                 onTap: () async {
-                  logFirebaseEvent('CircleImage_ON_TAP');
+                  logFirebaseEvent('CHAT_CircleImage_16m8m50m_ON_TAP');
                   logFirebaseEvent('CircleImage_Expand-Image');
                   await Navigator.push(
                     context,
@@ -91,14 +91,14 @@ class _ChatPageWidgetState extends State<ChatPageWidget> {
                       child: FlutterFlowExpandedImageView(
                         image: Image.network(
                           valueOrDefault<String>(
-                            widget.chatUser.photoUrl,
+                            widget.chatUser!.photoUrl!,
                             'https://t3.ftcdn.net/jpg/03/46/83/96/360_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg',
                           ),
                           fit: BoxFit.contain,
                         ),
                         allowRotation: false,
                         tag: valueOrDefault<String>(
-                          widget.chatUser.photoUrl,
+                          widget.chatUser!.photoUrl!,
                           'https://t3.ftcdn.net/jpg/03/46/83/96/360_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg',
                         ),
                         useHeroAnimation: true,
@@ -108,7 +108,7 @@ class _ChatPageWidgetState extends State<ChatPageWidget> {
                 },
                 child: Hero(
                   tag: valueOrDefault<String>(
-                    widget.chatUser.photoUrl,
+                    widget.chatUser!.photoUrl!,
                     'https://t3.ftcdn.net/jpg/03/46/83/96/360_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg',
                   ),
                   transitionOnUserGestures: true,
@@ -121,7 +121,7 @@ class _ChatPageWidgetState extends State<ChatPageWidget> {
                     ),
                     child: Image.network(
                       valueOrDefault<String>(
-                        widget.chatUser.photoUrl,
+                        widget.chatUser!.photoUrl!,
                         'https://t3.ftcdn.net/jpg/03/46/83/96/360_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg',
                       ),
                       fit: BoxFit.cover,
@@ -136,7 +136,7 @@ class _ChatPageWidgetState extends State<ChatPageWidget> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   AutoSizeText(
-                    widget.chatUser.displayName,
+                    widget.chatUser!.displayName!,
                     style: FlutterFlowTheme.of(context).bodyText1.override(
                           fontFamily: 'Open Sans',
                           color: FlutterFlowTheme.of(context).primaryText,
@@ -163,7 +163,7 @@ class _ChatPageWidgetState extends State<ChatPageWidget> {
             padding: EdgeInsetsDirectional.fromSTEB(0, 0, 12, 0),
             child: InkWell(
               onTap: () async {
-                logFirebaseEvent('Icon_ON_TAP');
+                logFirebaseEvent('CHAT_PAGE_PAGE_Icon_78qjwv36_ON_TAP');
                 logFirebaseEvent('Icon_Show-Snack-Bar');
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
@@ -200,11 +200,11 @@ class _ChatPageWidgetState extends State<ChatPageWidget> {
             ),
             builder: (context, snapshot) => snapshot.hasData
                 ? FFChatPage(
-                    chatInfo: snapshot.data,
+                    chatInfo: snapshot.data!,
                     allowImages: true,
                     backgroundColor:
                         FlutterFlowTheme.of(context).secondaryBackground,
-                    timeDisplaySetting: TimeDisplaySetting.alwaysVisible,
+                    timeDisplaySetting: TimeDisplaySetting.visibleOnTap,
                     currentUserBoxDecoration: BoxDecoration(
                       color: Color(0xFF0078FF),
                       border: Border.all(

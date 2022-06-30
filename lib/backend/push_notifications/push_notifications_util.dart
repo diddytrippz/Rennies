@@ -13,6 +13,8 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 export 'push_notifications_handler.dart';
 export 'serialization_util.dart';
 
+const kUserPushNotificationsCollectionName = 'ff_user_push_notifications';
+
 class UserTokenInfo {
   const UserTokenInfo(this.userPath, this.fcmToken);
   final String userPath;
@@ -22,19 +24,20 @@ class UserTokenInfo {
 Stream<UserTokenInfo> getFcmTokenStream(String userPath) =>
     Stream.value(!kIsWeb && (Platform.isIOS || Platform.isAndroid))
         .where((shouldGetToken) => shouldGetToken)
-        .asyncMap((_) => FirebaseMessaging.instance.requestPermission().then(
-              (settings) =>
-                  settings.authorizationStatus == AuthorizationStatus.authorized
+        .asyncMap<String?>(
+            (_) => FirebaseMessaging.instance.requestPermission().then(
+                  (settings) => settings.authorizationStatus ==
+                          AuthorizationStatus.authorized
                       ? FirebaseMessaging.instance.getToken()
                       : null,
-            ))
+                ))
         .switchMap((fcmToken) => Stream.value(fcmToken)
             .merge(FirebaseMessaging.instance.onTokenRefresh))
         .where((fcmToken) => fcmToken != null && fcmToken.isNotEmpty)
-        .map((token) => UserTokenInfo(userPath, token));
+        .map((token) => UserTokenInfo(userPath, token!));
 final fcmTokenUserStream = authenticatedUserStream
     .where((user) => user != null)
-    .map((user) => user.reference.path)
+    .map((user) => user!.reference.path)
     .distinct()
     .switchMap(getFcmTokenStream)
     .map(
@@ -47,3 +50,36 @@ final fcmTokenUserStream = authenticatedUserStream
         },
       ),
     );
+
+void triggerPushNotification({
+  required String? notificationTitle,
+  required String? notificationText,
+  String? notificationImageUrl,
+  DateTime? scheduledTime,
+  String? notificationSound,
+  required List<DocumentReference> userRefs,
+  required String initialPageName,
+  required Map<String, dynamic> parameterData,
+}) {
+  if ((notificationTitle ?? '').isEmpty || (notificationText ?? '').isEmpty) {
+    return;
+  }
+  final serializedParameterData = serializeParameterData(parameterData);
+  final pushNotificationData = {
+    'notification_title': notificationTitle,
+    'notification_text': notificationText,
+    if (notificationImageUrl != null)
+      'notification_image_url': notificationImageUrl,
+    if (scheduledTime != null) 'scheduled_time': scheduledTime,
+    if (notificationSound != null) 'notification_sound': notificationSound,
+    'user_refs': userRefs.map((u) => u.path).join(','),
+    'initial_page_name': initialPageName,
+    'parameter_data': serializedParameterData,
+    'sender': currentUserReference,
+    'timestamp': DateTime.now(),
+  };
+  FirebaseFirestore.instance
+      .collection(kUserPushNotificationsCollectionName)
+      .doc()
+      .set(pushNotificationData);
+}

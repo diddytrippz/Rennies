@@ -11,61 +11,47 @@ abstract class MaintenanceRecord
   static Serializer<MaintenanceRecord> get serializer =>
       _$maintenanceRecordSerializer;
 
-  @nullable
-  String get issue;
+  String? get issue;
 
-  @nullable
-  String get status;
+  String? get status;
 
-  @nullable
-  String get email;
+  String? get email;
 
-  @nullable
   @BuiltValueField(wireName: 'photo_url')
-  String get photoUrl;
+  String? get photoUrl;
 
-  @nullable
-  String get uid;
+  String? get uid;
 
-  @nullable
   @BuiltValueField(wireName: 'created_time')
-  DateTime get createdTime;
+  DateTime? get createdTime;
 
-  @nullable
   @BuiltValueField(wireName: 'phone_number')
-  String get phoneNumber;
+  String? get phoneNumber;
 
-  @nullable
   @BuiltValueField(wireName: 'display_name')
-  String get displayName;
+  String? get displayName;
 
-  @nullable
-  String get room;
+  String? get room;
 
-  @nullable
-  String get building;
+  String? get building;
 
-  @nullable
-  String get notes;
+  String? get notes;
 
-  @nullable
-  int get rating;
+  int? get rating;
 
-  @nullable
-  bool get isDone;
+  bool? get isDone;
 
-  @nullable
-  String get category;
+  String? get category;
 
-  @nullable
-  String get assigned;
+  String? get assigned;
 
-  @nullable
-  DateTime get updateTime;
+  DateTime? get updateTime;
 
-  @nullable
+  DocumentReference? get userRec;
+
   @BuiltValueField(wireName: kDocumentReferenceField)
-  DocumentReference get reference;
+  DocumentReference? get ref;
+  DocumentReference get reference => ref!;
 
   static void _initializeBuilder(MaintenanceRecordBuilder builder) => builder
     ..issue = ''
@@ -88,11 +74,11 @@ abstract class MaintenanceRecord
 
   static Stream<MaintenanceRecord> getDocument(DocumentReference ref) => ref
       .snapshots()
-      .map((s) => serializers.deserializeWith(serializer, serializedData(s)));
+      .map((s) => serializers.deserializeWith(serializer, serializedData(s))!);
 
   static Future<MaintenanceRecord> getDocumentOnce(DocumentReference ref) => ref
       .get()
-      .then((s) => serializers.deserializeWith(serializer, serializedData(s)));
+      .then((s) => serializers.deserializeWith(serializer, serializedData(s))!);
 
   MaintenanceRecord._();
   factory MaintenanceRecord([void Function(MaintenanceRecordBuilder) updates]) =
@@ -101,26 +87,27 @@ abstract class MaintenanceRecord
   static MaintenanceRecord getDocumentFromData(
           Map<String, dynamic> data, DocumentReference reference) =>
       serializers.deserializeWith(serializer,
-          {...mapFromFirestore(data), kDocumentReferenceField: reference});
+          {...mapFromFirestore(data), kDocumentReferenceField: reference})!;
 }
 
 Map<String, dynamic> createMaintenanceRecordData({
-  String issue,
-  String status,
-  String email,
-  String photoUrl,
-  String uid,
-  DateTime createdTime,
-  String phoneNumber,
-  String displayName,
-  String room,
-  String building,
-  String notes,
-  int rating,
-  bool isDone,
-  String category,
-  String assigned,
-  DateTime updateTime,
+  String? issue,
+  String? status,
+  String? email,
+  String? photoUrl,
+  String? uid,
+  DateTime? createdTime,
+  String? phoneNumber,
+  String? displayName,
+  String? room,
+  String? building,
+  String? notes,
+  int? rating,
+  bool? isDone,
+  String? category,
+  String? assigned,
+  DateTime? updateTime,
+  DocumentReference? userRec,
 }) =>
     serializers.toFirestore(
         MaintenanceRecord.serializer,
@@ -140,4 +127,5 @@ Map<String, dynamic> createMaintenanceRecordData({
           ..isDone = isDone
           ..category = category
           ..assigned = assigned
-          ..updateTime = updateTime));
+          ..updateTime = updateTime
+          ..userRec = userRec));

@@ -22,12 +22,11 @@ export 'package:page_transition/page_transition.dart';
 export 'custom_icons.dart' show FFIcons;
 export 'internationalization.dart' show FFLocalizations;
 export '../backend/firebase_analytics/analytics.dart';
-export 'nav/nav.dart';
 
-T valueOrDefault<T>(T value, T defaultValue) =>
+T valueOrDefault<T>(T? value, T defaultValue) =>
     (value is String && value.isEmpty) || value == null ? defaultValue : value;
 
-String dateTimeFormat(String format, DateTime dateTime) {
+String dateTimeFormat(String format, DateTime? dateTime) {
   if (dateTime == null) {
     return '';
   }
@@ -62,18 +61,18 @@ enum DecimalType {
 }
 
 String formatNumber(
-  num value, {
-  FormatType formatType,
-  DecimalType decimalType,
-  String currency,
+  num? value, {
+  required FormatType formatType,
+  DecimalType? decimalType,
+  String? currency,
   bool toLowerCase = false,
-  String format,
-  String locale,
+  String? format,
+  String? locale,
 }) {
   var formattedValue = '';
   switch (formatType) {
     case FormatType.decimal:
-      switch (decimalType) {
+      switch (decimalType!) {
         case DecimalType.automatic:
           formattedValue = NumberFormat.decimalPattern().format(value);
           break;
@@ -142,7 +141,7 @@ bool get isAndroid => !kIsWeb && Platform.isAndroid;
 bool get isiOS => !kIsWeb && Platform.isIOS;
 bool get isWeb => kIsWeb;
 bool responsiveVisibility({
-  @required BuildContext context,
+  required BuildContext context,
   bool phone = true,
   bool tablet = true,
   bool tabletLandscape = true,
@@ -159,6 +158,12 @@ bool responsiveVisibility({
     return desktop;
   }
 }
+
+const kTextValidatorUsernameRegex = r'^[a-zA-Z][a-zA-Z0-9_-]{2,16}$';
+const kTextValidatorEmailRegex =
+    r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$";
+const kTextValidatorWebsiteRegex =
+    r'(https?:\/\/)?(www\.)[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)|(https?:\/\/)?(www\.)?(?!ww)[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)';
 
 extension StringDocRef on String {
   DocumentReference get ref => FirebaseFirestore.instance.doc(this);
@@ -201,7 +206,7 @@ void showSnackbar(
 }
 
 extension FFStringExt on String {
-  String maybeHandleOverflow({int maxChars, String replacement = ''}) =>
+  String maybeHandleOverflow({int? maxChars, String replacement = ''}) =>
       maxChars != null && length > maxChars
           ? replaceRange(maxChars, null, replacement)
           : this;

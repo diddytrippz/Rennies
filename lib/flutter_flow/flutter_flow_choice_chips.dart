@@ -7,42 +7,42 @@ const double _kChoiceChipsHeight = 40.0;
 class ChipData {
   const ChipData(this.label, [this.iconData]);
   final String label;
-  final IconData iconData;
+  final IconData? iconData;
 }
 
 class ChipStyle {
   const ChipStyle(
-      {this.backgroundColor,
-      this.textStyle,
-      this.iconColor,
-      this.iconSize,
+      {required this.backgroundColor,
+      required this.textStyle,
+      required this.iconColor,
+      required this.iconSize,
       this.labelPadding,
-      this.elevation});
+      required this.elevation});
   final Color backgroundColor;
   final TextStyle textStyle;
   final Color iconColor;
   final double iconSize;
-  final EdgeInsetsGeometry labelPadding;
+  final EdgeInsetsGeometry? labelPadding;
   final double elevation;
 }
 
 class FlutterFlowChoiceChips extends StatefulWidget {
   const FlutterFlowChoiceChips({
     this.initiallySelected,
-    @required this.options,
-    @required this.onChanged,
-    this.selectedChipStyle,
-    this.unselectedChipStyle,
-    this.chipSpacing,
+    required this.options,
+    required this.onChanged,
+    required this.selectedChipStyle,
+    required this.unselectedChipStyle,
+    required this.chipSpacing,
     this.rowSpacing = 0.0,
-    this.multiselect,
+    required this.multiselect,
     this.initialized = true,
     this.alignment = WrapAlignment.start,
   });
 
-  final List<String> initiallySelected;
+  final List<String>? initiallySelected;
   final List<ChipData> options;
-  final void Function(List<String>) onChanged;
+  final void Function(List<String>?) onChanged;
   final ChipStyle selectedChipStyle;
   final ChipStyle unselectedChipStyle;
   final double chipSpacing;
@@ -56,17 +56,14 @@ class FlutterFlowChoiceChips extends StatefulWidget {
 }
 
 class _FlutterFlowChoiceChipsState extends State<FlutterFlowChoiceChips> {
-  List<String> choiceChipValues;
+  late List<String> choiceChipValues;
 
   @override
   void initState() {
     super.initState();
     choiceChipValues = widget.initiallySelected ?? [];
     if (!widget.initialized && choiceChipValues.isNotEmpty) {
-      if (SchedulerBinding.instance == null) {
-        return;
-      }
-      SchedulerBinding.instance.addPostFrameCallback(
+      SchedulerBinding.instance!.addPostFrameCallback(
         (_) => widget.onChanged(choiceChipValues),
       );
     }

@@ -11,24 +11,19 @@ abstract class ChatMessagesRecord
   static Serializer<ChatMessagesRecord> get serializer =>
       _$chatMessagesRecordSerializer;
 
-  @nullable
-  DocumentReference get user;
+  DocumentReference? get user;
 
-  @nullable
-  DocumentReference get chat;
+  DocumentReference? get chat;
 
-  @nullable
-  String get text;
+  String? get text;
 
-  @nullable
-  String get image;
+  String? get image;
 
-  @nullable
-  DateTime get timestamp;
+  DateTime? get timestamp;
 
-  @nullable
   @BuiltValueField(wireName: kDocumentReferenceField)
-  DocumentReference get reference;
+  DocumentReference? get ref;
+  DocumentReference get reference => ref!;
 
   static void _initializeBuilder(ChatMessagesRecordBuilder builder) => builder
     ..text = ''
@@ -39,11 +34,11 @@ abstract class ChatMessagesRecord
 
   static Stream<ChatMessagesRecord> getDocument(DocumentReference ref) => ref
       .snapshots()
-      .map((s) => serializers.deserializeWith(serializer, serializedData(s)));
+      .map((s) => serializers.deserializeWith(serializer, serializedData(s))!);
 
   static Future<ChatMessagesRecord> getDocumentOnce(DocumentReference ref) =>
       ref.get().then(
-          (s) => serializers.deserializeWith(serializer, serializedData(s)));
+          (s) => serializers.deserializeWith(serializer, serializedData(s))!);
 
   ChatMessagesRecord._();
   factory ChatMessagesRecord(
@@ -53,15 +48,15 @@ abstract class ChatMessagesRecord
   static ChatMessagesRecord getDocumentFromData(
           Map<String, dynamic> data, DocumentReference reference) =>
       serializers.deserializeWith(serializer,
-          {...mapFromFirestore(data), kDocumentReferenceField: reference});
+          {...mapFromFirestore(data), kDocumentReferenceField: reference})!;
 }
 
 Map<String, dynamic> createChatMessagesRecordData({
-  DocumentReference user,
-  DocumentReference chat,
-  String text,
-  String image,
-  DateTime timestamp,
+  DocumentReference? user,
+  DocumentReference? chat,
+  String? text,
+  String? image,
+  DateTime? timestamp,
 }) =>
     serializers.toFirestore(
         ChatMessagesRecord.serializer,

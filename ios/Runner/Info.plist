@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>EasyTenant</string>
+	<string>Rennie House</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -13,9 +13,16 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>EasyTenant</string>
+	<string>Rennie House</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
+	<key>CFBundleLocalizations</key>
+	<array>
+		<string>en</string>
+		<string>af</string>
+		<string>zu</string>
+		<string>st</string>
+	</array>
 
 	<key>CFBundleShortVersionString</key>
 	<string>$(FLUTTER_BUILD_NAME)</string>
@@ -33,19 +40,7 @@
             </array>
         </dict>
 
-        <dict>
-        <key>CFBundleTypeRole</key>
-        <string>Editor</string>
-        <key>CFBundleURLName</key>
-        <string>campusafrica.com</string>
-        <key>CFBundleURLSchemes</key>
-        <array>
-        <string>campusafrica</string>
-        </array>
-        </dict>
     </array>
-    <key>FlutterDeepLinkingEnabled</key>
-    <true/>
 
 
 	<key>CFBundleVersion</key>

@@ -6,6 +6,7 @@ import '../flutter_flow/flutter_flow_icon_button.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
+import '../main.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -15,20 +16,20 @@ import 'package:page_transition/page_transition.dart';
 
 class ReviewsWidget extends StatefulWidget {
   const ReviewsWidget({
-    Key key,
+    Key? key,
     this.jobReviews,
   }) : super(key: key);
 
-  final MaintenanceRecord jobReviews;
+  final MaintenanceRecord? jobReviews;
 
   @override
   _ReviewsWidgetState createState() => _ReviewsWidgetState();
 }
 
 class _ReviewsWidgetState extends State<ReviewsWidget> {
-  List<String> choiceChipsValues;
-  TextEditingController textController;
-  double ratingBarValue;
+  List<String>? choiceChipsValues;
+  TextEditingController? textController;
+  double? ratingBarValue;
   final formKey = GlobalKey<FormState>();
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -57,13 +58,15 @@ class _ReviewsWidgetState extends State<ReviewsWidget> {
             size: 24,
           ),
           onPressed: () async {
-            logFirebaseEvent('IconButton_ON_TAP');
+            logFirebaseEvent('REVIEWS_PAGE_arrow_back_ICN_ON_TAP');
             logFirebaseEvent('IconButton_Navigate-Back');
-            context.pop();
+            Navigator.pop(context);
           },
         ),
         title: Text(
-          'Review',
+          FFLocalizations.of(context).getText(
+            'o4ma2plr' /* Review */,
+          ),
           style: FlutterFlowTheme.of(context).title2.override(
                 fontFamily: 'Open Sans',
                 color: FlutterFlowTheme.of(context).primaryText,
@@ -108,7 +111,8 @@ class _ReviewsWidgetState extends State<ReviewsWidget> {
                             AuthUserStreamWidget(
                               child: InkWell(
                                 onTap: () async {
-                                  logFirebaseEvent('Image_ON_TAP');
+                                  logFirebaseEvent(
+                                      'REVIEWS_PAGE_Image_6fzsaa1o_ON_TAP');
                                   logFirebaseEvent('Image_Expand-Image');
                                   await Navigator.push(
                                     context,
@@ -157,7 +161,7 @@ class _ReviewsWidgetState extends State<ReviewsWidget> {
                               padding:
                                   EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
                               child: Text(
-                                widget.jobReviews.displayName,
+                                widget.jobReviews!.displayName!,
                                 style: FlutterFlowTheme.of(context)
                                     .title1
                                     .override(
@@ -174,7 +178,7 @@ class _ReviewsWidgetState extends State<ReviewsWidget> {
                                   EdgeInsetsDirectional.fromSTEB(18, 8, 18, 0),
                               child: Text(
                                 dateTimeFormat(
-                                    'yMMMd', widget.jobReviews.createdTime),
+                                    'yMMMd', widget.jobReviews!.createdTime!),
                                 textAlign: TextAlign.center,
                                 style: FlutterFlowTheme.of(context)
                                     .bodyText1
@@ -199,7 +203,7 @@ class _ReviewsWidgetState extends State<ReviewsWidget> {
                                 ),
                                 direction: Axis.horizontal,
                                 initialRating: ratingBarValue ??=
-                                    widget.jobReviews.rating.toDouble(),
+                                    widget.jobReviews!.rating!.toDouble(),
                                 unratedColor:
                                     FlutterFlowTheme.of(context).campusGrey,
                                 itemCount: 5,
@@ -211,7 +215,9 @@ class _ReviewsWidgetState extends State<ReviewsWidget> {
                               padding:
                                   EdgeInsetsDirectional.fromSTEB(0, 10, 0, 0),
                               child: Text(
-                                'Private Feedback',
+                                FFLocalizations.of(context).getText(
+                                  'd385clrz' /* Private Feedback */,
+                                ),
                                 style: FlutterFlowTheme.of(context)
                                     .title1
                                     .override(
@@ -247,7 +253,9 @@ class _ReviewsWidgetState extends State<ReviewsWidget> {
                                       mainAxisSize: MainAxisSize.max,
                                       children: [
                                         Text(
-                                          'What was your most important concern with this  ticket?',
+                                          FFLocalizations.of(context).getText(
+                                            '73kmddwp' /* What was your most important c... */,
+                                          ),
                                           style: FlutterFlowTheme.of(context)
                                               .bodyText1
                                               .override(
@@ -274,11 +282,36 @@ class _ReviewsWidgetState extends State<ReviewsWidget> {
                                                             ? choiceChipsValues
                                                             : [],
                                                     options: [
-                                                      ChipData('Time'),
-                                                      ChipData('Convinience'),
-                                                      ChipData('Cleanliness'),
-                                                      ChipData('Communication'),
-                                                      ChipData('Quality')
+                                                      ChipData(
+                                                          FFLocalizations.of(
+                                                                  context)
+                                                              .getText(
+                                                        'ugvvl6sj' /* Time */,
+                                                      )),
+                                                      ChipData(
+                                                          FFLocalizations.of(
+                                                                  context)
+                                                              .getText(
+                                                        'hf7xrl78' /* Convinience */,
+                                                      )),
+                                                      ChipData(
+                                                          FFLocalizations.of(
+                                                                  context)
+                                                              .getText(
+                                                        '8qm66qau' /* Cleanliness */,
+                                                      )),
+                                                      ChipData(
+                                                          FFLocalizations.of(
+                                                                  context)
+                                                              .getText(
+                                                        '655gd3ni' /* Communication */,
+                                                      )),
+                                                      ChipData(
+                                                          FFLocalizations.of(
+                                                                  context)
+                                                              .getText(
+                                                        'oakcj4gl' /* Quality */,
+                                                      ))
                                                     ],
                                                     onChanged: (val) =>
                                                         setState(() =>
@@ -338,7 +371,7 @@ class _ReviewsWidgetState extends State<ReviewsWidget> {
                                           ],
                                         ),
                                         Divider(
-                                          thickness: 2,
+                                          thickness: 1,
                                           indent: 10,
                                           endIndent: 10,
                                           color: Color(0x62464749),
@@ -356,7 +389,10 @@ class _ReviewsWidgetState extends State<ReviewsWidget> {
                                               obscureText: false,
                                               decoration: InputDecoration(
                                                 hintText:
-                                                    'Anything you\'d like us to know?\n(optional)',
+                                                    FFLocalizations.of(context)
+                                                        .getText(
+                                                  'ylyfvpnm' /* Anything you'd like us to know... */,
+                                                ),
                                                 enabledBorder:
                                                     UnderlineInputBorder(
                                                   borderSide: BorderSide(
@@ -410,7 +446,9 @@ class _ReviewsWidgetState extends State<ReviewsWidget> {
                               padding:
                                   EdgeInsetsDirectional.fromSTEB(18, 20, 18, 0),
                               child: Text(
-                                'Your rating is really important for us as it helps us to improve our services for the future.',
+                                FFLocalizations.of(context).getText(
+                                  '11421gx0' /* Your rating is really importan... */,
+                                ),
                                 textAlign: TextAlign.start,
                                 style: FlutterFlowTheme.of(context)
                                     .bodyText1
@@ -428,10 +466,11 @@ class _ReviewsWidgetState extends State<ReviewsWidget> {
                                     22, 30, 22, 30),
                                 child: FFButtonWidget(
                                   onPressed: () async {
-                                    logFirebaseEvent('Button_ON_TAP');
+                                    logFirebaseEvent(
+                                        'REVIEWS_PAGE_CONFIRM_BTN_ON_TAP');
                                     logFirebaseEvent('Button_Validate-Form');
                                     if (formKey.currentState == null ||
-                                        !formKey.currentState.validate()) {
+                                        !formKey.currentState!.validate()) {
                                       return;
                                     }
 
@@ -469,9 +508,9 @@ class _ReviewsWidgetState extends State<ReviewsWidget> {
 
                                     final maintenanceUpdateData =
                                         createMaintenanceRecordData(
-                                      rating: ratingBarValue.round(),
+                                      rating: ratingBarValue?.round(),
                                     );
-                                    await widget.jobReviews.reference
+                                    await widget.jobReviews!.reference
                                         .update(maintenanceUpdateData);
                                     logFirebaseEvent('Button_Show-Snack-Bar');
                                     ScaffoldMessenger.of(context).showSnackBar(
@@ -490,9 +529,21 @@ class _ReviewsWidgetState extends State<ReviewsWidget> {
                                       ),
                                     );
                                     logFirebaseEvent('Button_Navigate-To');
-                                    context.pushNamed('viewPage');
+                                    await Navigator.push(
+                                      context,
+                                      PageTransition(
+                                        type: PageTransitionType.bottomToTop,
+                                        duration: Duration(milliseconds: 300),
+                                        reverseDuration:
+                                            Duration(milliseconds: 300),
+                                        child:
+                                            NavBarPage(initialPage: 'viewPage'),
+                                      ),
+                                    );
                                   },
-                                  text: 'Confirm',
+                                  text: FFLocalizations.of(context).getText(
+                                    'q7zf3n84' /* Confirm */,
+                                  ),
                                   options: FFButtonOptions(
                                     width: double.infinity,
                                     height: 55,
@@ -510,7 +561,7 @@ class _ReviewsWidgetState extends State<ReviewsWidget> {
                                       color: Colors.transparent,
                                       width: 1,
                                     ),
-                                    borderRadius: 22,
+                                    borderRadius: 16,
                                   ),
                                 ),
                               ),

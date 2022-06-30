@@ -14,7 +14,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class PlumbingWidget extends StatefulWidget {
-  const PlumbingWidget({Key key}) : super(key: key);
+  const PlumbingWidget({Key? key}) : super(key: key);
 
   @override
   _PlumbingWidgetState createState() => _PlumbingWidgetState();
@@ -22,9 +22,9 @@ class PlumbingWidget extends StatefulWidget {
 
 class _PlumbingWidgetState extends State<PlumbingWidget> {
   String uploadedFileUrl = '';
-  TextEditingController textController1;
-  String issueValue;
-  TextEditingController reasonController;
+  TextEditingController? textController1;
+  String? issueValue;
+  TextEditingController? reasonController;
   final formKey = GlobalKey<FormState>();
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -54,13 +54,15 @@ class _PlumbingWidgetState extends State<PlumbingWidget> {
             size: 24,
           ),
           onPressed: () async {
-            logFirebaseEvent('IconButton_ON_TAP');
+            logFirebaseEvent('PLUMBING_arrow_back_rounded_ICN_ON_TAP');
             logFirebaseEvent('IconButton_Navigate-Back');
-            context.pop();
+            Navigator.pop(context);
           },
         ),
         title: Text(
-          'Plumbing',
+          FFLocalizations.of(context).getText(
+            'j6exf7im' /* Plumbing */,
+          ),
           style: FlutterFlowTheme.of(context).title2.override(
                 fontFamily: 'Open Sans',
                 color: FlutterFlowTheme.of(context).primaryText,
@@ -104,7 +106,8 @@ class _PlumbingWidgetState extends State<PlumbingWidget> {
                           ),
                           child: InkWell(
                             onTap: () async {
-                              logFirebaseEvent('Column_ON_TAP');
+                              logFirebaseEvent(
+                                  'PLUMBING_PAGE_Column_pgbda6hv_ON_TAP');
                               logFirebaseEvent('Column_Upload-Photo-Video');
                               final selectedMedia =
                                   await selectMediaWithSourceBottomSheet(
@@ -124,6 +127,7 @@ class _PlumbingWidgetState extends State<PlumbingWidget> {
                                             await uploadData(
                                                 m.storagePath, m.bytes))))
                                     .where((u) => u != null)
+                                    .map((u) => u!)
                                     .toList();
                                 ScaffoldMessenger.of(context)
                                     .hideCurrentSnackBar();
@@ -134,7 +138,9 @@ class _PlumbingWidgetState extends State<PlumbingWidget> {
                                       uploadedFileUrl = downloadUrls.first);
                                   showUploadMessage(
                                     context,
-                                    'File Uploaded!',
+                                    FFLocalizations.of(context).getText(
+                                      'z40c2u6r' /* File Uploaded! */,
+                                    ),
                                   );
                                 } else {
                                   showUploadMessage(
@@ -177,7 +183,9 @@ class _PlumbingWidgetState extends State<PlumbingWidget> {
                         mainAxisSize: MainAxisSize.max,
                         children: [
                           Text(
-                            'Name',
+                            FFLocalizations.of(context).getText(
+                              'sjfameuq' /* Name */,
+                            ),
                             style: FlutterFlowTheme.of(context)
                                 .bodyText1
                                 .override(
@@ -199,7 +207,9 @@ class _PlumbingWidgetState extends State<PlumbingWidget> {
                           readOnly: true,
                           obscureText: false,
                           decoration: InputDecoration(
-                            labelText: ' ',
+                            labelText: FFLocalizations.of(context).getText(
+                              'hh3kxhi3' /*   */,
+                            ),
                             hintText: currentUserDisplayName,
                             enabledBorder: OutlineInputBorder(
                               borderSide: BorderSide(
@@ -240,7 +250,9 @@ class _PlumbingWidgetState extends State<PlumbingWidget> {
                         mainAxisSize: MainAxisSize.max,
                         children: [
                           Text(
-                            'Issue',
+                            FFLocalizations.of(context).getText(
+                              '6ydhq6qy' /* Issue */,
+                            ),
                             style: FlutterFlowTheme.of(context)
                                 .bodyText1
                                 .override(
@@ -258,18 +270,40 @@ class _PlumbingWidgetState extends State<PlumbingWidget> {
                       padding: EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
                       child: FlutterFlowDropDown(
                         options: [
-                          'Damaged toilet sit',
-                          'Damaged basin/sink',
-                          'Blocked urinal',
-                          'Blocked toilet',
-                          'Blocked shower drain',
-                          'Low water pressure',
-                          'No cold water',
-                          'No hot water',
-                          'Shower head needs to be replaced',
-                          'Leaking gyser',
-                          'Burst pipes'
-                        ].toList(),
+                          FFLocalizations.of(context).getText(
+                            'g1s4b5qt' /* Damaged toilet sit */,
+                          ),
+                          FFLocalizations.of(context).getText(
+                            'f3r9wayy' /* Damaged basin/sink */,
+                          ),
+                          FFLocalizations.of(context).getText(
+                            'uzsclpgj' /* Blocked urinal */,
+                          ),
+                          FFLocalizations.of(context).getText(
+                            'bcc5cdzk' /* Blocked toilet */,
+                          ),
+                          FFLocalizations.of(context).getText(
+                            'jvpf1jfb' /* Blocked shower drain */,
+                          ),
+                          FFLocalizations.of(context).getText(
+                            '4wyw28qg' /* Low water pressure */,
+                          ),
+                          FFLocalizations.of(context).getText(
+                            'xglpnog5' /* No cold water */,
+                          ),
+                          FFLocalizations.of(context).getText(
+                            '4ybabfa3' /* No hot water */,
+                          ),
+                          FFLocalizations.of(context).getText(
+                            'oe2iooc7' /* Shower head needs to be replac... */,
+                          ),
+                          FFLocalizations.of(context).getText(
+                            '1hx0jrbo' /* Leaking gyser */,
+                          ),
+                          FFLocalizations.of(context).getText(
+                            '0acr9e1x' /* Burst pipes */,
+                          )
+                        ],
                         onChanged: (val) => setState(() => issueValue = val),
                         width: MediaQuery.of(context).size.width * 0.98,
                         height: 70,
@@ -281,7 +315,9 @@ class _PlumbingWidgetState extends State<PlumbingWidget> {
                               fontSize: 14,
                               fontWeight: FontWeight.normal,
                             ),
-                        hintText: 'Please select...',
+                        hintText: FFLocalizations.of(context).getText(
+                          'jecw64w4' /* Please select... */,
+                        ),
                         icon: Icon(
                           FFIcons.kedit,
                           color: FlutterFlowTheme.of(context).primaryText,
@@ -302,7 +338,9 @@ class _PlumbingWidgetState extends State<PlumbingWidget> {
                         mainAxisSize: MainAxisSize.max,
                         children: [
                           Text(
-                            'Description',
+                            FFLocalizations.of(context).getText(
+                              '221kv5j6' /* Description */,
+                            ),
                             style: FlutterFlowTheme.of(context)
                                 .bodyText1
                                 .override(
@@ -322,7 +360,9 @@ class _PlumbingWidgetState extends State<PlumbingWidget> {
                         controller: reasonController,
                         obscureText: false,
                         decoration: InputDecoration(
-                          hintText: 'Describe your Issue',
+                          hintText: FFLocalizations.of(context).getText(
+                            'g4jhlicm' /* Describe your Issue */,
+                          ),
                           enabledBorder: OutlineInputBorder(
                             borderSide: BorderSide(
                               color: Color(0x00C5C5C5),
@@ -350,10 +390,15 @@ class _PlumbingWidgetState extends State<PlumbingWidget> {
                             ),
                         textAlign: TextAlign.start,
                         maxLines: 5,
-                        keyboardType: TextInputType.name,
                         validator: (val) {
                           if (val == null || val.isEmpty) {
-                            return 'Field is required';
+                            return FFLocalizations.of(context).getText(
+                              'h85e3ygq' /* Field is required */,
+                            );
+                          }
+
+                          if (val.length > 120) {
+                            return 'Maximum 120 characters allowed, currently ${val.length}.';
                           }
 
                           return null;
@@ -364,10 +409,10 @@ class _PlumbingWidgetState extends State<PlumbingWidget> {
                       padding: EdgeInsetsDirectional.fromSTEB(16, 50, 16, 50),
                       child: FFButtonWidget(
                         onPressed: () async {
-                          logFirebaseEvent('Button_ON_TAP');
+                          logFirebaseEvent('PLUMBING_PAGE_SUBMIT_BTN_ON_TAP');
                           logFirebaseEvent('Button_Validate-Form');
                           if (formKey.currentState == null ||
-                              !formKey.currentState.validate()) {
+                              !formKey.currentState!.validate()) {
                             return;
                           }
 
@@ -402,13 +447,14 @@ class _PlumbingWidgetState extends State<PlumbingWidget> {
                             room: valueOrDefault(currentUserDocument?.room, ''),
                             building: valueOrDefault(
                                 currentUserDocument?.building, ''),
-                            notes: reasonController.text,
+                            notes: reasonController!.text,
                             rating: 0,
                             uid: currentUserUid,
                             category: 'Plumbing',
                             isDone: false,
                             assigned: 'Maintenance Team',
                             photoUrl: uploadedFileUrl,
+                            userRec: currentUserReference,
                           );
                           await MaintenanceRecord.collection
                               .doc()
@@ -427,7 +473,9 @@ class _PlumbingWidgetState extends State<PlumbingWidget> {
                             },
                           );
                         },
-                        text: 'Submit',
+                        text: FFLocalizations.of(context).getText(
+                          '9hwlv2m7' /* Submit */,
+                        ),
                         options: FFButtonOptions(
                           width: double.infinity,
                           height: 55,

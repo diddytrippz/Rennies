@@ -13,7 +13,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class OthersWidget extends StatefulWidget {
-  const OthersWidget({Key key}) : super(key: key);
+  const OthersWidget({Key? key}) : super(key: key);
 
   @override
   _OthersWidgetState createState() => _OthersWidgetState();
@@ -21,8 +21,8 @@ class OthersWidget extends StatefulWidget {
 
 class _OthersWidgetState extends State<OthersWidget> {
   String uploadedFileUrl = '';
-  TextEditingController textController1;
-  TextEditingController reasonController;
+  TextEditingController? textController1;
+  TextEditingController? reasonController;
   final formKey = GlobalKey<FormState>();
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -52,13 +52,15 @@ class _OthersWidgetState extends State<OthersWidget> {
             size: 24,
           ),
           onPressed: () async {
-            logFirebaseEvent('IconButton_ON_TAP');
+            logFirebaseEvent('OTHERS_PAGE_arrow_back_ICN_ON_TAP');
             logFirebaseEvent('IconButton_Navigate-Back');
-            context.pop();
+            Navigator.pop(context);
           },
         ),
         title: Text(
-          'Other',
+          FFLocalizations.of(context).getText(
+            '2ytiwh02' /* Other */,
+          ),
           style: FlutterFlowTheme.of(context).title2.override(
                 fontFamily: 'Open Sans',
                 color: FlutterFlowTheme.of(context).primaryText,
@@ -102,7 +104,8 @@ class _OthersWidgetState extends State<OthersWidget> {
                           ),
                           child: InkWell(
                             onTap: () async {
-                              logFirebaseEvent('Column_ON_TAP');
+                              logFirebaseEvent(
+                                  'OTHERS_PAGE_Column_e4don70x_ON_TAP');
                               logFirebaseEvent('Column_Upload-Photo-Video');
                               final selectedMedia =
                                   await selectMediaWithSourceBottomSheet(
@@ -122,6 +125,7 @@ class _OthersWidgetState extends State<OthersWidget> {
                                             await uploadData(
                                                 m.storagePath, m.bytes))))
                                     .where((u) => u != null)
+                                    .map((u) => u!)
                                     .toList();
                                 ScaffoldMessenger.of(context)
                                     .hideCurrentSnackBar();
@@ -132,7 +136,9 @@ class _OthersWidgetState extends State<OthersWidget> {
                                       uploadedFileUrl = downloadUrls.first);
                                   showUploadMessage(
                                     context,
-                                    'File Uploaded!',
+                                    FFLocalizations.of(context).getText(
+                                      'z40c2u6r' /* File Uploaded! */,
+                                    ),
                                   );
                                 } else {
                                   showUploadMessage(
@@ -175,7 +181,9 @@ class _OthersWidgetState extends State<OthersWidget> {
                         mainAxisSize: MainAxisSize.max,
                         children: [
                           Text(
-                            'Name',
+                            FFLocalizations.of(context).getText(
+                              'crrao6ih' /* Name */,
+                            ),
                             style: FlutterFlowTheme.of(context)
                                 .bodyText1
                                 .override(
@@ -197,7 +205,9 @@ class _OthersWidgetState extends State<OthersWidget> {
                           readOnly: true,
                           obscureText: false,
                           decoration: InputDecoration(
-                            labelText: ' ',
+                            labelText: FFLocalizations.of(context).getText(
+                              'xi810ac6' /*   */,
+                            ),
                             hintText: currentUserDisplayName,
                             enabledBorder: OutlineInputBorder(
                               borderSide: BorderSide(
@@ -238,7 +248,9 @@ class _OthersWidgetState extends State<OthersWidget> {
                         mainAxisSize: MainAxisSize.max,
                         children: [
                           Text(
-                            'Issue',
+                            FFLocalizations.of(context).getText(
+                              '8jet81fh' /* Issue */,
+                            ),
                             style: FlutterFlowTheme.of(context)
                                 .bodyText1
                                 .override(
@@ -258,7 +270,9 @@ class _OthersWidgetState extends State<OthersWidget> {
                         controller: reasonController,
                         obscureText: false,
                         decoration: InputDecoration(
-                          hintText: 'Describe your Issue',
+                          hintText: FFLocalizations.of(context).getText(
+                            'gn9nsu4y' /* Describe your Issue */,
+                          ),
                           enabledBorder: OutlineInputBorder(
                             borderSide: BorderSide(
                               color: Color(0x00C5C5C5),
@@ -286,10 +300,15 @@ class _OthersWidgetState extends State<OthersWidget> {
                             ),
                         textAlign: TextAlign.start,
                         maxLines: 5,
-                        keyboardType: TextInputType.name,
                         validator: (val) {
                           if (val == null || val.isEmpty) {
-                            return 'Field is required';
+                            return FFLocalizations.of(context).getText(
+                              '6wg4lijw' /* Field is required */,
+                            );
+                          }
+
+                          if (val.length > 250) {
+                            return 'Maximum 250 characters allowed, currently ${val.length}.';
                           }
 
                           return null;
@@ -300,10 +319,10 @@ class _OthersWidgetState extends State<OthersWidget> {
                       padding: EdgeInsetsDirectional.fromSTEB(16, 50, 16, 50),
                       child: FFButtonWidget(
                         onPressed: () async {
-                          logFirebaseEvent('Button_ON_TAP');
+                          logFirebaseEvent('OTHERS_PAGE_SUBMIT_BTN_ON_TAP');
                           logFirebaseEvent('Button_Validate-Form');
                           if (formKey.currentState == null ||
-                              !formKey.currentState.validate()) {
+                              !formKey.currentState!.validate()) {
                             return;
                           }
 
@@ -311,7 +330,7 @@ class _OthersWidgetState extends State<OthersWidget> {
 
                           final maintenanceCreateData =
                               createMaintenanceRecordData(
-                            issue: reasonController.text,
+                            issue: reasonController!.text,
                             status: 'Submitted',
                             email: currentUserEmail,
                             createdTime: getCurrentTimestamp,
@@ -325,6 +344,7 @@ class _OthersWidgetState extends State<OthersWidget> {
                             isDone: false,
                             assigned: 'Maintenance Team',
                             photoUrl: uploadedFileUrl,
+                            userRec: currentUserReference,
                           );
                           await MaintenanceRecord.collection
                               .doc()
@@ -343,7 +363,9 @@ class _OthersWidgetState extends State<OthersWidget> {
                             },
                           );
                         },
-                        text: 'Submit',
+                        text: FFLocalizations.of(context).getText(
+                          'joeg6jq5' /* Submit */,
+                        ),
                         options: FFButtonOptions(
                           width: double.infinity,
                           height: 55,

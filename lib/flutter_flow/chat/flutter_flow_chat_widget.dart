@@ -13,12 +13,12 @@ enum TimeDisplaySetting {
 
 class FFChatWidget extends StatelessWidget {
   const FFChatWidget({
-    Key key,
-    @required this.currentUser,
-    @required this.scrollController,
-    @required this.focusNode,
-    @required this.messages,
-    @required this.onSend,
+    Key? key,
+    required this.currentUser,
+    required this.scrollController,
+    required this.focusNode,
+    required this.messages,
+    required this.onSend,
     this.uploadMediaAction,
     // Theme settings
     this.backgroundColor,
@@ -37,17 +37,17 @@ class FFChatWidget extends StatelessWidget {
   final FocusNode focusNode;
   final List<ChatMessage> messages;
   final Function(ChatMessage) onSend;
-  final Function() uploadMediaAction;
+  final Function()? uploadMediaAction;
 
-  final Color backgroundColor;
-  final TimeDisplaySetting timeDisplaySetting;
-  final BoxDecoration currentUserBoxDecoration;
-  final BoxDecoration otherUsersBoxDecoration;
-  final TextStyle currentUserTextStyle;
-  final TextStyle otherUsersTextStyle;
-  final TextStyle inputHintTextStyle;
-  final TextStyle inputTextStyle;
-  final Widget emptyChatWidget;
+  final Color? backgroundColor;
+  final TimeDisplaySetting? timeDisplaySetting;
+  final BoxDecoration? currentUserBoxDecoration;
+  final BoxDecoration? otherUsersBoxDecoration;
+  final TextStyle? currentUserTextStyle;
+  final TextStyle? otherUsersTextStyle;
+  final TextStyle? inputHintTextStyle;
+  final TextStyle? inputTextStyle;
+  final Widget? emptyChatWidget;
 
   @override
   Widget build(BuildContext context) => GestureDetector(
@@ -119,12 +119,12 @@ class FFChatWidget extends StatelessWidget {
                     messageBuilder: (chatMessage) => FFChatMessage(
                       key: Key('ChatMessage_${chatMessage.id}'),
                       chatMessage: chatMessage,
+                      isMe: chatMessage.user.uid == currentUser.uid,
                       timeDisplaySetting: timeDisplaySetting,
                       currentUserBoxDecoration: currentUserBoxDecoration,
                       otherUsersBoxDecoration: otherUsersBoxDecoration,
                       currentUserTextStyle: currentUserTextStyle,
                       otherUsersTextStyle: otherUsersTextStyle,
-                      isMe: chatMessage.user.uid == currentUser.uid,
                     ),
                   ),
                 ),
@@ -139,22 +139,22 @@ class FFChatWidget extends StatelessWidget {
 
 class FFChatMessage extends StatefulWidget {
   const FFChatMessage({
-    Key key,
-    this.chatMessage,
+    Key? key,
+    required this.chatMessage,
+    required this.isMe,
     this.timeDisplaySetting,
     this.currentUserBoxDecoration,
     this.otherUsersBoxDecoration,
     this.currentUserTextStyle,
     this.otherUsersTextStyle,
-    this.isMe,
   }) : super(key: key);
 
   final ChatMessage chatMessage;
-  final TimeDisplaySetting timeDisplaySetting;
-  final BoxDecoration currentUserBoxDecoration;
-  final BoxDecoration otherUsersBoxDecoration;
-  final TextStyle currentUserTextStyle;
-  final TextStyle otherUsersTextStyle;
+  final TimeDisplaySetting? timeDisplaySetting;
+  final BoxDecoration? currentUserBoxDecoration;
+  final BoxDecoration? otherUsersBoxDecoration;
+  final TextStyle? currentUserTextStyle;
+  final TextStyle? otherUsersTextStyle;
   final bool isMe;
 
   @override
@@ -227,7 +227,7 @@ class _FFChatMessageState extends State<FFChatMessage> {
                     ? ClipRRect(
                         borderRadius: BorderRadius.circular(16),
                         child: CachedNetworkImage(
-                          imageUrl: widget.chatMessage.image,
+                          imageUrl: widget.chatMessage.image!,
                           fit: BoxFit.fitWidth,
                         ),
                       )
@@ -237,7 +237,7 @@ class _FFChatMessageState extends State<FFChatMessage> {
                           vertical: 6,
                         ),
                         child: Text(
-                          widget.chatMessage.text,
+                          widget.chatMessage.text!,
                           style: textStyle,
                         ),
                       ),

@@ -5,25 +5,25 @@ import 'package:timeago/timeago.dart' as timeago;
 
 class FFChatPreview extends StatelessWidget {
   const FFChatPreview({
-    Key key,
-    @required this.lastChatText,
-    @required this.lastChatTime,
-    @required this.seen,
-    @required this.title,
-    @required this.userProfilePic,
-    @required this.onTap,
+    Key? key,
+    required this.lastChatText,
+    required this.lastChatTime,
+    required this.seen,
+    required this.title,
+    required this.userProfilePic,
+    required this.onTap,
     // Theme settings
-    @required this.color,
-    @required this.unreadColor,
-    @required this.titleTextStyle,
-    @required this.dateTextStyle,
-    @required this.previewTextStyle,
+    required this.color,
+    required this.unreadColor,
+    required this.titleTextStyle,
+    required this.dateTextStyle,
+    required this.previewTextStyle,
     this.contentPadding = EdgeInsets.zero,
     this.borderRadius = BorderRadius.zero,
   }) : super(key: key);
 
   final String lastChatText;
-  final DateTime lastChatTime;
+  final DateTime? lastChatTime;
   final bool seen;
   final String title;
   final String userProfilePic;
@@ -106,7 +106,10 @@ class FFChatPreview extends StatelessWidget {
   }
 }
 
-String formattedDate(DateTime dateTime) {
+String formattedDate(DateTime? dateTime) {
+  if (dateTime == null) {
+    return 'Unknown';
+  }
   final now = DateTime.now();
   final today = DateTime(now.year, now.month, now.day);
   final yesterday = DateTime(now.year, now.month, now.day - 1);

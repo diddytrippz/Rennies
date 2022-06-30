@@ -12,14 +12,14 @@ extension DateTimeExtension on DateTime {
   DateTime get endOfDay => DateTime(year, month, day, 23, 59);
 }
 
-bool isSameDay(DateTime a, DateTime b) {
+bool isSameDay(DateTime? a, DateTime? b) {
   if (a == null || b == null) {
     return false;
   }
   return a.year == b.year && a.month == b.month && a.day == b.day;
 }
 
-bool isSameMonth(DateTime a, DateTime b) {
+bool isSameMonth(DateTime? a, DateTime? b) {
   if (a == null || b == null) {
     return false;
   }
@@ -28,8 +28,8 @@ bool isSameMonth(DateTime a, DateTime b) {
 
 class FlutterFlowCalendar extends StatefulWidget {
   const FlutterFlowCalendar({
-    Key key,
-    @required this.color,
+    Key? key,
+    required this.color,
     this.onChange,
     this.initialDate,
     this.weekFormat = false,
@@ -47,25 +47,25 @@ class FlutterFlowCalendar extends StatefulWidget {
   final bool weekFormat;
   final bool weekStartsMonday;
   final Color color;
-  final void Function(DateTimeRange) onChange;
-  final DateTime initialDate;
-  final Color iconColor;
-  final TextStyle dateStyle;
-  final TextStyle dayOfWeekStyle;
-  final TextStyle inactiveDateStyle;
-  final TextStyle selectedDateStyle;
-  final TextStyle titleStyle;
-  final double rowHeight;
-  final String locale;
+  final void Function(DateTimeRange?)? onChange;
+  final DateTime? initialDate;
+  final Color? iconColor;
+  final TextStyle? dateStyle;
+  final TextStyle? dayOfWeekStyle;
+  final TextStyle? inactiveDateStyle;
+  final TextStyle? selectedDateStyle;
+  final TextStyle? titleStyle;
+  final double? rowHeight;
+  final String? locale;
 
   @override
   State<StatefulWidget> createState() => _FlutterFlowCalendarState();
 }
 
 class _FlutterFlowCalendarState extends State<FlutterFlowCalendar> {
-  DateTime focusedDay;
-  DateTime selectedDay;
-  DateTimeRange selectedRange;
+  late DateTime focusedDay;
+  late DateTime selectedDay;
+  late DateTimeRange selectedRange;
 
   @override
   void initState() {
@@ -76,7 +76,7 @@ class _FlutterFlowCalendarState extends State<FlutterFlowCalendar> {
       start: selectedDay.startOfDay,
       end: selectedDay.endOfDay,
     );
-    SchedulerBinding.instance
+    SchedulerBinding.instance!
         .addPostFrameCallback((_) => setSelectedDay(selectedRange.start));
   }
 
@@ -94,8 +94,8 @@ class _FlutterFlowCalendarState extends State<FlutterFlowCalendar> {
   Color get lighterColor => widget.color.withOpacity(0.60);
 
   void setSelectedDay(
-    DateTime newSelectedDay, [
-    DateTime newSelectedEnd,
+    DateTime? newSelectedDay, [
+    DateTime? newSelectedEnd,
   ]) {
     final newRange = newSelectedDay == null
         ? null
@@ -104,9 +104,11 @@ class _FlutterFlowCalendarState extends State<FlutterFlowCalendar> {
             end: newSelectedEnd ?? newSelectedDay.endOfDay,
           );
     setState(() {
-      selectedDay = newSelectedDay;
-      selectedRange = newRange;
-      widget.onChange(newRange);
+      selectedDay = newSelectedDay ?? selectedDay;
+      selectedRange = newRange ?? selectedRange;
+      if (widget.onChange != null) {
+        widget.onChange!(newRange);
+      }
     });
   }
 
@@ -144,8 +146,10 @@ class _FlutterFlowCalendarState extends State<FlutterFlowCalendar> {
             rowHeight:
                 widget.rowHeight ?? MediaQuery.of(context).size.width / 7,
             calendarStyle: CalendarStyle(
-              weekendTextStyle: widget.dateStyle,
-              holidayTextStyle: widget.dateStyle,
+              weekendTextStyle: widget.dateStyle ??
+                  const TextStyle(color: const Color(0xFF5A5A5A)),
+              holidayTextStyle: widget.dateStyle ??
+                  const TextStyle(color: const Color(0xFF5C6BC0)),
               selectedTextStyle:
                   const TextStyle(color: Color(0xFFFAFAFA), fontSize: 16.0)
                       .merge(widget.selectedDateStyle),
@@ -192,11 +196,11 @@ class _FlutterFlowCalendarState extends State<FlutterFlowCalendar> {
 
 class CalendarHeader extends StatelessWidget {
   const CalendarHeader({
-    Key key,
-    @required this.focusedDay,
-    @required this.onLeftChevronTap,
-    @required this.onRightChevronTap,
-    @required this.onTodayButtonTap,
+    Key? key,
+    required this.focusedDay,
+    required this.onLeftChevronTap,
+    required this.onRightChevronTap,
+    required this.onTodayButtonTap,
     this.iconColor,
     this.titleStyle,
     this.locale,
@@ -206,9 +210,9 @@ class CalendarHeader extends StatelessWidget {
   final VoidCallback onLeftChevronTap;
   final VoidCallback onRightChevronTap;
   final VoidCallback onTodayButtonTap;
-  final Color iconColor;
-  final TextStyle titleStyle;
-  final String locale;
+  final Color? iconColor;
+  final TextStyle? titleStyle;
+  final String? locale;
 
   @override
   Widget build(BuildContext context) => Container(
@@ -246,9 +250,9 @@ class CalendarHeader extends StatelessWidget {
 
 class CustomIconButton extends StatelessWidget {
   const CustomIconButton({
-    Key key,
-    @required this.icon,
-    this.onTap,
+    Key? key,
+    required this.icon,
+    required this.onTap,
     this.margin = const EdgeInsets.symmetric(horizontal: 4),
     this.padding = const EdgeInsets.all(10),
   }) : super(key: key);

@@ -5,6 +5,7 @@ import 'maintenance_record.dart';
 import 'chats_record.dart';
 import 'chat_messages_record.dart';
 import 'checklist_record.dart';
+import 'notifications_record.dart';
 
 import 'index.dart';
 
@@ -21,6 +22,7 @@ const kDocumentReferenceField = 'Document__Reference__Field';
   ChatsRecord,
   ChatMessagesRecord,
   ChecklistRecord,
+  NotificationsRecord,
 ])
 final Serializers serializers = (_$serializers.toBuilder()
       ..add(DocumentReferenceSerializer())
@@ -31,7 +33,7 @@ final Serializers serializers = (_$serializers.toBuilder()
 
 extension SerializerExtensions on Serializers {
   Map<String, dynamic> toFirestore<T>(Serializer<T> serializer, T object) =>
-      mapToFirestore(serializeWith(serializer, object));
+      mapToFirestore(serializeWith(serializer, object) as Map<String, dynamic>);
 }
 
 class DocumentReferenceSerializer
@@ -91,16 +93,18 @@ class LatLngSerializer implements PrimitiveSerializer<LatLng> {
       serialized as LatLng;
 }
 
-Map<String, dynamic> serializedData(DocumentSnapshot doc) =>
-    {...mapFromFirestore(doc.data()), kDocumentReferenceField: doc.reference};
+Map<String, dynamic> serializedData(DocumentSnapshot doc) => {
+      ...mapFromFirestore(doc.data() as Map<String, dynamic>),
+      kDocumentReferenceField: doc.reference
+    };
 
 Map<String, dynamic> mapFromFirestore(Map<String, dynamic> data) =>
     data.map((key, value) {
       if (value is Timestamp) {
-        value = (value as Timestamp).toDate();
+        value = value.toDate();
       }
       if (value is GeoPoint) {
-        value = (value as GeoPoint).toLatLng();
+        value = value.toLatLng();
       }
       return MapEntry(key, value);
     });
@@ -108,7 +112,7 @@ Map<String, dynamic> mapFromFirestore(Map<String, dynamic> data) =>
 Map<String, dynamic> mapToFirestore(Map<String, dynamic> data) =>
     data.map((key, value) {
       if (value is LatLng) {
-        value = (value as LatLng).toGeoPoint();
+        value = value.toGeoPoint();
       }
       return MapEntry(key, value);
     });
@@ -123,7 +127,7 @@ extension LatLngExtension on GeoPoint {
 
 DocumentReference toRef(String ref) => FirebaseFirestore.instance.doc(ref);
 
-T safeGet<T>(T Function() func, [Function(dynamic) reportError]) {
+T? safeGet<T>(T Function() func, [Function(dynamic)? reportError]) {
   try {
     return func();
   } catch (e) {

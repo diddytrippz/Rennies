@@ -6,15 +6,15 @@ export 'api_manager.dart' show ApiCallResponse;
 
 class AirtableCall {
   static Future<ApiCallResponse> call({
-    String user = '',
-    String issue = '',
-    String room = '',
-    String building = '',
-    String status = '',
-    String created = '',
-    String updated = '',
-    String name = '',
-    String links = '',
+    String? user = '',
+    String? issue = '',
+    String? room = '',
+    String? building = '',
+    String? status = '',
+    String? created = '',
+    String? updated = '',
+    String? name = '',
+    String? links = '',
   }) {
     final body = '''
 {
@@ -55,10 +55,10 @@ class AirtableCall {
 
 class SendGridCall {
   static Future<ApiCallResponse> call({
-    String toEmail = '',
-    String subject = '',
-    String content = '',
-    String name = '',
+    String? toEmail = '2188162@students.wits.ac.za',
+    String? subject = 'Re: Maintenance',
+    String? content = 'Dynanmic link',
+    String? name = '',
   }) {
     final body = '''
 {

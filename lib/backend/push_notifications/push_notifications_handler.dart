@@ -13,7 +13,8 @@ import '../../index.dart';
 import '../../main.dart';
 
 class PushNotificationsHandler extends StatefulWidget {
-  const PushNotificationsHandler({Key key, this.child}) : super(key: key);
+  const PushNotificationsHandler({Key? key, required this.child})
+      : super(key: key);
 
   final Widget child;
 
@@ -66,15 +67,11 @@ class _PushNotificationsHandlerState extends State<PushNotificationsHandler> {
   @override
   Widget build(BuildContext context) => _loading
       ? Container(
-          color: FlutterFlowTheme.of(context).primaryColor,
-          child: Center(
-            child: Builder(
-              builder: (context) => Image.asset(
-                'assets/images/campus_logo_1.png',
-                width: MediaQuery.of(context).size.width * 0.75,
-                height: MediaQuery.of(context).size.height * 0.75,
-                fit: BoxFit.scaleDown,
-              ),
+          color: Color(0xFF000002),
+          child: Builder(
+            builder: (context) => Image.asset(
+              'assets/images/Untitled_design_(4).png',
+              fit: BoxFit.contain,
             ),
           ),
         )
@@ -82,24 +79,22 @@ class _PushNotificationsHandlerState extends State<PushNotificationsHandler> {
 }
 
 final pageBuilderMap = <String, Future<Widget> Function(Map<String, dynamic>)>{
-  'onboarding': (data) async => OnboardingWidget(),
+  'testOnboarding': (data) async => TestOnboardingWidget(),
   'loginPage': (data) async => LoginPageWidget(),
-  'verification': (data) async => VerificationWidget(),
-  'settingsPage': (data) async => NavBarPage(initialPage: 'settingsPage'),
-  'viewPage': (data) async => NavBarPage(initialPage: 'viewPage'),
+  'viewPage': (data) async => hasMatchingParameters(data, {'completeTemp'})
+      ? ViewPageWidget(
+          completeTemp: getParameter(data, 'completeTemp'),
+        )
+      : NavBarPage(initialPage: 'viewPage'),
   'rulesBook': (data) async => RulesBookWidget(),
-  'moreInfo': (data) async => MoreInfoWidget(
-        jobStatus: await getDocumentParameter(
-            data, 'jobStatus', MaintenanceRecord.serializer),
-      ),
   'ChatPage': (data) async => ChatPageWidget(
         chatUser: await getDocumentParameter(
             data, 'chatUser', UsersRecord.serializer),
         chatRef: getParameter(data, 'chatRef'),
       ),
-  'editProfile': (data) async => EditProfileWidget(),
+  'notifications': (data) async => NavBarPage(initialPage: 'notifications'),
+  'usersSearch': (data) async => UsersSearchWidget(),
   'MessagesPage': (data) async => NavBarPage(initialPage: 'MessagesPage'),
-  'usersSearch': (data) async => NavBarPage(initialPage: 'usersSearch'),
   'Appliances': (data) async => AppliancesWidget(),
   'Plumbing': (data) async => PlumbingWidget(),
   'Furniture': (data) async => FurnitureWidget(),
@@ -113,6 +108,12 @@ final pageBuilderMap = <String, Future<Widget> Function(Map<String, dynamic>)>{
         jobReviews: await getDocumentParameter(
             data, 'jobReviews', MaintenanceRecord.serializer),
       ),
+  'testMoreInfo': (data) async => TestMoreInfoWidget(
+        jobs: await getDocumentParameter(
+            data, 'jobs', MaintenanceRecord.serializer),
+      ),
+  'newProfile': (data) async => NewProfileWidget(),
+  'newSettings': (data) async => NavBarPage(initialPage: 'newSettings'),
 };
 
 bool hasMatchingParameters(Map<String, dynamic> data, Set<String> params) =>

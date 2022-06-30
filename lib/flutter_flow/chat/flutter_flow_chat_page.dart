@@ -7,8 +7,8 @@ import 'package:flutter/scheduler.dart';
 
 class FFChatPage extends StatefulWidget {
   FFChatPage({
-    Key key,
-    @required this.chatInfo,
+    Key? key,
+    required this.chatInfo,
     this.allowImages = false,
     // Theme settings
     this.backgroundColor,
@@ -25,15 +25,15 @@ class FFChatPage extends StatefulWidget {
   final FFChatInfo chatInfo;
   final bool allowImages;
 
-  final Color backgroundColor;
-  final TimeDisplaySetting timeDisplaySetting;
-  final BoxDecoration currentUserBoxDecoration;
-  final BoxDecoration otherUsersBoxDecoration;
-  final TextStyle currentUserTextStyle;
-  final TextStyle otherUsersTextStyle;
-  final TextStyle inputHintTextStyle;
-  final TextStyle inputTextStyle;
-  final Widget emptyChatWidget;
+  final Color? backgroundColor;
+  final TimeDisplaySetting? timeDisplaySetting;
+  final BoxDecoration? currentUserBoxDecoration;
+  final BoxDecoration? otherUsersBoxDecoration;
+  final TextStyle? currentUserTextStyle;
+  final TextStyle? otherUsersTextStyle;
+  final TextStyle? inputHintTextStyle;
+  final TextStyle? inputTextStyle;
+  final Widget? emptyChatWidget;
 
   @override
   _FFChatPageState createState() => _FFChatPageState();
@@ -51,17 +51,17 @@ class _FFChatPageState extends State<FFChatPage> {
 
   Map<String, ChatMessagesRecord> allMessages = {};
   List<ChatMessagesRecord> messages = [];
-  StreamSubscription<List<ChatMessagesRecord>> messagesStream;
+  late StreamSubscription<List<ChatMessagesRecord>> messagesStream;
   bool _initialized = false;
 
-  DateTime latestMessageTime() =>
+  DateTime? latestMessageTime() =>
       messages.isNotEmpty ? messages.last.timestamp : null;
 
   Future updateSeenBy() => chatReference.update({
         'last_message_seen_by': FieldValue.arrayUnion([currentUserReference])
       });
 
-  void onNewMessage(DateTime lastBefore, DateTime lastAfter) {
+  void onNewMessage(DateTime? lastBefore, DateTime? lastAfter) {
     if (!mounted ||
         !_initialized ||
         lastAfter == null ||
@@ -79,7 +79,7 @@ class _FFChatPageState extends State<FFChatPage> {
     final oldLatestTime = latestMessageTime();
     chatMessages.forEach((m) => allMessages[m.reference.id] = m);
     messages = allMessages.values.toList();
-    messages.sort((a, b) => a.timestamp.compareTo(b.timestamp));
+    messages.sort((a, b) => a.timestamp!.compareTo(b.timestamp!));
     onNewMessage(oldLatestTime, latestMessageTime());
     setState(() {});
   }
@@ -104,10 +104,7 @@ class _FFChatPageState extends State<FFChatPage> {
     });
   }
 
-  Future sendMessage({String text, String imageUrl}) async {
-    if (chatReference == null) {
-      return;
-    }
+  Future sendMessage({String? text, String? imageUrl}) async {
     final chatMessagesRecordData = createChatMessagesRecordData(
       user: currentUserReference,
       chat: chatReference,
@@ -135,7 +132,7 @@ class _FFChatPageState extends State<FFChatPage> {
 
   @override
   void dispose() {
-    messagesStream?.cancel();
+    messagesStream.cancel();
     super.dispose();
   }
 
@@ -150,9 +147,9 @@ class _FFChatPageState extends State<FFChatPage> {
                 .map(
                   (message) => ChatMessage(
                     id: message.reference.id,
-                    user: message.user.id == currentUser.uid
+                    user: message.user?.id == currentUser.uid
                         ? currentUser
-                        : otherUsers[message.user.id],
+                        : otherUsers[message.user?.id]!,
                     text: message.text,
                     image: message.image,
                     createdAt: message.timestamp,
@@ -199,7 +196,7 @@ extension _ChatUserExtensions on UsersRecord {
       ? ChatUser(uid: reference.id)
       : ChatUser(
           uid: reference.id,
-          name: displayName.isNotEmpty ? displayName : 'Friend',
+          name: displayName!.isNotEmpty ? displayName : 'Friend',
           avatar: photoUrl,
         );
 }

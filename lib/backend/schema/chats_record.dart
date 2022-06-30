@@ -9,36 +9,29 @@ part 'chats_record.g.dart';
 abstract class ChatsRecord implements Built<ChatsRecord, ChatsRecordBuilder> {
   static Serializer<ChatsRecord> get serializer => _$chatsRecordSerializer;
 
-  @nullable
-  BuiltList<DocumentReference> get users;
+  BuiltList<DocumentReference>? get users;
 
-  @nullable
   @BuiltValueField(wireName: 'user_a')
-  DocumentReference get userA;
+  DocumentReference? get userA;
 
-  @nullable
   @BuiltValueField(wireName: 'user_b')
-  DocumentReference get userB;
+  DocumentReference? get userB;
 
-  @nullable
   @BuiltValueField(wireName: 'last_message')
-  String get lastMessage;
+  String? get lastMessage;
 
-  @nullable
   @BuiltValueField(wireName: 'last_message_time')
-  DateTime get lastMessageTime;
+  DateTime? get lastMessageTime;
 
-  @nullable
   @BuiltValueField(wireName: 'last_message_sent_by')
-  DocumentReference get lastMessageSentBy;
+  DocumentReference? get lastMessageSentBy;
 
-  @nullable
   @BuiltValueField(wireName: 'last_message_seen_by')
-  BuiltList<DocumentReference> get lastMessageSeenBy;
+  BuiltList<DocumentReference>? get lastMessageSeenBy;
 
-  @nullable
   @BuiltValueField(wireName: kDocumentReferenceField)
-  DocumentReference get reference;
+  DocumentReference? get ref;
+  DocumentReference get reference => ref!;
 
   static void _initializeBuilder(ChatsRecordBuilder builder) => builder
     ..users = ListBuilder()
@@ -50,11 +43,11 @@ abstract class ChatsRecord implements Built<ChatsRecord, ChatsRecordBuilder> {
 
   static Stream<ChatsRecord> getDocument(DocumentReference ref) => ref
       .snapshots()
-      .map((s) => serializers.deserializeWith(serializer, serializedData(s)));
+      .map((s) => serializers.deserializeWith(serializer, serializedData(s))!);
 
   static Future<ChatsRecord> getDocumentOnce(DocumentReference ref) => ref
       .get()
-      .then((s) => serializers.deserializeWith(serializer, serializedData(s)));
+      .then((s) => serializers.deserializeWith(serializer, serializedData(s))!);
 
   ChatsRecord._();
   factory ChatsRecord([void Function(ChatsRecordBuilder) updates]) =
@@ -63,15 +56,15 @@ abstract class ChatsRecord implements Built<ChatsRecord, ChatsRecordBuilder> {
   static ChatsRecord getDocumentFromData(
           Map<String, dynamic> data, DocumentReference reference) =>
       serializers.deserializeWith(serializer,
-          {...mapFromFirestore(data), kDocumentReferenceField: reference});
+          {...mapFromFirestore(data), kDocumentReferenceField: reference})!;
 }
 
 Map<String, dynamic> createChatsRecordData({
-  DocumentReference userA,
-  DocumentReference userB,
-  String lastMessage,
-  DateTime lastMessageTime,
-  DocumentReference lastMessageSentBy,
+  DocumentReference? userA,
+  DocumentReference? userB,
+  String? lastMessage,
+  DateTime? lastMessageTime,
+  DocumentReference? lastMessageSentBy,
 }) =>
     serializers.toFirestore(
         ChatsRecord.serializer,

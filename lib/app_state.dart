@@ -20,6 +20,12 @@ class FFAppState {
     _myBio = prefs.getString('ff_myBio') ?? _myBio;
     _defaultLanguage =
         prefs.getString('ff_defaultLanguage') ?? _defaultLanguage;
+    _skeletonhome = prefs.getBool('ff_skeletonhome') ?? _skeletonhome;
+    _skeleteMessages = prefs.getBool('ff_skeleteMessages') ?? _skeleteMessages;
+    _skeletonView = prefs.getBool('ff_skeletonView') ?? _skeletonView;
+    _skeletonSettings =
+        prefs.getBool('ff_skeletonSettings') ?? _skeletonSettings;
+    _skeletonInfo = prefs.getBool('ff_skeletonInfo') ?? _skeletonInfo;
   }
 
   late SharedPreferences prefs;
@@ -62,6 +68,45 @@ class FFAppState {
     _defaultLanguage = _value;
     prefs.setString('ff_defaultLanguage', _value);
   }
+
+  bool btmNavVis = false;
+
+  bool _skeletonhome = true;
+  bool get skeletonhome => _skeletonhome;
+  set skeletonhome(bool _value) {
+    _skeletonhome = _value;
+    prefs.setBool('ff_skeletonhome', _value);
+  }
+
+  bool _skeleteMessages = true;
+  bool get skeleteMessages => _skeleteMessages;
+  set skeleteMessages(bool _value) {
+    _skeleteMessages = _value;
+    prefs.setBool('ff_skeleteMessages', _value);
+  }
+
+  bool _skeletonView = true;
+  bool get skeletonView => _skeletonView;
+  set skeletonView(bool _value) {
+    _skeletonView = _value;
+    prefs.setBool('ff_skeletonView', _value);
+  }
+
+  bool _skeletonSettings = true;
+  bool get skeletonSettings => _skeletonSettings;
+  set skeletonSettings(bool _value) {
+    _skeletonSettings = _value;
+    prefs.setBool('ff_skeletonSettings', _value);
+  }
+
+  bool _skeletonInfo = true;
+  bool get skeletonInfo => _skeletonInfo;
+  set skeletonInfo(bool _value) {
+    _skeletonInfo = _value;
+    prefs.setBool('ff_skeletonInfo', _value);
+  }
+
+  String link = '';
 }
 
 LatLng? _latLngFromString(String? val) {

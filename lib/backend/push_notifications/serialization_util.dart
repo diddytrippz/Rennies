@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:built_value/built_value.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:from_css_color/from_css_color.dart';
 
 import '../../backend/backend.dart';
 import '../../flutter_flow/lat_lng.dart';
@@ -35,6 +36,8 @@ dynamic serializeParameter(dynamic value) {
       return dateTimeRangeToString(value as DateTimeRange);
     case LatLng:
       return (value as LatLng).serialize();
+    case Color:
+      return (value as Color).toCssString();
     case FFPlace:
       return placeToString(value as FFPlace);
   }
@@ -126,6 +129,8 @@ T? getParameter<T>(Map<String, dynamic> data, String paramName) {
         return dateTimeRangeFromString(param) as T;
       case LatLng:
         return latLngFromString(param) as T;
+      case Color:
+        return fromCssColor(param) as T;
       case FFPlace:
         return placeFromString(param) as T;
     }

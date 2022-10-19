@@ -68,7 +68,7 @@ class _FFChatPageState extends State<FFChatPage> {
         (lastBefore?.isAtSameMomentAs(lastAfter) ?? false)) {
       return;
     }
-    SchedulerBinding.instance?.addPostFrameCallback((_) async {
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
       Future.delayed(Duration(milliseconds: 100))
           .then((_) => scrollController.jumpTo(0));
       updateSeenBy();
@@ -98,7 +98,7 @@ class _FFChatPageState extends State<FFChatPage> {
     super.initState();
     updateMessages(FFChatManager.instance.getLatestMessages(chatReference));
     messagesStream = getMessagesStream(chatReference);
-    SchedulerBinding.instance?.addPostFrameCallback((_) {
+    SchedulerBinding.instance.addPostFrameCallback((_) {
       updateSeenBy();
       setState(() => _initialized = true);
     });

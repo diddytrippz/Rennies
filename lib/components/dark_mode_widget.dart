@@ -14,6 +14,13 @@ class DarkModeWidget extends StatefulWidget {
 
 class _DarkModeWidgetState extends State<DarkModeWidget> {
   @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsetsDirectional.fromSTEB(20, 40, 20, 70),
@@ -25,7 +32,7 @@ class _DarkModeWidgetState extends State<DarkModeWidget> {
           InkWell(
             onTap: () async {
               logFirebaseEvent('DARK_MODE_COMP_Container_p3nzubfr_ON_TAP');
-              logFirebaseEvent('Container_Set-Dark-Mode-Settings');
+              logFirebaseEvent('Container_set_dark_mode_settings');
               setDarkModeSetting(context, ThemeMode.light);
             },
             child: Material(
@@ -79,7 +86,7 @@ class _DarkModeWidgetState extends State<DarkModeWidget> {
           InkWell(
             onTap: () async {
               logFirebaseEvent('DARK_MODE_COMP_Container_uq4n3iod_ON_TAP');
-              logFirebaseEvent('Container_Set-Dark-Mode-Settings');
+              logFirebaseEvent('Container_set_dark_mode_settings');
               setDarkModeSetting(context, ThemeMode.dark);
             },
             child: Material(
@@ -119,7 +126,7 @@ class _DarkModeWidgetState extends State<DarkModeWidget> {
           InkWell(
             onTap: () async {
               logFirebaseEvent('DARK_MODE_COMP_Container_o8gpwlya_ON_TAP');
-              logFirebaseEvent('Container_Set-Dark-Mode-Settings');
+              logFirebaseEvent('Container_set_dark_mode_settings');
               setDarkModeSetting(context, ThemeMode.system);
             },
             child: Material(

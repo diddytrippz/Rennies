@@ -30,8 +30,8 @@ abstract class ChatsRecord implements Built<ChatsRecord, ChatsRecordBuilder> {
   BuiltList<DocumentReference>? get lastMessageSeenBy;
 
   @BuiltValueField(wireName: kDocumentReferenceField)
-  DocumentReference? get ref;
-  DocumentReference get reference => ref!;
+  DocumentReference? get ffRef;
+  DocumentReference get reference => ffRef!;
 
   static void _initializeBuilder(ChatsRecordBuilder builder) => builder
     ..users = ListBuilder()
@@ -65,14 +65,20 @@ Map<String, dynamic> createChatsRecordData({
   String? lastMessage,
   DateTime? lastMessageTime,
   DocumentReference? lastMessageSentBy,
-}) =>
-    serializers.toFirestore(
-        ChatsRecord.serializer,
-        ChatsRecord((c) => c
-          ..users = null
-          ..userA = userA
-          ..userB = userB
-          ..lastMessage = lastMessage
-          ..lastMessageTime = lastMessageTime
-          ..lastMessageSentBy = lastMessageSentBy
-          ..lastMessageSeenBy = null));
+}) {
+  final firestoreData = serializers.toFirestore(
+    ChatsRecord.serializer,
+    ChatsRecord(
+      (c) => c
+        ..users = null
+        ..userA = userA
+        ..userB = userB
+        ..lastMessage = lastMessage
+        ..lastMessageTime = lastMessageTime
+        ..lastMessageSentBy = lastMessageSentBy
+        ..lastMessageSeenBy = null,
+    ),
+  );
+
+  return firestoreData;
+}

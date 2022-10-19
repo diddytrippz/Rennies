@@ -39,7 +39,9 @@ class _PushNotificationsHandlerState extends State<PushNotificationsHandler> {
   }
 
   Future _handlePushNotification(RemoteMessage message) async {
-    setState(() => _loading = true);
+    if (mounted) {
+      setState(() => _loading = true);
+    }
     try {
       final initialPageName = message.data['initialPageName'] as String;
       final initialParameterData = getInitialParameterData(message.data);
@@ -54,7 +56,9 @@ class _PushNotificationsHandlerState extends State<PushNotificationsHandler> {
     } catch (e) {
       print('Error: $e');
     } finally {
-      setState(() => _loading = false);
+      if (mounted) {
+        setState(() => _loading = false);
+      }
     }
   }
 
@@ -67,10 +71,12 @@ class _PushNotificationsHandlerState extends State<PushNotificationsHandler> {
   @override
   Widget build(BuildContext context) => _loading
       ? Container(
-          color: Color(0xFF000002),
-          child: Builder(
-            builder: (context) => Image.asset(
+          color: Colors.black,
+          child: Center(
+            child: Image.asset(
               'assets/images/Untitled_design_(4).png',
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height * 1,
               fit: BoxFit.contain,
             ),
           ),
@@ -79,22 +85,17 @@ class _PushNotificationsHandlerState extends State<PushNotificationsHandler> {
 }
 
 final pageBuilderMap = <String, Future<Widget> Function(Map<String, dynamic>)>{
-  'testOnboarding': (data) async => TestOnboardingWidget(),
-  'loginPage': (data) async => LoginPageWidget(),
-  'viewPage': (data) async => hasMatchingParameters(data, {'completeTemp'})
-      ? ViewPageWidget(
-          completeTemp: getParameter(data, 'completeTemp'),
-        )
-      : NavBarPage(initialPage: 'viewPage'),
-  'rulesBook': (data) async => RulesBookWidget(),
-  'ChatPage': (data) async => ChatPageWidget(
+  'onboarding': (data) async => OnboardingWidget(),
+  'login': (data) async => LoginWidget(),
+  'view': (data) async => ViewWidget(
+        completeTemp: getParameter(data, 'completeTemp'),
+      ),
+  'rules': (data) async => RulesWidget(),
+  'chats': (data) async => ChatsWidget(
         chatUser: await getDocumentParameter(
             data, 'chatUser', UsersRecord.serializer),
         chatRef: getParameter(data, 'chatRef'),
       ),
-  'notifications': (data) async => NavBarPage(initialPage: 'notifications'),
-  'usersSearch': (data) async => UsersSearchWidget(),
-  'MessagesPage': (data) async => NavBarPage(initialPage: 'MessagesPage'),
   'Appliances': (data) async => AppliancesWidget(),
   'Plumbing': (data) async => PlumbingWidget(),
   'Furniture': (data) async => FurnitureWidget(),
@@ -108,12 +109,16 @@ final pageBuilderMap = <String, Future<Widget> Function(Map<String, dynamic>)>{
         jobReviews: await getDocumentParameter(
             data, 'jobReviews', MaintenanceRecord.serializer),
       ),
-  'testMoreInfo': (data) async => TestMoreInfoWidget(
+  'profile': (data) async => ProfileWidget(),
+  'settings': (data) async => SettingsWidget(),
+  'messages': (data) async => MessagesWidget(),
+  'sendNotifications': (data) async => SendNotificationsWidget(),
+  'information': (data) async => InformationWidget(
         jobs: await getDocumentParameter(
             data, 'jobs', MaintenanceRecord.serializer),
       ),
-  'newProfile': (data) async => NewProfileWidget(),
-  'newSettings': (data) async => NavBarPage(initialPage: 'newSettings'),
+  'notifications': (data) async => NotificationsWidget(),
+  'search': (data) async => SearchWidget(),
 };
 
 bool hasMatchingParameters(Map<String, dynamic> data, Set<String> params) =>

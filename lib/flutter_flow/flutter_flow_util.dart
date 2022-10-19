@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
+import 'package:from_css_color/from_css_color.dart';
 import 'package:intl/intl.dart';
 import 'package:json_path/json_path.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -12,26 +13,34 @@ import '../main.dart';
 
 import 'lat_lng.dart';
 
+export 'keep_alive_wrapper.dart';
 export 'lat_lng.dart';
 export 'place.dart';
 export '../app_state.dart';
 export 'dart:math' show min, max;
+export 'dart:convert' show jsonEncode, jsonDecode;
 export 'package:intl/intl.dart';
 export 'package:cloud_firestore/cloud_firestore.dart' show DocumentReference;
 export 'package:page_transition/page_transition.dart';
 export 'custom_icons.dart' show FFIcons;
 export 'internationalization.dart' show FFLocalizations;
 export '../backend/firebase_analytics/analytics.dart';
+export 'nav/nav.dart';
 
 T valueOrDefault<T>(T? value, T defaultValue) =>
     (value is String && value.isEmpty) || value == null ? defaultValue : value;
 
-String dateTimeFormat(String format, DateTime? dateTime) {
+void _setTimeagoLocales() {
+  timeago.setLocaleMessages('en', timeago.EnMessages());
+}
+
+String dateTimeFormat(String format, DateTime? dateTime, {String? locale}) {
   if (dateTime == null) {
     return '';
   }
   if (format == 'relative') {
-    return timeago.format(dateTime);
+    _setTimeagoLocales();
+    return timeago.format(dateTime, locale: locale);
   }
   return DateFormat(format).format(dateTime);
 }
@@ -43,6 +52,13 @@ Future launchURL(String url) async {
   } catch (e) {
     throw 'Could not launch $uri: $e';
   }
+}
+
+Color colorFromCssString(String color, {Color? defaultColor}) {
+  try {
+    return fromCssColor(color);
+  } catch (_) {}
+  return defaultColor ?? Colors.black;
 }
 
 enum FormatType {
@@ -69,6 +85,9 @@ String formatNumber(
   String? format,
   String? locale,
 }) {
+  if (value == null) {
+    return '';
+  }
   var formattedValue = '';
   switch (formatType) {
     case FormatType.decimal:
@@ -128,13 +147,20 @@ extension DateTimeComparisonOperators on DateTime {
   bool operator >=(DateTime other) => this > other || isAtSameMomentAs(other);
 }
 
-dynamic getJsonField(dynamic response, String jsonPath) {
+dynamic getJsonField(
+  dynamic response,
+  String jsonPath, [
+  bool isForList = false,
+]) {
   final field = JsonPath(jsonPath).read(response);
-  return field.isNotEmpty
-      ? field.length > 1
-          ? field.map((f) => f.value).toList()
-          : field.first.value
-      : null;
+  if (field.isEmpty) {
+    return null;
+  }
+  if (field.length > 1) {
+    return field.map((f) => f.value).toList();
+  }
+  final value = field.first.value;
+  return isForList && value is! Iterable ? [value] : value;
 }
 
 bool get isAndroid => !kIsWeb && Platform.isAndroid;
@@ -170,7 +196,7 @@ extension StringDocRef on String {
 }
 
 void setAppLanguage(BuildContext context, String language) =>
-    MyApp.of(context).setLocale(Locale(language, ''));
+    MyApp.of(context).setLocale(language);
 
 void setDarkModeSetting(BuildContext context, ThemeMode themeMode) =>
     MyApp.of(context).setThemeMode(themeMode);

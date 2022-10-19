@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:from_css_color/from_css_color.dart';
+
 import 'index.dart';
 import 'serializers.dart';
 import 'package:built_value/built_value.dart';
@@ -34,8 +36,8 @@ abstract class UsersRecord implements Built<UsersRecord, UsersRecordBuilder> {
   String? get role;
 
   @BuiltValueField(wireName: kDocumentReferenceField)
-  DocumentReference? get ref;
-  DocumentReference get reference => ref!;
+  DocumentReference? get ffRef;
+  DocumentReference get reference => ffRef!;
 
   static void _initializeBuilder(UsersRecordBuilder builder) => builder
     ..email = ''
@@ -72,7 +74,7 @@ abstract class UsersRecord implements Built<UsersRecord, UsersRecordBuilder> {
           ..room = snapshot.data['room']
           ..building = snapshot.data['building']
           ..role = snapshot.data['role']
-          ..ref = UsersRecord.collection.doc(snapshot.objectID),
+          ..ffRef = UsersRecord.collection.doc(snapshot.objectID),
       );
 
   static Future<List<UsersRecord>> search(
@@ -111,17 +113,23 @@ Map<String, dynamic> createUsersRecordData({
   String? room,
   String? building,
   String? role,
-}) =>
-    serializers.toFirestore(
-        UsersRecord.serializer,
-        UsersRecord((u) => u
-          ..email = email
-          ..password = password
-          ..displayName = displayName
-          ..photoUrl = photoUrl
-          ..uid = uid
-          ..createdTime = createdTime
-          ..phoneNumber = phoneNumber
-          ..room = room
-          ..building = building
-          ..role = role));
+}) {
+  final firestoreData = serializers.toFirestore(
+    UsersRecord.serializer,
+    UsersRecord(
+      (u) => u
+        ..email = email
+        ..password = password
+        ..displayName = displayName
+        ..photoUrl = photoUrl
+        ..uid = uid
+        ..createdTime = createdTime
+        ..phoneNumber = phoneNumber
+        ..room = room
+        ..building = building
+        ..role = role,
+    ),
+  );
+
+  return firestoreData;
+}

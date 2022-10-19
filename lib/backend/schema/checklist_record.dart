@@ -16,8 +16,8 @@ abstract class ChecklistRecord
   BuiltList<String>? get options;
 
   @BuiltValueField(wireName: kDocumentReferenceField)
-  DocumentReference? get ref;
-  DocumentReference get reference => ref!;
+  DocumentReference? get ffRef;
+  DocumentReference get reference => ffRef!;
 
   static void _initializeBuilder(ChecklistRecordBuilder builder) => builder
     ..description = ''
@@ -46,9 +46,15 @@ abstract class ChecklistRecord
 
 Map<String, dynamic> createChecklistRecordData({
   String? description,
-}) =>
-    serializers.toFirestore(
-        ChecklistRecord.serializer,
-        ChecklistRecord((c) => c
-          ..description = description
-          ..options = null));
+}) {
+  final firestoreData = serializers.toFirestore(
+    ChecklistRecord.serializer,
+    ChecklistRecord(
+      (c) => c
+        ..description = description
+        ..options = null,
+    ),
+  );
+
+  return firestoreData;
+}

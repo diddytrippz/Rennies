@@ -61,7 +61,7 @@ class _FlutterFlowPdfViewerState extends State<FlutterFlowPdfViewer> {
                 scrollDirection:
                     widget.horizontalScroll ? Axis.horizontal : Axis.vertical,
                 builders: PdfViewBuilders<DefaultBuilderOptions>(
-                  options: DefaultBuilderOptions(),
+                  options: const DefaultBuilderOptions(),
                   documentLoaderBuilder: (_) =>
                       const Center(child: CircularProgressIndicator()),
                   pageLoaderBuilder: (_) =>

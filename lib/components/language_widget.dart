@@ -15,6 +15,13 @@ class LanguageWidget extends StatefulWidget {
 
 class _LanguageWidgetState extends State<LanguageWidget> {
   @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsetsDirectional.fromSTEB(20, 40, 20, 70),
@@ -26,7 +33,7 @@ class _LanguageWidgetState extends State<LanguageWidget> {
           InkWell(
             onTap: () async {
               logFirebaseEvent('LANGUAGE_COMP_Container_gxinj2kq_ON_TAP');
-              logFirebaseEvent('Container_Set-App-Language');
+              logFirebaseEvent('Container_set_app_language');
               setAppLanguage(context, 'af');
             },
             child: Material(
@@ -89,7 +96,7 @@ class _LanguageWidgetState extends State<LanguageWidget> {
           InkWell(
             onTap: () async {
               logFirebaseEvent('LANGUAGE_COMP_Container_g6qmst4n_ON_TAP');
-              logFirebaseEvent('Container_Set-App-Language');
+              logFirebaseEvent('Container_set_app_language');
               setAppLanguage(context, 'en');
             },
             child: Material(
@@ -142,7 +149,7 @@ class _LanguageWidgetState extends State<LanguageWidget> {
           InkWell(
             onTap: () async {
               logFirebaseEvent('LANGUAGE_COMP_Container_8by4dcs8_ON_TAP');
-              logFirebaseEvent('Container_Set-App-Language');
+              logFirebaseEvent('Container_set_app_language');
               setAppLanguage(context, 'zu');
             },
             child: Material(

@@ -50,8 +50,8 @@ abstract class MaintenanceRecord
   DocumentReference? get userRec;
 
   @BuiltValueField(wireName: kDocumentReferenceField)
-  DocumentReference? get ref;
-  DocumentReference get reference => ref!;
+  DocumentReference? get ffRef;
+  DocumentReference get reference => ffRef!;
 
   static void _initializeBuilder(MaintenanceRecordBuilder builder) => builder
     ..issue = ''
@@ -108,24 +108,30 @@ Map<String, dynamic> createMaintenanceRecordData({
   String? assigned,
   DateTime? updateTime,
   DocumentReference? userRec,
-}) =>
-    serializers.toFirestore(
-        MaintenanceRecord.serializer,
-        MaintenanceRecord((m) => m
-          ..issue = issue
-          ..status = status
-          ..email = email
-          ..photoUrl = photoUrl
-          ..uid = uid
-          ..createdTime = createdTime
-          ..phoneNumber = phoneNumber
-          ..displayName = displayName
-          ..room = room
-          ..building = building
-          ..notes = notes
-          ..rating = rating
-          ..isDone = isDone
-          ..category = category
-          ..assigned = assigned
-          ..updateTime = updateTime
-          ..userRec = userRec));
+}) {
+  final firestoreData = serializers.toFirestore(
+    MaintenanceRecord.serializer,
+    MaintenanceRecord(
+      (m) => m
+        ..issue = issue
+        ..status = status
+        ..email = email
+        ..photoUrl = photoUrl
+        ..uid = uid
+        ..createdTime = createdTime
+        ..phoneNumber = phoneNumber
+        ..displayName = displayName
+        ..room = room
+        ..building = building
+        ..notes = notes
+        ..rating = rating
+        ..isDone = isDone
+        ..category = category
+        ..assigned = assigned
+        ..updateTime = updateTime
+        ..userRec = userRec,
+    ),
+  );
+
+  return firestoreData;
+}
